@@ -26,7 +26,7 @@ public class ReactiveMongoConfig {
             @NotNull
             @Override
             public Mono<MongoDatabase> getMongoDatabase() throws DataAccessException {
-                return super.getMongoDatabase(dbName + "_" + TenantResolver.resolve());
+                return super.getMongoDatabase(dbName + TenantResolver.resolve());
             }
         };
     }

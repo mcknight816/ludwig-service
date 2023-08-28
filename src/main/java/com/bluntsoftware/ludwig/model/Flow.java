@@ -1,20 +1,27 @@
 package com.bluntsoftware.ludwig.model;
 
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
 import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Document
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS,property = "@class")
 public class Flow {
-
-	private String name;
-	@Id
-	private String id;
+    @Id
+    private String id;
+    private String name;
+    private Boolean locked = false;
+    private List<FlowActivity> activities;
+    private List<Connection> connections;
+    private List<ConnectionMap> connectionMaps;
 }

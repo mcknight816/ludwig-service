@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.data.domain.PageRequest;
 
 @RestController
-@RequestMapping("/rest")
+@RequestMapping("/core/flow")
 public class FlowController {
 
   private final  FlowService service;
@@ -21,28 +21,28 @@ public class FlowController {
     this.service = service;
   }
 
-  @PostMapping(value="/flow",produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<FlowDto> save(@RequestBody FlowDto dto){
     return this.service.save(FlowMapper.MAPPER.flowDtoToFlow(dto)).map(FlowMapper.MAPPER::flowToFlowDto);
   }
 
-  @GetMapping(value = "/flow/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "{id}",produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<FlowDto> findById(@PathVariable("id") String id ){
     return this.service.findById(String.valueOf(id)).map(FlowMapper.MAPPER::flowToFlowDto);
   }
 
-  @GetMapping(value = "/flow",produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public Flux<FlowDto> findAll(){
     return this.service.findAll().map(FlowMapper.MAPPER::flowToFlowDto);
   }
 
-  @DeleteMapping(value = "/flow/{id}")
+  @DeleteMapping(value = "{id}")
   public Mono<Void> deleteById(@PathVariable("id") String id ){
     return this.service.deleteById(String.valueOf(id));
   }
 
   @ResponseBody
-  @GetMapping(value = {"/flow/search"}, produces = { "application/json" })
+  @GetMapping(value = {"/search"}, produces = { "application/json" })
   public Flux<FlowDto> search(@RequestParam(value = "term",  defaultValue = "") String searchTerm,
                              @RequestParam(value = "page",  defaultValue = "0") Integer page,
                              @RequestParam(value = "limit", defaultValue = "50") Integer limit){
