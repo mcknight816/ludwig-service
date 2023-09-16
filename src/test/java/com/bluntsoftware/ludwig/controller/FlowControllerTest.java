@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.controller;
 import com.bluntsoftware.ludwig.model.Flow;
 import com.bluntsoftware.ludwig.service.FlowService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,12 +46,10 @@ class FlowControllerTest {
 
   @BeforeEach
   void before() {
-  EasyRandomParameters parameters = new EasyRandomParameters();
-  parameters.setCollectionSizeRange(new EasyRandomParameters.Range<>(2,10));
-  EasyRandom generator = new EasyRandom(parameters);
+    objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
-  mono = Mono.just(generator.nextObject(Flow.class));
-    flux = Flux.just(generator.nextObject(Flow.class), generator.nextObject(Flow.class));
+    mono = Mono.just(Flow.builder().id("1").build());
+    flux = Flux.just(Flow.builder().id("1").build(), Flow.builder().id("2").build());
     Mockito.when(this.service.findAll()).thenReturn(flux);
     Mockito.when(this.service.save(any())).thenReturn(mono);
     Mockito.when(this.service.findById(any())).thenReturn(mono);
@@ -60,7 +59,7 @@ class FlowControllerTest {
   void shouldFindById() throws Exception {
     String jsonBlob = objectMapper.writeValueAsString(mono.block());
     byte[] data = WebTestClient.bindToController(controller).build()
-      .get().uri("/rest/flow/1")
+      .get().uri("/core/flow/1")
       .exchange()
       .expectStatus().isOk()
       .expectHeader().contentType(MediaType.APPLICATION_JSON)
@@ -72,7 +71,7 @@ class FlowControllerTest {
   void shouldFindAll() throws Exception {
     String jsonBlob = objectMapper.writeValueAsString(flux.collectList().block());
     byte[] data = WebTestClient.bindToController(controller).build()
-      .get().uri("/rest/flow")
+      .get().uri("/core/flow")
       .exchange()
       .expectStatus().isOk()
       .expectHeader().contentType(MediaType.APPLICATION_JSON)
@@ -86,7 +85,7 @@ class FlowControllerTest {
     WebTestClient
       .bindToController(controller)
       .build()
-      .delete().uri("/rest/flow/1")
+      .delete().uri("/core/flow/1")
       .exchange()
       .expectStatus().isOk();
   }
@@ -95,7 +94,7 @@ class FlowControllerTest {
   void shouldSave() throws Exception {
     String jsonBlob = objectMapper.writeValueAsString(mono.block());
      byte[] data = WebTestClient.bindToController(controller).build()
-      .post().uri("/rest/flow")
+      .post().uri("/core/flow")
       .body(mono,Flow.class)
       .accept(MediaType.APPLICATION_JSON)
       .exchange()

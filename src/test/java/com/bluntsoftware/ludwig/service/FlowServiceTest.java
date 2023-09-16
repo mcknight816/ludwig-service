@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.service;
 
-import com.bluntsoftware.ludwig.repository.FlowRepo;
+import com.bluntsoftware.ludwig.repository.FlowRepository;
 import com.bluntsoftware.ludwig.model.Flow;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +22,7 @@ import java.util.List;
 class FlowServiceTest {
 
   @MockBean
-  private FlowRepo repo;
+  private FlowRepository repo;
 
   Flow item1;
   Flow item2;
