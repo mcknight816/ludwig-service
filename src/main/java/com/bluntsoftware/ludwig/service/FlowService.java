@@ -19,6 +19,10 @@ public class FlowService{
   }
 
   public Mono<Flow> save(Flow item) {
+    Flow flow = flowRepository.getByName(item.getName()).block();
+    if(flow != null && !flow.getId().equalsIgnoreCase(item.getId())){
+      throw new RuntimeException("flow name already exists");
+    }
     return flowRepository.save(item);
   }
 

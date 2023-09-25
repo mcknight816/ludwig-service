@@ -23,7 +23,7 @@ import java.util.Map;
 public class FlowRunnerController {
 
     private final FlowRunnerService flowRunnerService;
-private final AssetController assetService;
+    private final AssetController assetService;
     public FlowRunnerController(FlowRunnerService flowRunnerService, AssetController assetService) {
         this.flowRunnerService = flowRunnerService;
         this.assetService = assetService;

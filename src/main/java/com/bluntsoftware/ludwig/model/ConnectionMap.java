@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConnectionMap {
+    private Connection parent;
     private String src;
     private String tgt;
     @JsonIgnore

@@ -23,7 +23,6 @@ public class CounterActivity extends ActivityImpl {
         return "fa-plus";
     }
 
-
     @Override
     @Transactional
     public Map<String, Object> run(Map<String, Object> input) throws Exception {

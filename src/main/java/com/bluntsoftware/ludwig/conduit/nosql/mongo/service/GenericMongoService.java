@@ -38,7 +38,7 @@ public  class GenericMongoService<T extends Domain,X extends GenericMongoReposit
 
 
     @Override
-    protected Object save(@PathVariable("id") String id, HttpServletRequest request, @RequestBody T object) throws Exception {
+    public Object save(@PathVariable("id") String id, HttpServletRequest request, @RequestBody T object) throws Exception {
         object.set_id(id);
         return repository.save(object);
     }

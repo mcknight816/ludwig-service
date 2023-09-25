@@ -14,6 +14,6 @@ import java.util.HashMap;
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS,property = "@class")
 public class Config extends HashMap<String,Object> {
     @Id
-    String _id;
+    String id;
     String configClass;
 }

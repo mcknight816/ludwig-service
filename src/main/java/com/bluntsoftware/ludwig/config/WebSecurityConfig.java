@@ -33,6 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/rest/**").authenticated()
+                .antMatchers("/core/flow/**").authenticated()
                 .anyRequest()
                 .permitAll()
                 .and()
