@@ -1,16 +1,17 @@
 package com.bluntsoftware.ludwig.dto;
 
+import com.bluntsoftware.ludwig.model.Config;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.HashMap;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ConfigDto extends HashMap<String,Object> {
+public class FlowConfigDto {
     String id;
-    String configClass;
+    String name;
+    Config config;
 }

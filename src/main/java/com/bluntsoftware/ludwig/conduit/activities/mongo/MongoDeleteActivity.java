@@ -13,12 +13,12 @@ import java.util.Map;
  * Created by Alex Mcknight on 2/27/2017.
  *
  */
-
+@Service
 public class MongoDeleteActivity  extends MongoActivity {
 
     @Autowired
-    public MongoDeleteActivity(MongoConnectionConfig mongoConnectionConfig, MongoRepository mongoRepository) {
-        super(mongoConnectionConfig,mongoRepository);
+    public MongoDeleteActivity(MongoConnectionConfig mongoConnectionConfig) {
+        super(mongoConnectionConfig);
     }
 
     @Override

@@ -18,13 +18,13 @@ import java.util.Map;
 /**
  * Created by Alex Mcknight on 2/27/2017.
  */
-
+@Service
 public class MongoSaveActivity extends MongoActivity {
     private Logger log = LoggerFactory.getLogger(MongoSaveActivity.class);
 
     @Autowired
-    public MongoSaveActivity(MongoConnectionConfig mongoConnectionConfig, MongoRepository mongoRepository) {
-        super(mongoConnectionConfig,mongoRepository);
+    public MongoSaveActivity(MongoConnectionConfig mongoConnectionConfig) {
+        super(mongoConnectionConfig);
     }
 
     @Override

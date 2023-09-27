@@ -3,7 +3,6 @@ package com.bluntsoftware.ludwig.conduit.impl;
 
 import com.bluntsoftware.ludwig.conduit.Activity;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.repository.ConfigRepository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.stereotype.Service;

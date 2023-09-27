@@ -21,12 +21,12 @@ import java.util.Map;
 public abstract class MongoActivity extends ActivityImpl {
 
     private final MongoConnectionConfig mongoConnectionConfig;
-    private final MongoRepository mongoRepository;
+
     private final Map<Map<String,Object>, MongoRepository> repos = new HashMap<>();
 
-    public MongoActivity(MongoConnectionConfig mongoConnectionConfig,MongoRepository mongoRepository ) {
+    public MongoActivity(MongoConnectionConfig mongoConnectionConfig  ) {
         this.mongoConnectionConfig = mongoConnectionConfig;
-        this.mongoRepository = mongoRepository;
+
     }
 
     @Override
@@ -46,25 +46,27 @@ public abstract class MongoActivity extends ActivityImpl {
     MongoRepository getRepository(Map<String, Object> input){
         Map<String, Object>  config = this.getExternalConfigByName(input.get(mongoConnectionConfig.getPropertyName()),MongoConnectionConfig.class);
         if(config == null){
-            return this.mongoRepository;
-            //config = mongoConnectionConfig.getDefaults();
+            config = mongoConnectionConfig.getDefaults();
         }
         Map<String,Object> connection = (Map<String,Object>)config.get("connection");
-        MongoRepository repo = this.repos.get(connection);
-        if(repo != null){
+        if(connection != null){
+            MongoRepository repo = this.repos.get(connection);
+            if(repo != null){
+                return repo;
+            }
+
+            String strPort = connection.get("port").toString();
+            String server = connection.get("server").toString();
+            if(strPort != null && !strPort.equalsIgnoreCase("")) {
+                Integer port = Integer.parseInt(strPort);
+                repo =  new MongoRepository(new MongoConnection(server,port));
+            }else{
+                repo = new MongoRepository(new MongoConnection(server,null));
+            }
+            this.repos.put(connection,repo);
             return repo;
         }
-
-        String strPort = connection.get("port").toString();
-        String server = connection.get("server").toString();
-        if(strPort != null && !strPort.equalsIgnoreCase("")) {
-            Integer port = Integer.parseInt(strPort);
-            repo =  new MongoRepository(new MongoConnection(server,port));
-        }else{
-            repo = new MongoRepository(new MongoConnection(server,null));
-        }
-        this.repos.put(connection,repo);
-        return repo;
+        return null;
     }
     public static void main(String[] args) {
 

@@ -13,12 +13,12 @@ import java.util.Map;
 /**
  * Created by Alex Mcknight on 8/1/2017.
  */
-
+@Service
 public class MongoColumnsActivity extends MongoActivity {
 
-
-    public MongoColumnsActivity(MongoConnectionConfig mongoConnectionConfig, MongoRepository mongoRepository) {
-        super(mongoConnectionConfig,mongoRepository);
+    @Autowired
+    public MongoColumnsActivity(MongoConnectionConfig mongoConnectionConfig ) {
+        super(mongoConnectionConfig);
     }
 
     @Override

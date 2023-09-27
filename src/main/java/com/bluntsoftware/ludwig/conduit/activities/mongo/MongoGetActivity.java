@@ -7,6 +7,8 @@ import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +19,12 @@ import java.util.Map;
  * Created by Alex Mcknight on 2/27/2017.
  *
  */
-
+@Service
 public class MongoGetActivity extends MongoActivity {
-
+    private Logger log = LoggerFactory.getLogger(MongoGetActivity.class);
     @Autowired
-    public MongoGetActivity(MongoConnectionConfig mongoConnectionConfig, MongoRepository mongoRepository) {
-        super(mongoConnectionConfig,mongoRepository);
+    public MongoGetActivity(MongoConnectionConfig mongoConnectionConfig ) {
+        super(mongoConnectionConfig);
     }
 
     @Override

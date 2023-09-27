@@ -19,12 +19,12 @@ import java.util.Map;
 /**
  * Created by Alex Mcknight on 2/27/2017.
  */
-
+@Service
 public class MongoFindActivity extends MongoActivity {
 
     @Autowired
-    public MongoFindActivity(MongoConnectionConfig mongoConnectionConfig, MongoRepository mongoRepository) {
-        super(mongoConnectionConfig,mongoRepository);
+    public MongoFindActivity(MongoConnectionConfig mongoConnectionConfig) {
+        super(mongoConnectionConfig);
     }
 
     @Override
