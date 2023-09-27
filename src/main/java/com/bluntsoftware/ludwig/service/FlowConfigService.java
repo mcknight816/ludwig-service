@@ -1,6 +1,5 @@
 package com.bluntsoftware.ludwig.service;
 
-import com.bluntsoftware.ludwig.model.Config;
 import com.bluntsoftware.ludwig.model.FlowConfig;
 import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ public class FlowConfigService {
         this.configRepository = configRepository;
     }
     public Flux<FlowConfig> findAll() {
-        return  configRepository.findAll();
+        return configRepository.findAll();
     }
 
     public Mono<FlowConfig> findById(String id) {
@@ -27,10 +26,9 @@ public class FlowConfigService {
     }
 
     public Mono<FlowConfig> deleteById(String id) {
-        return configRepository.findById(id).publishOn(Schedulers.boundedElastic()).map(f-> {
-            configRepository.deleteById(id).block();
-            return f;
-        });
+        FlowConfig flowConfig = configRepository.findById(id).block();
+        configRepository.deleteById(id).block();
+        return  Mono.just(flowConfig);
     }
 
 }

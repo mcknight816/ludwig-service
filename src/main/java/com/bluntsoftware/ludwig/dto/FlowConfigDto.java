@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,5 +15,6 @@ import lombok.NoArgsConstructor;
 public class FlowConfigDto {
     String id;
     String name;
-    Config config;
+    String configClass;
+    Map<String,Object> config;
 }
