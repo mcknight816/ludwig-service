@@ -20,6 +20,7 @@ public class Application {
     private String id;
     private String name;
     private String description;
+    private String path;
     private Instant created;
     private Instant modified;
     private List<Flow> flows;

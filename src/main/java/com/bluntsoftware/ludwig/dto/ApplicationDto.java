@@ -16,5 +16,6 @@ public class ApplicationDto {
     String id;
     String name;
     String description;
+    String path;
     List<Flow> flows;
 }

@@ -42,16 +42,16 @@ public class OpenApiService {
         details.put("description",description);
         return details;
     }
-    public Map<String,Object> paths(String appId){
-        Application application = applicationRepository.findById(appId).block();
-        List<Flow> flows = Objects.requireNonNull(application).getFlows();
+    public Map<String,Object> paths(Application app){
+
+        List<Flow> flows = Objects.requireNonNull(app).getFlows();
         Map<String,Object> ret = new HashMap<>();
         for(Flow flow:flows){
             for(FlowActivity flowActivity:flow.getActivities()) {
                 try {
                     String category = flowActivity.getCategory();
                     if (category != null && category.equalsIgnoreCase("input")) {
-                        String path = getPath(flow.getName(), flowActivity);
+                        String path = getPath(flow.getPath() != null && flow.getPath().equalsIgnoreCase("") ? flow.getPath() :flow.getName().toLowerCase().replace(" " , "-"), flowActivity,app);
                         Map entity = (Map) ret.get(path);
                         if (entity == null) {
                             entity = method(flow,flowActivity);
@@ -67,8 +67,10 @@ public class OpenApiService {
         }
         return ret;
     }
-    private String getPath(String flowName, FlowActivity flowActivity){
-        String path = "/conduit/rest/" + flowName;
+    private String getPath(String flowName, FlowActivity flowActivity,Application app){
+        String appPath = app.getPath() != null && !app.getPath().equalsIgnoreCase("") ?
+                app.getPath() : app.getName().toLowerCase().replace(' ','-');
+        String path = "/api/" + appPath + "/" + flowName;
         String name =   flowActivity.getName(); //.getActivity()
         String context = flowActivity.getContext();
         if(context != null && !context.equalsIgnoreCase("")){
@@ -262,5 +264,22 @@ public class OpenApiService {
         ret.put("required",required);
         ret.put("description",description);
         return ret;
+    }
+
+    public Map<String, Object> openApi(String id) {
+
+        Application application = applicationRepository.findById(id).block();
+
+        Map<String,Object> info = new HashMap<>();
+        Map<String,Object> openApi = new HashMap<>();
+        info.put("description",application.getDescription());
+        info.put("version","1.0.3");
+        info.put("title",application.getName());
+        openApi.put("openapi","3.0.0");
+
+        openApi.put("info",info);
+        openApi.put("url","http://localhost:9094");
+        openApi.put("paths",paths(application));
+        return openApi;
     }
 }

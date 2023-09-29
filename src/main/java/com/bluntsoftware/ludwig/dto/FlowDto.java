@@ -19,6 +19,7 @@ public class FlowDto {
 
 	private String id;
 	private String name;
+	private String path;
 	private Boolean locked = false;
 	private List<FlowActivity> activities;
 	private List<Connection> connections;

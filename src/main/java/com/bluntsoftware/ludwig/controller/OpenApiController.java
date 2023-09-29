@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 @RestController
 @RequestMapping(value = "/api/swagger")
@@ -29,19 +28,9 @@ public class OpenApiController {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public Map<String,Object> api(@PathVariable("appId") String id){
-        Map<String,Object> info = new HashMap<>();
-        Map<String,Object> openApi = new HashMap<>();
-        info.put("description","Conduit rest api based on Ludwig flows.");
-        info.put("version","1.0.3");
-        info.put("title","Ludwig Conduit API");
-        openApi.put("openapi","3.0.0");
-
-        openApi.put("info",info);
-        openApi.put("url","http://localhost:8088");
-        openApi.put("paths",openAPiService.paths(id));
-
-        return openApi;
+        return openAPiService.openApi(id);
     }
+
     @RequestMapping(
             value = "/{appId}/ludwig.json",
             method = { RequestMethod.GET},
@@ -53,7 +42,7 @@ public class OpenApiController {
         HttpHeaders respHeaders = new HttpHeaders();
         try {
             ObjectMapper mapper = new ObjectMapper();
-            byte[] dataBuffer =  mapper.writeValueAsBytes(api(id));
+            byte[] dataBuffer =  mapper.writeValueAsBytes(openAPiService.openApi(id));
             isr = new InputStreamResource(new ByteArrayInputStream(dataBuffer));
             respHeaders.setContentType(MediaType.valueOf("application/json"));
             respHeaders.setContentLength(dataBuffer.length);
