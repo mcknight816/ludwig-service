@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.service;
 
-import com.bluntsoftware.ludwig.model.Application;
+import com.bluntsoftware.ludwig.domain.Application;
 import com.bluntsoftware.ludwig.repository.ApplicationRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

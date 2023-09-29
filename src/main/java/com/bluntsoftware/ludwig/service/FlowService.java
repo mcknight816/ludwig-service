@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.service;
 
-import com.bluntsoftware.ludwig.model.Flow;
+import com.bluntsoftware.ludwig.domain.Flow;
 import com.bluntsoftware.ludwig.repository.FlowRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

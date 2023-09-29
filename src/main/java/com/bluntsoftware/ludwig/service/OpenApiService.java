@@ -1,10 +1,10 @@
 package com.bluntsoftware.ludwig.service;
 
 import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
-import com.bluntsoftware.ludwig.model.Application;
-import com.bluntsoftware.ludwig.model.Flow;
-import com.bluntsoftware.ludwig.model.FlowActivity;
-import com.bluntsoftware.ludwig.model.FlowConfig;
+import com.bluntsoftware.ludwig.domain.Application;
+import com.bluntsoftware.ludwig.domain.Flow;
+import com.bluntsoftware.ludwig.domain.FlowActivity;
+import com.bluntsoftware.ludwig.domain.FlowConfig;
 import com.bluntsoftware.ludwig.repository.ApplicationRepository;
 import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;

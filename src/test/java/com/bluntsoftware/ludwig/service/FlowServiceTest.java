@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.service;
 
 import com.bluntsoftware.ludwig.repository.FlowRepository;
-import com.bluntsoftware.ludwig.model.Flow;
+import com.bluntsoftware.ludwig.domain.Flow;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;

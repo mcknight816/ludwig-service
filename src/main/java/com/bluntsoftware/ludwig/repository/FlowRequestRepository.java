@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.repository;
 
 
-import com.bluntsoftware.ludwig.model.FlowRequest;
+import com.bluntsoftware.ludwig.domain.FlowRequest;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.model;
+package com.bluntsoftware.ludwig.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

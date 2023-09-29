@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.controller;
 
 import com.bluntsoftware.ludwig.conduit.activities.files.FileDownloader;
-import com.bluntsoftware.ludwig.model.FlowActivity;
+import com.bluntsoftware.ludwig.domain.FlowActivity;
 import com.bluntsoftware.ludwig.service.FlowRunnerService;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;

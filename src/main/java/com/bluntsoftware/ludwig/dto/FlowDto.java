@@ -1,8 +1,8 @@
 package com.bluntsoftware.ludwig.dto;
 
-import com.bluntsoftware.ludwig.model.Connection;
-import com.bluntsoftware.ludwig.model.ConnectionMap;
-import com.bluntsoftware.ludwig.model.FlowActivity;
+import com.bluntsoftware.ludwig.domain.Connection;
+import com.bluntsoftware.ludwig.domain.ConnectionMap;
+import com.bluntsoftware.ludwig.domain.FlowActivity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;

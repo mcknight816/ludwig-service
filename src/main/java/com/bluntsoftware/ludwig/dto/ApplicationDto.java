@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.dto;
 
-import com.bluntsoftware.ludwig.model.Flow;
+import com.bluntsoftware.ludwig.domain.Flow;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

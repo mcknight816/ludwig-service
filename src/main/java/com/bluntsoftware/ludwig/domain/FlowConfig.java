@@ -1,6 +1,5 @@
-package com.bluntsoftware.ludwig.model;
+package com.bluntsoftware.ludwig.domain;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

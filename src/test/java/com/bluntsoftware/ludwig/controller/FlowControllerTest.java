@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.controller;
 
-import com.bluntsoftware.ludwig.model.Flow;
+import com.bluntsoftware.ludwig.domain.Flow;
 import com.bluntsoftware.ludwig.service.FlowService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -8,8 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.jeasy.random.EasyRandom;
-import org.jeasy.random.EasyRandomParameters;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;

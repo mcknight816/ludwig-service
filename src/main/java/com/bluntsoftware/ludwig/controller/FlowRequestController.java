@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.controller;
 
-import com.bluntsoftware.ludwig.model.FlowRequest;
+import com.bluntsoftware.ludwig.domain.FlowRequest;
 import com.bluntsoftware.ludwig.service.FlowRequestService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;

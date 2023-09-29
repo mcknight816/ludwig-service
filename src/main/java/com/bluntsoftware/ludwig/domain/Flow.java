@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.model;
+package com.bluntsoftware.ludwig.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

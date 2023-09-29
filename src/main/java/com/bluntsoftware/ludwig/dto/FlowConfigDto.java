@@ -1,6 +1,5 @@
 package com.bluntsoftware.ludwig.dto;
 
-import com.bluntsoftware.ludwig.model.Config;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

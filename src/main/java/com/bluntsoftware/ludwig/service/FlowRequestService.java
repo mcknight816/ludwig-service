@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.service;
 
-import com.bluntsoftware.ludwig.model.FlowRequest;
+import com.bluntsoftware.ludwig.domain.FlowRequest;
 import com.bluntsoftware.ludwig.repository.FlowRequestRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

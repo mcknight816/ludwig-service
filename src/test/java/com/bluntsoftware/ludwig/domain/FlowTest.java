@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.model;
+package com.bluntsoftware.ludwig.domain;
 
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;

@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.mapping;
 
 import com.bluntsoftware.ludwig.dto.FlowConfigDto;
-import com.bluntsoftware.ludwig.model.FlowConfig;
+import com.bluntsoftware.ludwig.domain.FlowConfig;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.model;
+package com.bluntsoftware.ludwig.domain;
 
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Field;

@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.mapping;
 
 import com.bluntsoftware.ludwig.dto.ApplicationDto;
-import com.bluntsoftware.ludwig.model.Application;
+import com.bluntsoftware.ludwig.domain.Application;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
