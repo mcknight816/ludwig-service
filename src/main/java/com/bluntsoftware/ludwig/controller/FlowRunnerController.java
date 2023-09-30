@@ -1,6 +1,7 @@
 package com.bluntsoftware.ludwig.controller;
 
 import com.bluntsoftware.ludwig.conduit.activities.files.FileDownloader;
+import com.bluntsoftware.ludwig.conduit.activities.output.HttpResponseActivity;
 import com.bluntsoftware.ludwig.domain.FlowActivity;
 import com.bluntsoftware.ludwig.service.FlowRunnerService;
 import org.springframework.core.io.InputStreamResource;
@@ -43,7 +44,6 @@ public class FlowRunnerController {
         return response(flowRunnerService.handleGet(appPath,flowName,context));
     }
 
-
     public ResponseEntity<Object> response(List<FlowActivity> out ){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -52,7 +52,7 @@ public class FlowRunnerController {
                 if(flowActivity.getHasError() != null && flowActivity.getHasError()){
                     return new ResponseEntity<>(flowActivity.getOutput(),headers, HttpStatus.BAD_REQUEST);
                 }
-                if(flowActivity.getActivityClass().equalsIgnoreCase("com.bluntsoftware.lib.conduit.activities.output.HttpResponseActivity")){
+                if(flowActivity.getActivityClass().equalsIgnoreCase(HttpResponseActivity.class.getName())){
                     Map<String,Object> in = flowActivity.getInput();
                     boolean download = false;
                     if(in.containsKey("output_method")){
