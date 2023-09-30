@@ -5,6 +5,7 @@ import com.bluntsoftware.ludwig.conduit.config.queue.QConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.RecordProperty;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,10 @@ public class ListenerActivity extends ActivityImpl {
 
     @Autowired
     QConnectionConfig qConnectionConfig;
+
+    public ListenerActivity(FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
+    }
 
     @Override
     public JsonSchema getSchema() {

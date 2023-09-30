@@ -5,27 +5,94 @@ import com.bluntsoftware.ludwig.conduit.activities.input.PostActivity;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonPath;
 import com.bluntsoftware.ludwig.conduit.utils.SecurityUtils;
+import com.bluntsoftware.ludwig.domain.Application;
 import com.bluntsoftware.ludwig.domain.Flow;
 import com.bluntsoftware.ludwig.domain.FlowActivity;
 import com.bluntsoftware.ludwig.repository.ActivityRepository;
+import com.bluntsoftware.ludwig.repository.ApplicationRepository;
 import com.bluntsoftware.ludwig.repository.FlowRepository;
+import com.bluntsoftware.ludwig.mapping.FlowActivityMapper;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Synchronized;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import java.util.*;
-
+@Slf4j
 @Service("FlowRunnerService")
 public class FlowRunnerService {
 
+    private final ApplicationRepository applicationRepository;
     private final FlowRepository flowRepository;
     private final ActivityRepository activityRepository;
-    public FlowRunnerService(FlowRepository flowRepository, ActivityRepository activityRepository) {
+    public FlowRunnerService(ApplicationRepository applicationRepository, FlowRepository flowRepository, ActivityRepository activityRepository) {
+        this.applicationRepository = applicationRepository;
         this.flowRepository = flowRepository;
         this.activityRepository = activityRepository;
     }
+    public void run(FlowActivity flowActivity) throws Exception {
+        ActivityImpl activity = (ActivityImpl)activityRepository.getByKlass(flowActivity.getActivityClass());
+        Map<String,Object> out = new HashMap<>();
+        try{
+            out = activity.run(flowActivity.getInput());
+        }catch(Exception e){
+            out.put("err",e.getMessage());
+            flowActivity.setHasError(true);
+        }
+        flowActivity.setOutput(out);
+    }
+    private void run(Flow flow,FlowActivity flowActivity,List<FlowActivity> flowActivities){
+        FlowRunnerService service = this;
+        if(flowActivity != null && flowActivity.getId() != null){
+            try {
+                FlowActivityMapper.mapFields(flow.getConnectionMaps(),flowActivity,flowActivities);
+                if(flowActivity.isFireAndForget()){
+                    Thread t = new Thread(() -> {
+                        try {
+                            service.run(flowActivity);
+                        }catch(Exception e){
+                            //broadcastActivityError(flowActivity,e);
+                        }
+                    });
+                    t.start();
+                }else{
+                    run(flowActivity);
+                }
+                flowActivities.add(flowActivity);
+            }catch(Exception e){
+              //  broadcastActivityError(flowActivity,e);
+            }
+        }
+        getTargetFlowActivities(flow,flowActivity).forEach(t-> run(flow,t,flowActivities));
+        log.info("{}", flowActivities);
+    }
+    private List<FlowActivity> getTargetFlowActivities(Flow flow,FlowActivity flowActivity) {
+        List<FlowActivity> ret =  new ArrayList<>();
+        flow.getConnections().stream()
+                .filter(c->c.getSrc().equalsIgnoreCase(flowActivity.getId()))
+                .forEach(c->{
+                    FlowActivity fa = getFlowActivityByID(flow,c.getTgt());
+                    if(fa != null){ret.add(fa);}
+                });
+        return ret;
+    }
 
+
+    public List<FlowActivity> handleGet(String appPath, String flowName, String context) {
+        return new ArrayList<>();
+    }
+
+    public List<FlowActivity> handlePost(String appPath,String flowName, String context, Map<String,Object> input){
+        Application application = applicationRepository.findByPath(appPath).block();
+        InputActivity activity = (InputActivity)activityRepository.getByKlass(PostActivity.class.getName());
+        Map<String,Object> in = new HashMap<>();
+        in.put("user", SecurityUtils.getUserInfo());
+        in.put("payload",transform(input));
+        Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,70,in,context).block();
+        return run(flow,activity,in,context);
+    }
 
     public FlowActivity getFlowActivityByID(Flow flow,String flowActivityId){
         return flow.getActivities().stream()
@@ -37,9 +104,7 @@ public class FlowRunnerService {
         return runWithActivityClass(flow, InputActivity.class.getName(),input,context);
     }
 
-    void run(Flow flow,FlowActivity activity,List<FlowActivity> flowActivities){
 
-    }
     public Map<String,Object> getOutputFlowData(String flowName){
         Date requested = new Date();
         Map<String,Object> in = new HashMap<>();
@@ -49,18 +114,14 @@ public class FlowRunnerService {
         return in;
     }
 
-    public Mono<Flow> getOrCreateInputFlow(String flowName, Activity activity, Integer x, Integer y, Map<String,Object> input, String context) throws InsufficientAuthenticationException {
+    public Mono<Flow> getOrCreateInputFlow(Application application,String flowName, Activity activity, Integer x, Integer y, Map<String,Object> input, String context) throws InsufficientAuthenticationException {
+
         if(flowName == null || flowName.equalsIgnoreCase("")){
             return null;
         }
-        Flow flow = flowRepository.getByName(flowName).block();
+        Flow flow = application.getFlows().stream().filter(f -> f.getName().equalsIgnoreCase(flowName)).findFirst().orElse(null);
         if(flow == null){
-            flow = Flow.builder()
-                    .name(flowName)
-                    .connections(List.of())
-                    .connectionMaps(List.of())
-                    .activities(List.of())
-                    .build();
+            flow = Flow.builder().name(flowName).connections(List.of()).connectionMaps(List.of()).activities(List.of()).build();
             //flow.setFlowListenerService(flowListenerService); //What is this Listener ?
         }
         String classname = activity.getClass().getName();
@@ -93,7 +154,7 @@ public class FlowRunnerService {
             throw new InsufficientAuthenticationException("Conduit Access Denied (Role must be " + authorizedRole + " or higher.)" );
         }
 */
-        return flowRepository.save(flow);
+         return flowRepository.save(flow);
 
     }
     @JsonIgnore
@@ -141,11 +202,7 @@ public class FlowRunnerService {
         }
         return null;
     }
-    public Map<String,Object> getInputFlowData(){
-        Map<String,Object> in = new HashMap<>();
-        in.put("user", SecurityUtils.getUserInfo());
-        return in;
-    }
+
     public Map<String,Object> transform(Map<String,Object> data){
         Map<String,Object> ret = new HashMap<>();
         for(String key:data.keySet()){
@@ -153,14 +210,6 @@ public class FlowRunnerService {
             JsonPath.createValue(ret,key,value);
         }
         return ret;
-    }
-
-    public List<FlowActivity> handlePost(String flowName, String context, Map<String,Object> input){
-        InputActivity activity = (InputActivity)activityRepository.getByKlass(PostActivity.class.getName());
-        Map<String,Object> in = getInputFlowData();
-        in.put("payload",transform(input));
-        Flow flow  = getOrCreateInputFlow(flowName,activity,50,70,in,context).block();
-        return run(flow,activity,in,context);
     }
 
     private List<FlowActivity> run(Flow flow, Activity activity, Map<String, Object> input, String context){
@@ -198,5 +247,6 @@ public class FlowRunnerService {
 
         return flowActivities;
     }
+
 
 }

@@ -1,5 +1,6 @@
 package com.bluntsoftware.ludwig.conduit.activities.input;
 
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -7,6 +8,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class GetActivity extends InputActivity {
+    public GetActivity(FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
+    }
+
     //
     @Override
     public String getIcon() {

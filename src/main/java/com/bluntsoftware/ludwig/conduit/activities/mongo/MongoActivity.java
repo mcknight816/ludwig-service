@@ -6,6 +6,7 @@ import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoConnection;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
@@ -24,7 +25,8 @@ public abstract class MongoActivity extends ActivityImpl {
 
     private final Map<Map<String,Object>, MongoRepository> repos = new HashMap<>();
 
-    public MongoActivity(MongoConnectionConfig mongoConnectionConfig  ) {
+    public MongoActivity(MongoConnectionConfig mongoConnectionConfig , FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
         this.mongoConnectionConfig = mongoConnectionConfig;
 
     }

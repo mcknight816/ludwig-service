@@ -4,6 +4,7 @@ package com.bluntsoftware.ludwig.conduit.activities.conduit;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.ValidationUtils;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 @Service
 public class ValidationActivity extends ActivityImpl {
+
+    public ValidationActivity(FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
+    }
 
     @Override
     public Map<String, Object> run(Map<String, Object> input) throws Exception {

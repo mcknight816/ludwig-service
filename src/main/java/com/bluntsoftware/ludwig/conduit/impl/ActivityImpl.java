@@ -3,11 +3,14 @@ package com.bluntsoftware.ludwig.conduit.impl;
 
 import com.bluntsoftware.ludwig.conduit.Activity;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Created by Alex Mcknight on 1/4/2017.
@@ -19,20 +22,19 @@ public abstract class ActivityImpl implements Activity {
 
     private final static Map<String,Activity> activities = new HashMap<>();
 
-
-    public ActivityImpl() {
-
+    private final FlowConfigRepository flowConfigRepository;
+    public ActivityImpl(FlowConfigRepository flowConfigRepository) {
+        this.flowConfigRepository = flowConfigRepository;
         if(getClass().isAnnotationPresent(Service.class)){
             activities.put(getClass().getTypeName(),this);
         }
     }
 
-    public Map<String, Object> getExternalConfigByName(Object configName,Class clazz) {
+    public Map<String, Object> getExternalConfigByName(Object configName,Class clazz){
         if(configName != null){
-            return new HashMap<>();
-            /*if(configRepository != null){
-                return configRepository.getConfig(configName.toString(),clazz).orElse(null);
-            }*/
+            if(flowConfigRepository != null){
+                return Optional.of(Objects.requireNonNull(flowConfigRepository.findByNameAndConfigClass(configName.toString(), clazz.getName()).block()).getConfig()).orElse(null);
+            }
         }
         return null;
     }

@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,8 @@ import java.util.Map;
 public class MongoColumnsActivity extends MongoActivity {
 
     @Autowired
-    public MongoColumnsActivity(MongoConnectionConfig mongoConnectionConfig ) {
-        super(mongoConnectionConfig);
+    public MongoColumnsActivity(MongoConnectionConfig mongoConnectionConfig, FlowConfigRepository flowConfigRepository ) {
+        super(mongoConnectionConfig,flowConfigRepository);
     }
 
     @Override

@@ -4,6 +4,7 @@ package com.bluntsoftware.ludwig.conduit.activities.sql;
 import com.bluntsoftware.ludwig.conduit.config.sql.SQLConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 /**
@@ -13,7 +14,8 @@ import java.util.Map;
 public class SQLActivity extends ActivityImpl {
     private final SQLConnectionConfig sqlConnectionConfig;
 
-    public SQLActivity(SQLConnectionConfig sqlConnectionConfig) {
+    public SQLActivity(SQLConnectionConfig sqlConnectionConfig, FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
         this.sqlConnectionConfig = sqlConnectionConfig;
     }
 
@@ -34,7 +36,7 @@ public class SQLActivity extends ActivityImpl {
     }
 
     public static void main(String[] args) {
-        SQLActivity activity = new SQLActivity(new SQLConnectionConfig());
+        SQLActivity activity = new SQLActivity(new SQLConnectionConfig( ),null);
         System.out.println(activity.getInput());
         System.out.println(activity.getSchema().getJson());
     }

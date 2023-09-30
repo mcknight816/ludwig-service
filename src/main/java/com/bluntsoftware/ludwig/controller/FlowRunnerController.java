@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/{appPath}")
 public class FlowRunnerController {
 
     private final FlowRunnerService flowRunnerService;
@@ -29,14 +29,20 @@ public class FlowRunnerController {
         this.assetService = assetService;
     }
 
-    @RequestMapping(
-            value = {"/{flowName}","/{flowName}/action/{context}"},
-            method = { RequestMethod.PUT ,RequestMethod.POST})
+    @PostMapping(value = {"/{flowName}","/{flowName}/action/{context}"})
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<Object> postToFlow(@PathVariable String flowName, @PathVariable(required = false) String context, @RequestBody Map<String, Object> object)  {
-        return response(flowRunnerService.handlePost(flowName,context,object));
+    ResponseEntity<Object> postToFlow(@PathVariable String appPath,@PathVariable String flowName, @PathVariable(required = false) String context, @RequestBody Map<String, Object> object)  {
+        return response(flowRunnerService.handlePost(appPath,flowName,context,object));
     }
+
+    @GetMapping(value = {"/{flowName}","/{flowName}/action/{context}"})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<Object> get(@PathVariable String appPath,@PathVariable String flowName, @PathVariable(required = false) String context){
+        return response(flowRunnerService.handleGet(appPath,flowName,context));
+    }
+
 
     public ResponseEntity<Object> response(List<FlowActivity> out ){
         HttpHeaders headers = new HttpHeaders();

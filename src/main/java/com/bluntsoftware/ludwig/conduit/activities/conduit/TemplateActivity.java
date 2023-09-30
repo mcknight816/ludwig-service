@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
@@ -18,6 +19,10 @@ import java.util.Map;
  */
 @Service
 public class TemplateActivity extends ActivityImpl {
+
+    public TemplateActivity(FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
+    }
 
     @Override
     public JsonSchema getSchema() {
@@ -53,7 +58,7 @@ public class TemplateActivity extends ActivityImpl {
 
         input.put("template","Hello {{name}}");
         input.put("context",context);
-        TemplateActivity templateActivity = new TemplateActivity();
+        TemplateActivity templateActivity = new TemplateActivity(null);
         Map<String, Object> result = null;
         try {
             result = templateActivity.run(input);

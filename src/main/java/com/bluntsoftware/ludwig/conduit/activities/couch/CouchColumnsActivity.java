@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.couch;
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.CouchbaseConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.nosql.couch.CouchRepository;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,8 @@ import java.util.Map;
 public class CouchColumnsActivity extends CouchActivity {
 
     @Autowired
-    public CouchColumnsActivity(CouchbaseConnectionConfig couchConnectionConfig) {
-        super(couchConnectionConfig);
+    public CouchColumnsActivity(CouchbaseConnectionConfig couchConnectionConfig, FlowConfigRepository flowConfigRepository) {
+        super(couchConnectionConfig,flowConfigRepository);
     }
 
     @Override

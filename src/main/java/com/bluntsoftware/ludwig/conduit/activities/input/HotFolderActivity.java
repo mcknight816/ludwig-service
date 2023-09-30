@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.controller.AssetController;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -24,7 +25,8 @@ public class HotFolderActivity extends TimerActivity {
 
     private final AssetController assetService;
 
-    public HotFolderActivity(AssetController assetService) {
+    public HotFolderActivity(AssetController assetService, FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
         this.assetService = assetService;
     }
 

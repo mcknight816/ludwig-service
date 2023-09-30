@@ -19,6 +19,7 @@ public class FlowActivity {
     private String context;
     private Boolean hasError;
     private String activityClass;
+    private boolean fireAndForget;
     Map<String,Object> input;
     Map<String,Object> output;
 }

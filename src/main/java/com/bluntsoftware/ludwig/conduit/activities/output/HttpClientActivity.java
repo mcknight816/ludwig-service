@@ -4,6 +4,7 @@ package com.bluntsoftware.ludwig.conduit.activities.output;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.controller.AssetController;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,6 +46,10 @@ public class HttpClientActivity extends ActivityImpl {
 
     private @Autowired
     HttpServletRequest httpServletRequest;
+
+    public HttpClientActivity(FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
+    }
 
     @Override
     public JsonSchema getSchema() {
@@ -249,7 +254,7 @@ public class HttpClientActivity extends ActivityImpl {
     }
 
     public static void main(String[] args) {
-        HttpClientActivity httpClientActivity = new HttpClientActivity();
+        HttpClientActivity httpClientActivity = new HttpClientActivity(null);
         Map<String, Object> payload = new HashMap<>();
         payload.put("name","fred");
         Map<String, Object> in = new HashMap<>();

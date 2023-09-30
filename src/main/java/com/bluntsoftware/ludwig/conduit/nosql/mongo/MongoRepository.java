@@ -57,9 +57,9 @@ public class MongoRepository extends NoSqlRepository<MongoClient> implements IRe
     public long count(Map<String,Object> query, String database, String collection){
         MongoCollection<Document> docList =  getCreateCollection(database,collection);
         if(query == null){
-            return docList.count();
+            return docList.countDocuments();
         }else{
-            return docList.count(toBson(query));
+            return docList.countDocuments(toBson(query));
         }
     }
 
@@ -100,7 +100,7 @@ public class MongoRepository extends NoSqlRepository<MongoClient> implements IRe
          }
          //projection
 
-        long totalRecords = docList.count();
+        long totalRecords = docList.countDocuments();
         Long totalPages = (totalRecords/limit) + 1;
 
 
@@ -242,7 +242,7 @@ public class MongoRepository extends NoSqlRepository<MongoClient> implements IRe
     public String test(){
         String ret = "A Mongo Database is required. Download Here\n https://www.mongodb.com/download-center?jmp=nav#community";
         try {
-            ret = connection.getClient().getConnectPoint();
+            ret = connection.getClient().getClusterDescription().getShortDescription();
             System.out.println("Mongo connection " + ret );
             log.info("Mongo connection " + ret);
         }catch (Exception e){

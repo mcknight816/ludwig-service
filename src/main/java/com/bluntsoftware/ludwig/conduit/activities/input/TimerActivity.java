@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 
 
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -11,6 +12,10 @@ import java.util.*;
  */
 @Service
 public class TimerActivity extends InputActivity {
+    public TimerActivity(FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
+    }
+
     @Override
     public JsonSchema getSchema() {
         JsonSchema schema = new JsonSchema("Scheduler Properties");

@@ -5,6 +5,7 @@ package com.bluntsoftware.ludwig.conduit.activities.conduit;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.domain.FlowActivity;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @Service
-//TODO fix repository
 public class ConduitActivity extends ActivityImpl {
+
+    public ConduitActivity(FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
+    }
 /*
     private final ConduitService conduitService;
     ConduitActivity(ConduitService conduitService){

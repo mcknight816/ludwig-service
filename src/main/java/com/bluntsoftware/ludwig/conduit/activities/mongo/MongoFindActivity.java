@@ -7,6 +7,7 @@ import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.RecordProperty;
 import com.bluntsoftware.ludwig.conduit.utils.SecurityUtils;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ import java.util.Map;
 public class MongoFindActivity extends MongoActivity {
 
     @Autowired
-    public MongoFindActivity(MongoConnectionConfig mongoConnectionConfig) {
-        super(mongoConnectionConfig);
+    public MongoFindActivity(MongoConnectionConfig mongoConnectionConfig, FlowConfigRepository flowConfigRepository) {
+        super(mongoConnectionConfig,flowConfigRepository);
     }
 
     @Override

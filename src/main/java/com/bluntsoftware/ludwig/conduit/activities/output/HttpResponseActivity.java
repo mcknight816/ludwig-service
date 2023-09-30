@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.output;
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,6 +15,10 @@ import java.util.Map;
  */
 @Service
 public class HttpResponseActivity extends ActivityImpl {
+    public HttpResponseActivity(FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
+    }
+
     @Override
     public Map<String, Object> run(Map<String, Object> input)throws Exception {
         return null;

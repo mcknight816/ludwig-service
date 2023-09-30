@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import org.springframework.stereotype.Service;
 
 import javax.script.Invocable;
@@ -13,6 +14,10 @@ import java.util.Map;
 
 @Service
 public class JavascriptActivity extends ActivityImpl {
+
+    public JavascriptActivity(FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
+    }
 
     @Override
     public JsonSchema getSchema() {
@@ -49,7 +54,7 @@ public class JavascriptActivity extends ActivityImpl {
 
 
     public static void main(String[] args) {
-        JavascriptActivity activity = new JavascriptActivity();
+        JavascriptActivity activity = new JavascriptActivity(null);
         HashMap<String,Object> in = new HashMap<>();
         in.put("js","var run = function(context){ return context;};");
         HashMap<String,Object> context = new HashMap<>();

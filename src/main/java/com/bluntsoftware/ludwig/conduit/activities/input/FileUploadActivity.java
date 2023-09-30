@@ -4,6 +4,7 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.ValidationUtils;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,8 @@ import java.util.Map;
 public class FileUploadActivity extends InputActivity {
     PayloadSchemaConfig payloadSchemaConfig;
 
-    public FileUploadActivity(PayloadSchemaConfig payloadSchemaConfig) {
+    public FileUploadActivity(PayloadSchemaConfig payloadSchemaConfig, FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
         this.payloadSchemaConfig = payloadSchemaConfig;
     }
 

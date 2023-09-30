@@ -5,6 +5,7 @@ import com.bluntsoftware.ludwig.conduit.config.mail.Mail;
 import com.bluntsoftware.ludwig.conduit.config.mail.MailConfig;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import org.apache.commons.lang3.CharEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -44,7 +45,8 @@ public class MailActivity extends ActivityImpl {
 
 
     @Autowired
-    public MailActivity( MailConfig mailConfig ) {
+    public MailActivity( MailConfig mailConfig , FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
         this.mailConfig = mailConfig;
 
     }

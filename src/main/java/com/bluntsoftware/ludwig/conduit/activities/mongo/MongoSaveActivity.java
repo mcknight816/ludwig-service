@@ -5,6 +5,7 @@ import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.SecurityUtils;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -23,8 +24,8 @@ public class MongoSaveActivity extends MongoActivity {
     private Logger log = LoggerFactory.getLogger(MongoSaveActivity.class);
 
     @Autowired
-    public MongoSaveActivity(MongoConnectionConfig mongoConnectionConfig) {
-        super(mongoConnectionConfig);
+    public MongoSaveActivity(MongoConnectionConfig mongoConnectionConfig, FlowConfigRepository flowConfigRepository) {
+        super(mongoConnectionConfig,flowConfigRepository);
     }
 
     @Override

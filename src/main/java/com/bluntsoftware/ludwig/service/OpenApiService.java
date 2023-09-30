@@ -115,6 +115,18 @@ public class OpenApiService {
         Map<String,Object> ret = new HashMap<>();
         Map<String,Object> input = flowActivity.getInput();
         List<Map<String,Object>>  params = new ArrayList<>();
+        /*
+        {
+"name": "api_key",
+"in": "header",
+"required": false,
+"type": "string"
+},
+         */
+
+
+        params.add(getHeaderInputParameters("tenant-id",true,"string", "tenant-id"));
+
         switch(flowActivity.getName()){//.getActivity()
             case "Get":
                 params.add(getQueryInputParameters("rows",false,"string","20","max limit"));
@@ -133,13 +145,14 @@ public class OpenApiService {
                     Object schemaName = input.get(payloadSchemaConfig.getPropertyName());
                     ret.put("requestBody" ,getJsonPostRequestBody(input.get("payload"),  getPayloadSchema(schemaName)));
                 }
-
+                ret.put("parameters", params);
                 break;
             case "Delete":
                 params.add(getPathInputParameters("id",true,"string","id of the item to delete"));
                 ret.put("parameters", params);
                 break;
             case "Columns":
+                ret.put("parameters", params);
                 break;
             case "Upload":
                 List<String> consumedDataTypes  = new ArrayList<>();
@@ -272,12 +285,16 @@ public class OpenApiService {
 
         Map<String,Object> info = new HashMap<>();
         Map<String,Object> openApi = new HashMap<>();
+        Map<String,Object> server = new HashMap<>();
+        server.put("url","http://localhost:9094");
+        List<Map<String,Object>> servers = new ArrayList<>();
+        servers.add(server);
         info.put("description",application.getDescription());
         info.put("version","1.0.3");
         info.put("title",application.getName());
         openApi.put("openapi","3.0.0");
-
         openApi.put("info",info);
+        openApi.put("servers",servers);
         openApi.put("url","http://localhost:9094");
         openApi.put("paths",paths(application));
         return openApi;

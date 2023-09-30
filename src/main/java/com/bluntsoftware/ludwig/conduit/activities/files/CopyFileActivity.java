@@ -4,6 +4,7 @@ package com.bluntsoftware.ludwig.conduit.activities.files;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.controller.AssetController;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,8 @@ public class CopyFileActivity extends ActivityImpl {
 
     private final AssetController assetService;
 
-    public CopyFileActivity(AssetController assetService) {
+    public CopyFileActivity(AssetController assetService, FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
         this.assetService = assetService;
     }
 

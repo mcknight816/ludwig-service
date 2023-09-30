@@ -4,6 +4,7 @@ import com.bluntsoftware.ludwig.conduit.config.ConnectionFactoryChooser;
 import com.bluntsoftware.ludwig.conduit.config.queue.QConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsMessagingTemplate;
@@ -21,6 +22,11 @@ public class PublisherActivity extends ActivityImpl {
     QConnectionConfig qConnectionConfig;
     @Autowired
     ConnectionFactoryChooser connectionFactoryChooser;
+
+    public PublisherActivity(FlowConfigRepository flowConfigRepository) {
+        super(flowConfigRepository);
+    }
+
     @Override
     public JsonSchema getSchema() {
         //Config Parameters
