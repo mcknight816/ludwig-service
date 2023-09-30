@@ -5,6 +5,7 @@ import com.bluntsoftware.ludwig.domain.ConnectionMap;
 import com.bluntsoftware.ludwig.domain.ConnectionPath;
 import com.bluntsoftware.ludwig.domain.FlowActivity;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,8 +41,34 @@ public class FlowActivityMapper {
 
     private static List<ConnectionMap> getActivityConnectionMaps(List<ConnectionMap> connectionMapList,FlowActivity flowActivity){
         return  connectionMapList.stream()
+                .map(FlowActivityMapper::addConnectionPaths)
                 .filter(c->c.getTargetPath().getFlowActivityId().equalsIgnoreCase(flowActivity.getId()))
                 .collect(Collectors.toList());
+    }
+
+    private static ConnectionMap addConnectionPaths(ConnectionMap connectionMap){
+        return ConnectionMap.builder()
+                .tgt(connectionMap.getTgt())
+                .targetPath(getConnectionPath(connectionMap.getTgt()))
+                .src(connectionMap.getSrc())
+                .sourcePath(getConnectionPath(connectionMap.getSrc()))
+                .build();
+    }
+    private static ConnectionPath getConnectionPath(String path){
+            String[] paths = path.substring(2,path.length()-2).split("'\\]\\['");
+            List<String> keys = Arrays.stream(paths).collect(Collectors.toList());
+            String flowActivityId = keys.remove(0);
+            ConnectionPath.FieldType fieldType =  ConnectionPath.FieldType.valueOf(keys.remove(0));
+            StringBuilder newPath = new StringBuilder();
+            for(String val:keys){
+                newPath.append("['").append(val).append("']");
+            }
+            return ConnectionPath.builder()
+                    .flowActivityId(flowActivityId)
+                    .path(newPath.toString())
+                    .fieldType(fieldType)
+                    .build();
+
     }
 
 }
