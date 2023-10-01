@@ -4,7 +4,7 @@ public class TenantResolver {
     private static final ThreadLocal<String> currentTenant = new InheritableThreadLocal<>();
 
     public static String resolve() {
-        return currentTenant.get() != null ? "_" + currentTenant.get(): "";
+        return currentTenant.get() != null ? currentTenant.get(): "";
     }
 
     public static void setCurrentTenant(String tenant) {

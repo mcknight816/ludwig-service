@@ -7,6 +7,7 @@ import com.bluntsoftware.ludwig.domain.FlowActivity;
 import com.bluntsoftware.ludwig.domain.FlowConfig;
 import com.bluntsoftware.ludwig.repository.ApplicationRepository;
 import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.tenant.TenantResolver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -125,7 +126,7 @@ public class OpenApiService {
          */
 
 
-        params.add(getHeaderInputParameters("tenant-id",true,"string", "tenant-id"));
+        params.add(getHeaderInputParameters("tenant-id",true,"string", TenantResolver.resolve(),"tenant-id"));
 
         switch(flowActivity.getName()){//.getActivity()
             case "Get":
@@ -242,9 +243,12 @@ public class OpenApiService {
     }
 
 
-    Map<String,Object> getHeaderInputParameters(String name,boolean required,String type,String description){
+    Map<String,Object> getHeaderInputParameters(String name,boolean required,String type,Object defaultValue,String description){
         Map<String,Object> schema = new HashMap<>();
         schema.put("type",type);
+        if(defaultValue != null){
+            schema.put("default",defaultValue);
+        }
         return getInputParameters("header",name,required,schema,description);
     }
 

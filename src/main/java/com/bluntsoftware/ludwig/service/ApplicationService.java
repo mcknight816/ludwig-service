@@ -28,9 +28,8 @@ public class ApplicationService {
     }
 
     public Mono<Application> deleteById(String id) {
-        return applicationRepository.findById(id).publishOn(Schedulers.boundedElastic()).map(f-> {
-            applicationRepository.deleteById(id).block();
-            return f;
-        });
+        Application app =  applicationRepository.findById(id).block();
+        applicationRepository.deleteById(id).block();
+        return Mono.just(app);
     }
 }
