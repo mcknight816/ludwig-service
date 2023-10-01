@@ -3,7 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
@@ -20,8 +20,8 @@ import java.util.Map;
 @Service
 public class TemplateActivity extends ActivityImpl {
 
-    public TemplateActivity(FlowConfigRepository flowConfigRepository) {
-        super(flowConfigRepository);
+    public TemplateActivity(ActivityConfigRepository activityConfigRepository) {
+        super(activityConfigRepository);
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.nosql.couch.CouchConnection;
 import com.bluntsoftware.ludwig.conduit.nosql.couch.CouchRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.couchbase.client.java.Collection;
 
 import java.util.ArrayList;
@@ -27,8 +27,8 @@ public abstract class CouchActivity extends ActivityImpl {
     private final Map<Map<String,Object>, CouchRepository> repos = new HashMap<>();
 
 
-    public CouchActivity(CouchbaseConnectionConfig couchConnectionConfig, FlowConfigRepository flowConfigRepository ) {
-        super(flowConfigRepository);
+    public CouchActivity(CouchbaseConnectionConfig couchConnectionConfig, ActivityConfigRepository activityConfigRepository ) {
+        super(activityConfigRepository);
         this.couchConnectionConfig = couchConnectionConfig;
     }
 

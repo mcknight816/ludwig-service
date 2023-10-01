@@ -5,7 +5,7 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.RecordProperty;
-import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public class InputActivity extends ActivityImpl {
 
-    public InputActivity(FlowConfigRepository flowConfigRepository) {
-        super(flowConfigRepository);
+    public InputActivity(ActivityConfigRepository activityConfigRepository) {
+        super(activityConfigRepository);
     }
 
     @Override

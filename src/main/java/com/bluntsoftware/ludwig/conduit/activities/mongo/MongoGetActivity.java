@@ -4,7 +4,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
@@ -23,8 +23,8 @@ import java.util.Map;
 public class MongoGetActivity extends MongoActivity {
     private Logger log = LoggerFactory.getLogger(MongoGetActivity.class);
     @Autowired
-    public MongoGetActivity(MongoConnectionConfig mongoConnectionConfig, FlowConfigRepository flowConfigRepository) {
-        super(mongoConnectionConfig,flowConfigRepository);
+    public MongoGetActivity(MongoConnectionConfig mongoConnectionConfig, ActivityConfigRepository activityConfigRepository) {
+        super(mongoConnectionConfig,activityConfigRepository);
     }
 
     @Override

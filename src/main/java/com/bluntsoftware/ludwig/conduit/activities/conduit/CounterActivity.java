@@ -3,7 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +14,8 @@ import static com.mongodb.client.model.Filters.eq;
 //TODO fix repository
 @Service
 public class CounterActivity extends ActivityImpl {
-    public CounterActivity(FlowConfigRepository flowConfigRepository) {
-        super(flowConfigRepository);
+    public CounterActivity(ActivityConfigRepository activityConfigRepository) {
+        super(activityConfigRepository);
     }
     //@Autowired
     //MongoRepository mongoRepository;

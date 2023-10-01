@@ -3,7 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
 
 import javax.script.Invocable;
@@ -15,8 +15,8 @@ import java.util.Map;
 @Service
 public class JavascriptActivity extends ActivityImpl {
 
-    public JavascriptActivity(FlowConfigRepository flowConfigRepository) {
-        super(flowConfigRepository);
+    public JavascriptActivity(ActivityConfigRepository activityConfigRepository) {
+        super(activityConfigRepository);
     }
 
     @Override

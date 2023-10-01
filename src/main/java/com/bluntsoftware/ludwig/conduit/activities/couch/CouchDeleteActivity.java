@@ -4,7 +4,7 @@ package com.bluntsoftware.ludwig.conduit.activities.couch;
 import com.bluntsoftware.ludwig.conduit.config.nosql.CouchbaseConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.nosql.couch.CouchRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +18,8 @@ import java.util.Map;
 public class CouchDeleteActivity extends CouchActivity {
 
     @Autowired
-    public CouchDeleteActivity(CouchbaseConnectionConfig couchConnectionConfig, FlowConfigRepository flowConfigRepository) {
-        super(couchConnectionConfig,flowConfigRepository);
+    public CouchDeleteActivity(CouchbaseConnectionConfig couchConnectionConfig, ActivityConfigRepository activityConfigRepository) {
+        super(couchConnectionConfig,activityConfigRepository);
     }
 
     @Override

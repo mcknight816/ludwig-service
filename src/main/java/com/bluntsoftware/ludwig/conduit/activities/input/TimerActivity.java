@@ -2,7 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 
 
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,8 +12,8 @@ import java.util.*;
  */
 @Service
 public class TimerActivity extends InputActivity {
-    public TimerActivity(FlowConfigRepository flowConfigRepository) {
-        super(flowConfigRepository);
+    public TimerActivity(ActivityConfigRepository activityConfigRepository) {
+        super(activityConfigRepository);
     }
 
     @Override

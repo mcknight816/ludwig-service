@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,11 +25,15 @@ public abstract class ActivityConfigImpl implements ActivityConfig {
         ActivityConfig configSchema = configs.get(className);
         try {
             if(configSchema == null){
-                configSchema =  (ActivityConfig)Class.forName(className).newInstance();
+                configSchema =  (ActivityConfig)Class.forName(className).getDeclaredConstructor().newInstance();
                 configs.put(className, configSchema);
             }
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
         }
         return configSchema;
     }

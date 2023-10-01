@@ -280,23 +280,23 @@ public class OpenApiService {
     }
 
     public Map<String, Object> openApi(String id) {
-
+        Map<String, Object> openApi = new HashMap<>();
         Application application = applicationRepository.findById(id).block();
-
-        Map<String,Object> info = new HashMap<>();
-        Map<String,Object> openApi = new HashMap<>();
-        Map<String,Object> server = new HashMap<>();
-        server.put("url","http://localhost:9094");
-        List<Map<String,Object>> servers = new ArrayList<>();
-        servers.add(server);
-        info.put("description",application.getDescription());
-        info.put("version","1.0.3");
-        info.put("title",application.getName());
-        openApi.put("openapi","3.0.0");
-        openApi.put("info",info);
-        openApi.put("servers",servers);
-        openApi.put("url","http://localhost:9094");
-        openApi.put("paths",paths(application));
+        if(application != null) {
+            Map<String, Object> info = new HashMap<>();
+            Map<String, Object> server = new HashMap<>();
+            server.put("url", "http://localhost:9094");
+            List<Map<String, Object>> servers = new ArrayList<>();
+            servers.add(server);
+            info.put("description", application.getDescription());
+            info.put("version", "1.0.3");
+            info.put("title", application.getName());
+            openApi.put("openapi", "3.0.0");
+            openApi.put("info", info);
+            openApi.put("servers", servers);
+            openApi.put("url", "http://localhost:9094");
+            openApi.put("paths",paths(application));
+        }
         return openApi;
     }
 }

@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.conduit.activities.input;
 
-import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
 /**
  * Created by Alex Mcknight on 1/12/2017.
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class DeleteActivity extends InputActivity {
 
-    public DeleteActivity(FlowConfigRepository flowConfigRepository) {
-        super(flowConfigRepository);
+    public DeleteActivity(ActivityConfigRepository activityConfigRepository) {
+        super(activityConfigRepository);
     }
 
     @Override

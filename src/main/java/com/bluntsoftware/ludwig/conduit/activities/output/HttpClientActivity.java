@@ -4,7 +4,7 @@ package com.bluntsoftware.ludwig.conduit.activities.output;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.controller.AssetController;
-import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,8 +47,8 @@ public class HttpClientActivity extends ActivityImpl {
     private @Autowired
     HttpServletRequest httpServletRequest;
 
-    public HttpClientActivity(FlowConfigRepository flowConfigRepository) {
-        super(flowConfigRepository);
+    public HttpClientActivity(ActivityConfigRepository activityConfigRepository) {
+        super(activityConfigRepository);
     }
 
     @Override

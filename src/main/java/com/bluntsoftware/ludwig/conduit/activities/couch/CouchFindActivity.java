@@ -7,7 +7,7 @@ import com.bluntsoftware.ludwig.conduit.nosql.couch.CouchRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.RecordProperty;
 import com.bluntsoftware.ludwig.conduit.utils.SecurityUtils;
-import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,8 @@ import java.util.Map;
 public class CouchFindActivity extends CouchActivity {
 
     @Autowired
-    public CouchFindActivity(CouchbaseConnectionConfig couchConnectionConfig, FlowConfigRepository flowConfigRepository) {
-        super(couchConnectionConfig,flowConfigRepository);
+    public CouchFindActivity(CouchbaseConnectionConfig couchConnectionConfig, ActivityConfigRepository activityConfigRepository) {
+        super(couchConnectionConfig,activityConfigRepository);
     }
 
     @Override

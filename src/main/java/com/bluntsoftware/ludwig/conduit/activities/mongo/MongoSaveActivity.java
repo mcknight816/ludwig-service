@@ -5,11 +5,10 @@ import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.SecurityUtils;
-import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +18,13 @@ import java.util.Map;
 /**
  * Created by Alex Mcknight on 2/27/2017.
  */
+@Slf4j
 @Service
 public class MongoSaveActivity extends MongoActivity {
-    private Logger log = LoggerFactory.getLogger(MongoSaveActivity.class);
 
     @Autowired
-    public MongoSaveActivity(MongoConnectionConfig mongoConnectionConfig, FlowConfigRepository flowConfigRepository) {
-        super(mongoConnectionConfig,flowConfigRepository);
+    public MongoSaveActivity(MongoConnectionConfig mongoConnectionConfig, ActivityConfigRepository activityConfigRepository) {
+        super(mongoConnectionConfig,activityConfigRepository);
     }
 
     @Override

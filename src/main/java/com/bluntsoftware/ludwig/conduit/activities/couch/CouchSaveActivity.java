@@ -5,7 +5,7 @@ import com.bluntsoftware.ludwig.conduit.config.nosql.CouchbaseConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.nosql.couch.CouchRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.SecurityUtils;
-import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -24,8 +24,8 @@ public class CouchSaveActivity extends CouchActivity {
     private Logger log = LoggerFactory.getLogger(CouchSaveActivity.class);
 
     @Autowired
-    public CouchSaveActivity(CouchbaseConnectionConfig couchConnectionConfig, FlowConfigRepository flowConfigRepository) {
-        super(couchConnectionConfig,flowConfigRepository);
+    public CouchSaveActivity(CouchbaseConnectionConfig couchConnectionConfig, ActivityConfigRepository activityConfigRepository) {
+        super(couchConnectionConfig,activityConfigRepository);
     }
 
     @Override
