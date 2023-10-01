@@ -1,5 +1,6 @@
 package com.bluntsoftware.ludwig.service;
 import com.bluntsoftware.ludwig.conduit.Activity;
+import com.bluntsoftware.ludwig.conduit.activities.input.GetActivity;
 import com.bluntsoftware.ludwig.conduit.activities.input.InputActivity;
 import com.bluntsoftware.ludwig.conduit.activities.input.PostActivity;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
@@ -80,8 +81,15 @@ public class FlowRunnerService {
     }
 
 
-    public List<FlowActivity> handleGet(String appPath, String flowName, String context) {
-        return new ArrayList<>();
+
+    public List<FlowActivity> handleGet(String appPath, String flowName, String context,Map<String,Object> input) {
+        Application application = applicationRepository.findByPath(appPath).block();
+        InputActivity activity = (InputActivity)activityRepository.getByKlass(GetActivity.class.getName());
+        Map<String,Object> in = new HashMap<>();
+        in.put("user", SecurityUtils.getUserInfo());
+        in.put("payload",transform(input));// or just input
+        Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context).block();
+        return run(flow,activity,in,context);
     }
 
     public List<FlowActivity> handlePost(String appPath,String flowName, String context, Map<String,Object> input){

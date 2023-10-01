@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -40,8 +41,12 @@ public class FlowRunnerController {
     @GetMapping(value = {"/{flowName}","/{flowName}/action/{context}"})
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<Object> get(@PathVariable String appPath,@PathVariable String flowName, @PathVariable(required = false) String context){
-        return response(flowRunnerService.handleGet(appPath,flowName,context));
+    ResponseEntity<Object> get(@PathVariable String appPath, @PathVariable String flowName, @PathVariable(required = false) String context, HttpServletRequest request){
+        Map<String,Object> payload = new HashMap<>();
+        for(String key:request.getParameterMap().keySet()){
+            payload.put(key,request.getParameter(key));
+        }
+        return response(flowRunnerService.handleGet(appPath,flowName,context,payload));
     }
 
     public ResponseEntity<Object> response(List<FlowActivity> out ){
