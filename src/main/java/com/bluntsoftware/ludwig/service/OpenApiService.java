@@ -283,6 +283,11 @@ public class OpenApiService {
         return ret;
     }
 
+    /*
+    definitions
+     */
+
+
     public Map<String, Object> openApi(String id) {
         Map<String, Object> openApi = new HashMap<>();
         Application application = applicationRepository.findById(id).block();

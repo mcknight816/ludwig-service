@@ -1,8 +1,6 @@
 package com.bluntsoftware.ludwig.service;
 import com.bluntsoftware.ludwig.conduit.Activity;
-import com.bluntsoftware.ludwig.conduit.activities.input.GetActivity;
-import com.bluntsoftware.ludwig.conduit.activities.input.InputActivity;
-import com.bluntsoftware.ludwig.conduit.activities.input.PostActivity;
+import com.bluntsoftware.ludwig.conduit.activities.input.*;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonPath;
 import com.bluntsoftware.ludwig.conduit.utils.SecurityUtils;
@@ -80,14 +78,35 @@ public class FlowRunnerService {
         return ret;
     }
 
+    public List<FlowActivity> handelGetById(String appPath, String flowName, String context, String id) {
+        Application application = applicationRepository.findByPath(appPath).block();
+        InputActivity activity = (InputActivity)activityRepository.getByKlass(GetByIdActivity.class.getName());
+        Map<String,Object> in = new HashMap<>();
+        in.put("id",id);
+        Map<String,Object> payload = new HashMap<>();
+        payload.put("id",id);
+        in.put("payload",payload);
+        Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context).block();
+        return run(flow,activity,in,context);
+    }
 
+    public List<FlowActivity> handelDeleteById(String appPath, String flowName, String context, String id) {
+        Application application = applicationRepository.findByPath(appPath).block();
+        InputActivity activity = (InputActivity)activityRepository.getByKlass(DeleteActivity.class.getName());
+        Map<String,Object> in = new HashMap<>();
+        in.put("id",id);
+        Map<String,Object> payload = new HashMap<>();
+        payload.put("id",id);
+        in.put("payload",payload);
+        Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context).block();
+        return run(flow,activity,in,context);
+    }
 
     public List<FlowActivity> handleGet(String appPath, String flowName, String context,Map<String,Object> input) {
         Application application = applicationRepository.findByPath(appPath).block();
         InputActivity activity = (InputActivity)activityRepository.getByKlass(GetActivity.class.getName());
         Map<String,Object> in = new HashMap<>();
-        in.put("user", SecurityUtils.getUserInfo());
-        in.put("payload",transform(input));// or just input
+        in.put("payload",transform(input));
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context).block();
         return run(flow,activity,in,context);
     }
@@ -156,14 +175,15 @@ public class FlowRunnerService {
             out.putAll(input);
             flowActivity.setOutput(out);
         }
+
 /*
         if(!isAuthorised(flowActivity)){
             String authorizedRole = (String)flowActivity.getInput().get("authorized_role");
             throw new InsufficientAuthenticationException("Conduit Access Denied (Role must be " + authorizedRole + " or higher.)" );
         }
 */
-         return flowRepository.save(flow);
-
+           applicationRepository.save(application);
+        return Mono.just(flow);
     }
     @JsonIgnore
     public FlowActivity getContextByClassName(Flow flow,String activityClass,String context){
@@ -255,6 +275,7 @@ public class FlowRunnerService {
 
         return flowActivities;
     }
+
 
 
 }

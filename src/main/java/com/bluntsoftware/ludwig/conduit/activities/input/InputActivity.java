@@ -37,14 +37,13 @@ public class InputActivity extends ActivityImpl {
         requests.add("Log and Save");
         requests.add("None");
         editor.addEnum("Flow Request Log","flow_request_log",requests,"Log and Save");
-
         editor.addString("hold","false",null);
 
         //Hidden Parameters
         editor.addString("flow","",true);
         editor.addString("requested","",true);
         editor.addString("payload","",true);
-
+/*
         RecordProperty user = new RecordProperty("");
         user.addString("role","",true);
         user.addString("email","",true);
@@ -53,7 +52,7 @@ public class InputActivity extends ActivityImpl {
         user.addString("user_name","",true);
         user.addString("company","",true);
         user.addString("tenant_id","",true);
-        editor.addRecord("user",user);
+        editor.addRecord("user",user); */
 
         return editor;
     }

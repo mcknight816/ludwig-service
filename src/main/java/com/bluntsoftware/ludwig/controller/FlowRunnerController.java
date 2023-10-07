@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,6 +47,20 @@ public class FlowRunnerController {
         }
         return response(flowRunnerService.handleGet(appPath,flowName,context,payload));
     }
+    @GetMapping(value = {"/{flowName}/{id}","/{flowName}/action/{context}/{id}"})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    Object getById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context, HttpServletRequest request) {
+        return response(flowRunnerService.handelGetById(appPath,flowName,context,id)) ;
+    }
+
+    @DeleteMapping (value = {"/{flowName}/{id}","/{flowName}/action/{context}/{id}"})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    Object deleteById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context, HttpServletRequest request) {
+        return response(flowRunnerService.handelDeleteById(appPath,flowName,context,id)) ;
+    }
+
 
     public ResponseEntity<Object> response(List<FlowActivity> out ){
         HttpHeaders headers = new HttpHeaders();
