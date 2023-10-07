@@ -9,7 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
+
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -51,14 +51,14 @@ public class FlowRunnerController {
     @GetMapping(value = {"/{flowName}/{id}","/{flowName}/action/{context}/{id}"})
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    Object getById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context, HttpServletRequest request) {
+    Object getById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context) {
         return response(flowRunnerService.handelGetById(appPath,flowName,context,id)) ;
     }
 
     @DeleteMapping (value = {"/{flowName}/{id}","/{flowName}/action/{context}/{id}"})
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    Object deleteById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context, HttpServletRequest request) {
+    Object deleteById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context) {
         return response(flowRunnerService.handelDeleteById(appPath,flowName,context,id)) ;
     }
     @GetMapping( value = {"/{flowName}/columns","/{flowName}/columns/action/{context}"})
