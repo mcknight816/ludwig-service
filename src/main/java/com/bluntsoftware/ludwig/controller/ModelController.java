@@ -67,7 +67,7 @@ public class ModelController {
 
 
   @ResponseBody
-  @GetMapping(value = { "/search/{search-term}", "model/search"}, produces = { "application/json" })
+  @GetMapping(value = { "/search/{search-term}", "/search"}, produces = { "application/json" })
   public Flux<Model> findAll(@PathVariable(value = "search-term",required= false) String searchTerm,
                                @RequestParam(value = "page",required= false)  Integer page,
                              @RequestParam(value = "limit",required= false)  Integer limit){
