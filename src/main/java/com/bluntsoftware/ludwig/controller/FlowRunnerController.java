@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -60,7 +61,12 @@ public class FlowRunnerController {
     Object deleteById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context, HttpServletRequest request) {
         return response(flowRunnerService.handelDeleteById(appPath,flowName,context,id)) ;
     }
-
+    @GetMapping( value = {"/{flowName}/columns","/{flowName}/columns/action/{context}"})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    Object listColumns(@PathVariable String appPath, @PathVariable("flowName") String flowName, @PathVariable(required=false) String context) {
+        return response(flowRunnerService.handleGetColumns(appPath,flowName,context));
+    }
 
     public ResponseEntity<Object> response(List<FlowActivity> out ){
         HttpHeaders headers = new HttpHeaders();

@@ -78,6 +78,14 @@ public class FlowRunnerService {
         return ret;
     }
 
+    public List<FlowActivity> handleGetColumns(String appPath, String flowName, String context){
+        Application application = applicationRepository.findByPath(appPath).block();
+        InputActivity activity = (InputActivity)activityRepository.getByKlass(ColumnsActivity.class.getName());
+        Map<String,Object> in = new HashMap<>();
+        Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context).block();
+        return run(flow,activity,in,context);
+    }
+
     public List<FlowActivity> handelGetById(String appPath, String flowName, String context, String id) {
         Application application = applicationRepository.findByPath(appPath).block();
         InputActivity activity = (InputActivity)activityRepository.getByKlass(GetByIdActivity.class.getName());
