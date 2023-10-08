@@ -11,7 +11,7 @@ import com.bluntsoftware.ludwig.repository.ModelJsonRepository;
 import com.bluntsoftware.ludwig.repository.ModelRepository;
 import com.bluntsoftware.ludwig.utils.Inflector;
 import com.bluntsoftware.ludwig.utils.converter.ConverterFactory;
-import com.bluntsoftware.ludwig.utils.converter.impl.JsonConverter;
+import com.bluntsoftware.ludwig.utils.converter.impl.JsonToModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -87,7 +87,7 @@ public class ModelServiceImpl implements ModelService {
     ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
     yamlReader.findAndRegisterModules();
     try {
-      return  JsonConverter.buildFromMap(yamlReader.readValue(yaml, ConcurrentModel.class));
+      return  JsonToModel.buildFromMap(yamlReader.readValue(yaml, ConcurrentModel.class));
     } catch (JsonProcessingException jsonProcessingException) {
       jsonProcessingException.printStackTrace();
     }

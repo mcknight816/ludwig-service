@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class AIService {
 
-    private static final String API_KEY = "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";
+    private static final String API_KEY = "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";
     private static final String API_COMPLETIONS_URL = "https://api.openai.com/v1/completions";
     private static final String API_IMAGES_URL = "https://api.openai.com/v1/images/generations";
     public static AICompletionResponse completions(AICompletion completion) {

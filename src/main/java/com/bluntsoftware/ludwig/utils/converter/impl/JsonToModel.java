@@ -8,16 +8,15 @@ import com.bluntsoftware.ludwig.utils.Inflector;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class JsonConverter extends ModelConverter{
+public class JsonToModel extends ModelConverter{
 
   private final String name;
-  public JsonConverter(String name){
+  public JsonToModel(String name){
     this.name = name != null ? name : "Untitled";
   }
 

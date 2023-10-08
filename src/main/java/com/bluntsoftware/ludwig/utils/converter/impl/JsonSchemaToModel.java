@@ -1,6 +1,5 @@
 package com.bluntsoftware.ludwig.utils.converter.impl;
 
-
 import com.bluntsoftware.ludwig.domain.Entity;
 import com.bluntsoftware.ludwig.domain.Model;
 import com.bluntsoftware.ludwig.domain.Variable;
@@ -14,17 +13,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 @Slf4j
-public class JsonSchemaConverter extends ModelConverter{
+public class JsonSchemaToModel extends ModelConverter{
 
   private final String name;
-  public JsonSchemaConverter(String name){
+  public JsonSchemaToModel(String name){
     this.name = name != null ? name : "Untitled";
   }
 
   @Override
   public Model convert(Map<String, Object> data) {
     Map<String, Object> properties = convertToMap(data.get("properties"));
-    Model model =  Model.builder().name(this.name).entities(buildEntities(name,properties)).build();
+    String entityName = this.name;
+    if(data.containsKey("title")){
+      entityName = data.get("title").toString();
+    }
+    Model model =  Model.builder().name(this.name).entities(buildEntities(entityName,properties)).build();
     log.info(writeAsString(model));
     return model;
   }

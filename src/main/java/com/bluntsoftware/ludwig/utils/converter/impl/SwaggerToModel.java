@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class SwaggerConverter extends ModelConverter {
+public class SwaggerToModel extends ModelConverter {
   private static final String PROPERTIES = "properties";
 
   @Override
