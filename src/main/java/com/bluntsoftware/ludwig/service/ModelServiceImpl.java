@@ -12,6 +12,7 @@ import com.bluntsoftware.ludwig.repository.ModelRepository;
 import com.bluntsoftware.ludwig.utils.Inflector;
 import com.bluntsoftware.ludwig.utils.converter.ConverterFactory;
 import com.bluntsoftware.ludwig.utils.converter.impl.JsonToModel;
+import com.bluntsoftware.ludwig.utils.converter.impl.ModelToJsonSchema;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -127,6 +128,12 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public Flux<Model> findAllByName(String name, Pageable pageable) {
         return repo.findAllByOwnerAndNameIgnoreCaseContainingOrderByUpdateDateDesc("system",name,pageable);
+    }
+
+    @Override
+    public Map<String, Object> entityToSchema(String entityName, List<Entity> model) {
+        ModelToJsonSchema modelToJsonSchema = new ModelToJsonSchema();
+        return modelToJsonSchema.convert(Model.builder().entities(model).build(),entityName);
     }
 
 

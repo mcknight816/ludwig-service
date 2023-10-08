@@ -17,7 +17,7 @@ public final class ConverterFactory {
     if(json.containsKey("openapi") || json.containsKey("swagger")){
       converter = new SwaggerToModel();
     }
-    if(json.containsKey("$schema")){
+    if(json.containsKey("$schema") || (json.containsKey("title") && json.containsKey("type") && json.get("type").toString().equalsIgnoreCase("object"))){
       converter = new JsonSchemaToModel(name);
     }
     return converter.convert(json).getEntities();

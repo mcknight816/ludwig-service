@@ -100,6 +100,12 @@ public class ModelController {
     return this.service.importFromYaml(yaml.get("yaml").toString());
   }
 
+    @PostMapping(value="/entity-to-schema/{entity-name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public  Map<String,Object> modelToSchema(@PathVariable("entity-name") String entityName,@RequestBody List<Entity> model){
+        return this.service.entityToSchema(entityName,model);
+    }
+
+
 /*  @PostMapping(value="/model/publish/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public  Mono<PublicModel> publish(@PathVariable("id") String id, @RequestBody Map<String,Object> props){
     return publicService.publish(service.findById(id));
@@ -125,5 +131,8 @@ public class ModelController {
     public Mono<ModelJson> fromAi(@PathVariable("modelType") String modelType){
        return this.service.generateAIModelTypeJson(modelType);
     }
+
+
+
 
 }

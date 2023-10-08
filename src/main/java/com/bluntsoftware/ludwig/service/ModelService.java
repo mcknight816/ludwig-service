@@ -26,4 +26,6 @@ public interface ModelService {
     Mono<Model> getOrCreateSystemModel(String modelType);
     Mono<ModelJson> generateAIModelTypeJson(String modelType);
     Flux<Model> findAllByName(String searchString, Pageable pageable);
+
+    Map<String, Object> entityToSchema(String entityName, List<Entity> model);
 }

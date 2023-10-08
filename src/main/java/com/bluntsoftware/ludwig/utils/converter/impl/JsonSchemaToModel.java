@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 @Slf4j
-public class JsonSchemaToModel extends ModelConverter{
+public class JsonSchemaToModel extends ModelConverter {
 
   private final String name;
   public JsonSchemaToModel(String name){

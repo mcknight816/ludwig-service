@@ -1,0 +1,51 @@
+{
+  "title": "Customer",
+  "type": "object",
+  "properties": {
+    "phone_numbers": {
+      "type": "array",
+      "items": {
+        "title": "PhoneNumber",
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "address": {
+      "title": "Address",
+      "type": "object",
+      "properties": {
+        "zip": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "street": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      }
+    },
+    "name": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer"
+    },
+    "email": {
+      "type": "string"
+    }
+  }
+}
