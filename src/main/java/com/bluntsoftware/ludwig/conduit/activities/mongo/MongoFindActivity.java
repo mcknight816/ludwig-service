@@ -112,11 +112,12 @@ public class MongoFindActivity extends MongoActivity {
         sord.add("DESC");
 
         RecordProperty query = new RecordProperty("Query");
+        query.addString("filter","","json");
         query.addString("page","1");
         query.addString("rows","20",null);
         query.addEnum("Sort Order","sord",sord,"ASC");
         query.addString("Sort Index","sidx","_id",null,false);
-        query.addString("filter","","json");
+
         schema.addRecord("query",query);
         return schema;
     }

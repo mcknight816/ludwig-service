@@ -1,6 +1,7 @@
 package com.bluntsoftware.ludwig.controller;
 
 import com.bluntsoftware.ludwig.service.OpenApiService;
+import com.bluntsoftware.ludwig.tenant.TenantResolver;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -21,13 +22,15 @@ public class OpenApiController {
         this.openAPiService = openAPiService;
     }
 
-    @RequestMapping(
-            value = "/{appId}",
+    @RequestMapping(value = {"/{appId}","/{appId}/{tenantId}"},
             method = { RequestMethod.GET},
             produces = "application/json")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public Map<String,Object> api(@PathVariable("appId") String id){
+    public Map<String,Object> api(@PathVariable("appId") String id,@PathVariable(value = "tenantId",required= false) String tenantId){
+        if(tenantId != null){
+            TenantResolver.setCurrentTenant(tenantId);
+        }
         return openAPiService.openApi(id);
     }
 

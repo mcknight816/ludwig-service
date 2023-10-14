@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,7 @@ public class ModelToJson {
 
     Map<String,Entity> objectTypes = new HashMap<>();
 
-    Map<String,Object> convert(Model model, String entityName){
+    public Map<String,Object> convert(Model model, String entityName){
         model.getEntities().forEach(e-> objectTypes.put(e.getName(),e));
         return this.handleEntity(objectTypes.get(entityName));
     }
@@ -40,6 +41,15 @@ public class ModelToJson {
             return handleEntity(objectTypes.get(variable.getType()));
         } else {
             FieldType type = FieldType.byJavaType(variable.getType());
+            if(type.getSchemaType().equalsIgnoreCase("boolean")){
+                return Boolean.FALSE;
+            }else if(type.getSchemaType().equalsIgnoreCase("integer")){
+                return Integer.parseInt("1");
+            }else if(type.getSchemaType().equalsIgnoreCase("number")){
+                return BigDecimal.valueOf(1L);
+            }else if(type.getSchemaType().equalsIgnoreCase("double")){
+                return Double.valueOf("1.1");
+            }
             return "";
         }
     }

@@ -1,13 +1,12 @@
 package com.bluntsoftware.ludwig.service;
 
 import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
-import com.bluntsoftware.ludwig.domain.Application;
-import com.bluntsoftware.ludwig.domain.Flow;
-import com.bluntsoftware.ludwig.domain.FlowActivity;
-import com.bluntsoftware.ludwig.domain.FlowConfig;
+import com.bluntsoftware.ludwig.domain.*;
 import com.bluntsoftware.ludwig.repository.ApplicationRepository;
 import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import com.bluntsoftware.ludwig.tenant.TenantResolver;
+import com.bluntsoftware.ludwig.utils.converter.impl.JsonSchemaToModel;
+import com.bluntsoftware.ludwig.utils.converter.impl.ModelToJson;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -145,6 +144,7 @@ public class OpenApiService {
                 if(input.containsKey("payload")){
                     Object schemaName = input.get(payloadSchemaConfig.getPropertyName());
                     ret.put("requestBody" ,getJsonPostRequestBody(input.get("payload"),  getPayloadSchema(schemaName)));
+
                 }
                 ret.put("parameters", params);
                 break;
@@ -213,14 +213,14 @@ public class OpenApiService {
         Map<String,Object> payload = Optional.of(Objects.requireNonNull(flowConfig.block()).getConfig()).orElse(null);
         if(payload != null && payload.containsKey("PayloadSchema")){
             Map<String,Object> payloadSchema = (Map<String,Object>)payload.get("PayloadSchema");
-            if(payloadSchema.containsKey("schema")){
+            //if(payloadSchema.containsKey("schema")){
                 ObjectMapper mapper = new ObjectMapper();
                 try {
                     schema = mapper.readValue(payloadSchema.get("schema").toString(),HashMap.class);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
-            }
+            //}
         }
         if(schema == null){
             schema = new HashMap<>();
@@ -230,9 +230,19 @@ public class OpenApiService {
         return schema;
     }
     Map<String,Object> getJsonPostRequestBody(Object example,Map<String,Object> schema){
+
         Map<String,Object> appRoot = new HashMap<>();
-        appRoot.put("schema",schema);
-        if(example != null){
+
+        if(schema != null && schema.containsKey("title")){
+            appRoot.put("schema",schema);
+            if(schema.containsKey("title")){
+                String title = schema.get("title").toString();
+                JsonSchemaToModel jsonSchemaToModel = new JsonSchemaToModel(title);
+                Model model = jsonSchemaToModel.convert(schema);
+                ModelToJson modelToJson = new ModelToJson();
+                appRoot.put("example",modelToJson.convert(model,title));
+            }
+        } else if(example != null) {
             appRoot.put("example",example);
         }
         Map<String,Object> applicationType = new HashMap<>();
@@ -294,6 +304,7 @@ public class OpenApiService {
         if(application != null) {
             Map<String, Object> info = new HashMap<>();
             Map<String, Object> server = new HashMap<>();
+            Map<String, Object> externalDocs = new HashMap<>();
             server.put("url", "http://localhost:9094");
             List<Map<String, Object>> servers = new ArrayList<>();
             servers.add(server);
@@ -305,6 +316,18 @@ public class OpenApiService {
             openApi.put("servers", servers);
             openApi.put("url", "http://localhost:9094");
             openApi.put("paths",paths(application));
+
+            String jsonUrl = "http://localhost:9094/api/swagger/" + id + "/" + TenantResolver.resolve();
+            externalDocs.put("description","Open API Json");
+            externalDocs.put("url",jsonUrl);
+
+            openApi.put("externalDocs",externalDocs);
+            /*
+            "externalDocs": {
+"description": "Find out more about Swagger",
+"url": "http://swagger.io"
+}
+             */
         }
         return openApi;
     }
