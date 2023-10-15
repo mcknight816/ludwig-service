@@ -32,4 +32,8 @@ public class ApplicationService {
         applicationRepository.deleteById(id).block();
         return Mono.just(app);
     }
+
+    public Application findByPath(String appPath) {
+        return applicationRepository.findByPath(appPath).block();
+    }
 }

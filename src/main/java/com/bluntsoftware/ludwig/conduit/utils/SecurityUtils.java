@@ -1,7 +1,10 @@
 package com.bluntsoftware.ludwig.conduit.utils;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -10,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.jwt.Jwt;
 
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -17,7 +21,9 @@ import java.util.*;
  */
 public final class SecurityUtils {
 
-    private SecurityUtils() {
+
+    private SecurityUtils(ObjectMapper mapper) {
+
     }
 
     /**
@@ -50,10 +56,20 @@ public final class SecurityUtils {
         }
         return (String)principal;
     }
+    public static ObjectMapper objectMapper() {
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        javaTimeModule.addSerializer(Instant.class, InstantSerializer.INSTANCE);
+        return new ObjectMapper()
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .registerModule(javaTimeModule);
+    }
+
     public static Map getPrincipal(){
         Authentication auth = getAuthentication();
         if(auth != null){
-            ObjectMapper oMapper = new ObjectMapper();
+            ObjectMapper oMapper = objectMapper();
+
+
             Object principal = auth.getPrincipal();
             if(principal != null && !(principal instanceof String)){
                 if(principal instanceof Jwt){

@@ -17,5 +17,6 @@ public class ApplicationDto {
     String name;
     String description;
     String path;
+    String jwkUri;
     List<Flow> flows;
 }

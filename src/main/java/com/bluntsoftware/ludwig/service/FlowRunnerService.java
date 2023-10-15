@@ -156,7 +156,13 @@ public class FlowRunnerService {
         }
         Flow flow = application.getFlows().stream().filter(f -> f.getName().equalsIgnoreCase(flowName)).findFirst().orElse(null);
         if(flow == null){
-            flow = Flow.builder().name(flowName).connections(List.of()).connectionMaps(List.of()).activities(List.of()).build();
+            flow = Flow.builder().locked(false).name(flowName)
+                    .activities(new ArrayList<>())
+                    .connections(new ArrayList<>())
+                    .connectionMaps(new ArrayList<>())
+                    .id(UUID.randomUUID().toString())
+                    .build();
+            application.getFlows().add(flow);
             //flow.setFlowListenerService(flowListenerService); //What is this Listener ?
         }
         String classname = activity.getClass().getName();
@@ -190,7 +196,7 @@ public class FlowRunnerService {
             throw new InsufficientAuthenticationException("Conduit Access Denied (Role must be " + authorizedRole + " or higher.)" );
         }
 */
-           applicationRepository.save(application);
+        applicationRepository.save(application).block();
         return Mono.just(flow);
     }
     @JsonIgnore

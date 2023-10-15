@@ -23,5 +23,6 @@ public class Application {
     private String path;
     private Instant created;
     private Instant modified;
+    private String jwkUri;
     private List<Flow> flows;
 }
