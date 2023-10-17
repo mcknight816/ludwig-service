@@ -68,8 +68,6 @@ public final class SecurityUtils {
         Authentication auth = getAuthentication();
         if(auth != null){
             ObjectMapper oMapper = objectMapper();
-
-
             Object principal = auth.getPrincipal();
             if(principal != null && !(principal instanceof String)){
                 if(principal instanceof Jwt){
@@ -154,7 +152,7 @@ public final class SecurityUtils {
         return SecurityContextHolder.getContext().getAuthentication();
     }
     public static Collection<? extends GrantedAuthority>  getAuthorities(){
-        return getAuthentication().getAuthorities();
+        return getAuthentication() != null && getAuthentication().getAuthorities() != null ? getAuthentication().getAuthorities() : new ArrayList<>();
     }
 
     public static Collection<String> getRoles() {

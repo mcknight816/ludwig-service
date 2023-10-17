@@ -6,13 +6,14 @@ import com.bluntsoftware.ludwig.service.ApplicationService;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -21,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 @Slf4j
 @Configuration
-@Order(Ordered.HIGHEST_PRECEDENCE)
 public class JwtFilter extends OncePerRequestFilter {
 
     private final ApplicationService applicationService;
@@ -34,6 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NotNull HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String[] pathInfo = httpServletRequest.getServletPath().split("/");
         boolean isApiCall = pathInfo[1] != null && pathInfo[1].equalsIgnoreCase("api");
+        boolean hasError = false;
         if (isApiCall) {
             String appPath = pathInfo[2];
             String flowName = pathInfo[3];
@@ -52,16 +53,22 @@ public class JwtFilter extends OncePerRequestFilter {
                                 securityContext.setAuthentication(JwtAuthentication.builder().jwt(jwt).build());
                             }
                         }catch(Exception e){
-                           log.error( e.getMessage());
+                            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid token " + e.getMessage());
+                            hasError = true;
                         }
                     } else {
-                        //throw security violation
+                        httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), " JWT Bearer token not found in Authorization header");
+                        hasError = true;
                     }
                 }
+            } else if(app == null){
+                httpServletResponse.sendError(HttpStatus.NOT_FOUND.value(), "Application with path /api/" + appPath + " not found");
+                hasError = true;
             }
         }
-
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
+        if(!hasError){
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+        }
     }
 
     private JwtDecoder selectDecoder(String jwkUri) {
