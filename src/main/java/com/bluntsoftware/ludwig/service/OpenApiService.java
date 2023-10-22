@@ -208,20 +208,23 @@ public class OpenApiService {
     }
     Map<String,Object> getPayloadSchema(Object name){
         Map<String,Object> schema = null;
-
         Mono<FlowConfig> flowConfig = configRepository.findByNameAndConfigClass(name.toString(), PayloadSchemaConfig.class.getName());
-        Map<String,Object> payload = Optional.of(Objects.requireNonNull(flowConfig.block()).getConfig()).orElse(null);
-        if(payload != null && payload.containsKey("PayloadSchema")){
-            Map<String,Object> payloadSchema = (Map<String,Object>)payload.get("PayloadSchema");
-            //if(payloadSchema.containsKey("schema")){
+        FlowConfig config = flowConfig.block();
+        if(config != null){
+            Map<String,Object> payload = Optional.of(config.getConfig()).orElse(null);
+            if(payload != null && payload.containsKey("PayloadSchema")){
+                Map<String,Object> payloadSchema = (Map<String,Object>)payload.get("PayloadSchema");
+                //if(payloadSchema.containsKey("schema")){
                 ObjectMapper mapper = new ObjectMapper();
                 try {
                     schema = mapper.readValue(payloadSchema.get("schema").toString(),HashMap.class);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
-            //}
+                //}
+            }
         }
+
         if(schema == null){
             schema = new HashMap<>();
             schema.put("type","object");
@@ -293,8 +296,24 @@ public class OpenApiService {
         return ret;
     }
 
-    /*
-    definitions
+
+        /*
+    "securityDefinitions": {
+        "api_key": {
+            "type": "apiKey",
+            "name": "api_key",
+            "in": "header"
+        },
+        "petstore_auth": {
+            "type": "oauth2",
+            "authorizationUrl": "https://petstore.swagger.io/oauth/authorize",
+            "flow": "implicit",
+            "scopes": {
+                "read:pets": "read your pets",
+                "write:pets": "modify pets in your account"
+            }
+        }
+     },
      */
 
 

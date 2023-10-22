@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -31,11 +30,11 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(@NotNull HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NotNull HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull FilterChain filterChain) throws ServletException, IOException {
         String[] pathInfo = httpServletRequest.getServletPath().split("/");
         boolean isApiCall = pathInfo[1] != null && pathInfo[1].equalsIgnoreCase("api");
         boolean hasError = false;
-        if (isApiCall) {
+        if (isApiCall && pathInfo[2] != null && !pathInfo[2].equalsIgnoreCase("swagger")) {
             String appPath = pathInfo[2];
             String flowName = pathInfo[3];
             Application app = applicationService.findByPath(appPath);
