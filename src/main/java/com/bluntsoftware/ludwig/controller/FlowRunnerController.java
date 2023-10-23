@@ -51,20 +51,20 @@ public class FlowRunnerController {
     @GetMapping(value = {"/{flowName}/{id}","/{flowName}/action/{context}/{id}"})
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    Object getById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context) {
+    ResponseEntity<Object> getById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context) {
         return response(flowRunnerService.handelGetById(appPath,flowName,context,id)) ;
     }
 
     @DeleteMapping (value = {"/{flowName}/{id}","/{flowName}/action/{context}/{id}"})
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    Object deleteById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context) {
+    ResponseEntity<Object> deleteById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context) {
         return response(flowRunnerService.handelDeleteById(appPath,flowName,context,id)) ;
     }
     @GetMapping( value = {"/{flowName}/columns","/{flowName}/columns/action/{context}"})
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    Object listColumns(@PathVariable String appPath, @PathVariable("flowName") String flowName, @PathVariable(required=false) String context) {
+    ResponseEntity<Object> listColumns(@PathVariable String appPath, @PathVariable("flowName") String flowName, @PathVariable(required=false) String context) {
         return response(flowRunnerService.handleGetColumns(appPath,flowName,context));
     }
 
@@ -74,7 +74,7 @@ public class FlowRunnerController {
         if(out != null){
             for(FlowActivity flowActivity:out){
                 if(flowActivity.getHasError() != null && flowActivity.getHasError()){
-                    return new ResponseEntity<>(flowActivity.getOutput(),headers, HttpStatus.BAD_REQUEST);
+                    return ResponseEntity.badRequest().headers(headers).body(flowActivity.getOutput());
                 }
                 if(flowActivity.getActivityClass().equalsIgnoreCase(HttpResponseActivity.class.getName())){
                     Map<String,Object> in = flowActivity.getInput();
@@ -96,13 +96,13 @@ public class FlowRunnerController {
                             headers.set("Content-Disposition", "attachment; filename=" + "data." + contentType);
                         }
                     }
-                    return new ResponseEntity<>(in.get("data"),headers, HttpStatus.OK);
+                    return ResponseEntity.ok().headers(headers).body(in.get("data"));
                 }
             }
         }
         Map<String,Object> result = new HashMap<>();
         result.put("result",out);
-        return new ResponseEntity<>(result,headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(result);
     }
     ResponseEntity<Object> downloadFileByUrl(String url,Boolean download)  {
         try{

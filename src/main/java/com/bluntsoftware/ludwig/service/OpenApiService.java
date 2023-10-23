@@ -43,7 +43,10 @@ public class OpenApiService {
         return details;
     }
     public Map<String,Object> paths(Application app){
-
+        String securitySchema = null;
+        if(app.getJwkUri() != null && !app.getJwkUri().equalsIgnoreCase("")){
+            securitySchema = "bearerAuth";
+        }
         List<Flow> flows = Objects.requireNonNull(app).getFlows();
         Map<String,Object> ret = new HashMap<>();
         for(Flow flow:flows){
@@ -54,9 +57,9 @@ public class OpenApiService {
                         String path = getPath(flow.getPath() != null && flow.getPath().equalsIgnoreCase("") ? flow.getPath() :flow.getName().toLowerCase().replace(" " , "-"), flowActivity,app);
                         Map entity = (Map) ret.get(path);
                         if (entity == null) {
-                            entity = method(flow,flowActivity);
+                            entity = method(flow,flowActivity,securitySchema);
                         } else {
-                            entity.putAll(method(flow,flowActivity));
+                            entity.putAll(method(flow,flowActivity,securitySchema));
                         }
                         ret.put(path, entity);
                     }
@@ -88,7 +91,7 @@ public class OpenApiService {
         return path;
     }
 
-    private Map method(Flow flow,FlowActivity flowActivity){
+    private Map method(Flow flow,FlowActivity flowActivity,String securitySchema){
         String activityName =   flowActivity.getName();//.getActivity()
         Map<String,Object> details = activityDetails.get(activityName);
         String description = flowActivity.getDescription();
@@ -105,7 +108,15 @@ public class OpenApiService {
 
         props.putAll(input( flowActivity));
         props.putAll(output( flowActivity));
-
+        List<Map<String,List<String>>> security = new ArrayList<>();
+        if(flow.getLocked() && securitySchema != null && !securitySchema.equalsIgnoreCase("")){
+            Map<String,List<String>> securityMap = new HashMap<>();
+            securityMap.put(securitySchema,new ArrayList<>());
+            security.add(securityMap);
+        }
+        if(security.size() > 0){
+            props.put("security",security);
+        }
         Map<String,Object> ret = new HashMap<>();
         ret.put(type,props);
 
@@ -316,6 +327,18 @@ public class OpenApiService {
      },
      */
 
+    public Map<String,Object> bearerJwtToken(){
+        Map<String,Object> bearer = new HashMap<>();
+        bearer.put("type","http");
+        bearer.put("scheme","bearer");
+        bearer.put("bearerFormat","JWT");
+        return bearer;
+    }
+
+    //TODO: build an Oauth2 code flow
+    public Map<String, Object> oAuth2CodeFlow(){
+        return new HashMap<>();
+    }
 
     public Map<String, Object> openApi(String id) {
         Map<String, Object> openApi = new HashMap<>();
@@ -335,19 +358,22 @@ public class OpenApiService {
             openApi.put("servers", servers);
             openApi.put("url", "http://localhost:9094");
             openApi.put("paths",paths(application));
-
+            openApi.put("components",components(application));
             String jsonUrl = "http://localhost:9094/api/swagger/" + id + "/" + TenantResolver.resolve();
             externalDocs.put("description","Open API Json");
             externalDocs.put("url",jsonUrl);
-
             openApi.put("externalDocs",externalDocs);
-            /*
-            "externalDocs": {
-"description": "Find out more about Swagger",
-"url": "http://swagger.io"
-}
-             */
         }
         return openApi;
+    }
+
+    private Map<String,Object> components(Application application) {
+        Map<String,Object> components = new HashMap<>();
+        if(application.getJwkUri() != null && !application.getJwkUri().equalsIgnoreCase("")){
+            Map<String,Object> securitySchemas = new HashMap<>();
+            securitySchemas.put( "bearerAuth",bearerJwtToken());
+            components.put("securitySchemes",securitySchemas);
+        }
+        return components;
     }
 }
