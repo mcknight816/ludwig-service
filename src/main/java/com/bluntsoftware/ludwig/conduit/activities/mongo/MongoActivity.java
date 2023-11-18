@@ -2,7 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
-import com.bluntsoftware.ludwig.conduit.domain.MongoSettings;
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoConnection;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
@@ -11,9 +11,7 @@ import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

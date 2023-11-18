@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 
-import com.bluntsoftware.ludwig.conduit.domain.MongoSave;
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSave;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;

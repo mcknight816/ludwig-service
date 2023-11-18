@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.conduit.domain;
+package com.bluntsoftware.ludwig.conduit.activities.mongo.domain;
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.schema.*;

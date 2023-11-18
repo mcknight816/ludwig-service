@@ -2,7 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
-import com.bluntsoftware.ludwig.conduit.domain.MongoFind;
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoFind;
 import com.bluntsoftware.ludwig.conduit.nosql.NoSqlResult;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
@@ -13,8 +13,6 @@ import com.mongodb.BasicDBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
