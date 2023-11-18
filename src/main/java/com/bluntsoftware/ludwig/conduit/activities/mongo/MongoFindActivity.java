@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
+import com.bluntsoftware.ludwig.conduit.domain.MongoFind;
 import com.bluntsoftware.ludwig.conduit.nosql.NoSqlResult;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
@@ -105,20 +106,7 @@ public class MongoFindActivity extends MongoActivity {
 
     @Override
     public JsonSchema getSchema() {
-        JsonSchema schema =  super.getSchema();
-        List<String> sord = new ArrayList<>();
-        sord.add("ASC");
-        sord.add("DESC");
-
-        JsonSchema query = new JsonSchema("Query");
-        query.addString("filter","","json");
-        query.addString("page","1");
-        query.addString("rows","20",null);
-        query.addEnum("Sort Order","sord",sord,"ASC");
-        query.addString("Sort Index","sidx","_id",null,false);
-
-        schema.addRecord("query",query);
-        return schema;
+        return MongoFind.getSchema();
     }
 
 

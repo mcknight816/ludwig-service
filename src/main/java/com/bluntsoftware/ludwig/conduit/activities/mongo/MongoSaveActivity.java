@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,10 +30,7 @@ public class MongoSaveActivity extends MongoActivity {
 
     @Override
     public JsonSchema getSchema() {
-        return JsonSchema.builder()
-                .title("Mongo Connection")
-                .properties(MongoSave.getSchema().getProperties())
-                .build();
+        return MongoSave.getSchema();
     }
 
     @Override

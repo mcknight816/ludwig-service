@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
+import com.bluntsoftware.ludwig.conduit.domain.MongoSettings;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoConnection;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
@@ -33,16 +34,7 @@ public abstract class MongoActivity extends ActivityImpl {
 
     @Override
     public JsonSchema getSchema() {
-        JsonSchema schema = new JsonSchema("Mongo Properties");
-        schema.addString("database","test",null);
-        schema.addString("collection","",null);
-        List<String> truefalse = new ArrayList<String>();
-        truefalse.add("true");
-        truefalse.add("false");
-        schema.addEnum("User Managed","userManaged",truefalse,"false");
-        schema.addEnum("Allow Friends","allowFriends",truefalse,"false");
-        schema.addConfig(mongoConnectionConfig);
-        return schema;
+         return MongoSettings.getSchema();
     }
 
     MongoRepository getRepository(Map<String, Object> input){
