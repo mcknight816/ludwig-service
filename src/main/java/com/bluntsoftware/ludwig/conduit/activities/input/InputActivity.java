@@ -4,7 +4,6 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.RecordProperty;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 
 import java.util.ArrayList;

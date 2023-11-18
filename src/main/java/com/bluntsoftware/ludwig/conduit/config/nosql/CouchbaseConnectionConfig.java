@@ -2,7 +2,7 @@ package com.bluntsoftware.ludwig.conduit.config.nosql;
 
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityConfigImpl;
-import com.bluntsoftware.ludwig.conduit.schema.RecordProperty;
+import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -10,8 +10,8 @@ import java.util.Map;
 public class CouchbaseConnectionConfig extends ActivityConfigImpl {
 
     @Override
-    public RecordProperty getRecord() {
-        RecordProperty connection = new RecordProperty("connection");
+    public JsonSchema getRecord() {
+        JsonSchema connection = new JsonSchema("connection");
         connection.addString("server","localhost",null);
         connection.addString("port","27017",null);
         connection.addString("user",null,null);

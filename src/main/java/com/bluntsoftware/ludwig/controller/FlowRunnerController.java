@@ -96,7 +96,7 @@ public class FlowRunnerController {
                             headers.set("Content-Disposition", "attachment; filename=" + "data." + contentType);
                         }
                     }
-                    return ResponseEntity.ok().headers(headers).body(in.get("data"));
+                    return ResponseEntity.ok().headers(headers).body(in.get("payload"));
                 }
             }
         }

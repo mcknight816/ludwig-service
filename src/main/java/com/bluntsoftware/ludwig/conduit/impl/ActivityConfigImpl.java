@@ -4,7 +4,6 @@ import com.bluntsoftware.ludwig.conduit.AES;
 import com.bluntsoftware.ludwig.conduit.ActivityConfig;
 import com.bluntsoftware.ludwig.conduit.schema.JsonPath;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.RecordProperty;
 import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
 import com.bluntsoftware.ludwig.domain.Config;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,7 +38,7 @@ public abstract class ActivityConfigImpl implements ActivityConfig {
     }
     public JsonSchema getSchema(){
         JsonSchema schema = new JsonSchema(getName());
-        RecordProperty recordProperty = getRecord();
+        JsonSchema recordProperty = getRecord();
         schema.addRecord(recordProperty.getTitle(),recordProperty);
         return schema;
     }
@@ -50,7 +49,7 @@ public abstract class ActivityConfigImpl implements ActivityConfig {
     }
 
     @JsonIgnore
-    public abstract RecordProperty getRecord();
+    public abstract JsonSchema getRecord();
     public abstract Map test();
     public ActivityConfigImpl() {
         if(getClass().isAnnotationPresent(Service.class)){

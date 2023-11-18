@@ -41,7 +41,7 @@ public class HttpResponseActivity extends ActivityImpl {
         schema.addEnum("output_method",outMethod ,"stream");
         schema.addEnum("output_type",outType ,"json");
         schema.addString("file","file-location","imageChooser");
-        schema.addString("data","{}",schema.getValue().get("output_type").toString());
+        schema.addString("payload","{}",schema.getValue().get("output_type").toString());
 
         return schema;
     }

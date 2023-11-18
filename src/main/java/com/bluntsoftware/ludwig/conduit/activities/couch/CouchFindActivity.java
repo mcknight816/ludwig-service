@@ -5,7 +5,6 @@ import com.bluntsoftware.ludwig.conduit.config.nosql.CouchbaseConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.nosql.NoSqlResult;
 import com.bluntsoftware.ludwig.conduit.nosql.couch.CouchRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.RecordProperty;
 import com.bluntsoftware.ludwig.conduit.utils.SecurityUtils;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -109,7 +108,7 @@ public class CouchFindActivity extends CouchActivity {
         sord.add("ASC");
         sord.add("DESC");
 
-        RecordProperty query = new RecordProperty("Query");
+        JsonSchema query = new JsonSchema("Query");
         query.addString("page","1");
         query.addString("rows","20",null);
         query.addEnum("Sort Order","sord",sord,"ASC");

@@ -122,7 +122,7 @@ public class MailActivity extends ActivityImpl {
         Map<String, Object> ret = new HashMap<>();
         Map<String, Object>  config = this.getExternalConfigByName(input.get(mailConfig.getPropertyName()),MailConfig.class);
         if(config != null){
-            this.javaMailSender = getMailSender(MailConfig.convertToMailConfig(config));
+            this.javaMailSender = getMailSender(MailConfig.convertToMailConfig((Map)config.get("mail")));
         }
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();

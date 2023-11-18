@@ -3,7 +3,6 @@ package com.bluntsoftware.ludwig.conduit.config.model;
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityConfigImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.RecordProperty;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -11,7 +10,7 @@ import java.util.Map;
 public class PayloadSchemaConfig extends ActivityConfigImpl {
 
     @Override
-    public RecordProperty getRecord() {
+    public JsonSchema getRecord() {
         JsonSchema schema = new JsonSchema("PayloadSchema");
         schema.addString("Schema","schema","{\n" +
                 "    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n" +

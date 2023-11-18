@@ -335,6 +335,14 @@ public class OpenApiService {
         return bearer;
     }
 
+    public Map<String,Object> openIdConnect(String jwkUri){
+        Map<String,Object> bearer = new HashMap<>();
+        bearer.put("type","openIdConnect");
+        bearer.put("scheme","bearer");
+        bearer.put("bearerFormat","JWT");
+        bearer.put("openIdConnectUrl",jwkUri);
+        return bearer;
+    }
     //TODO: build an Oauth2 code flow
     public Map<String, Object> oAuth2CodeFlow(){
         return new HashMap<>();

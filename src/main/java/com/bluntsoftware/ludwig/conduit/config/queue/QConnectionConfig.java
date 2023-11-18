@@ -2,7 +2,7 @@ package com.bluntsoftware.ludwig.conduit.config.queue;
 
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityConfigImpl;
-import com.bluntsoftware.ludwig.conduit.schema.RecordProperty;
+import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ public class QConnectionConfig extends ActivityConfigImpl {
 
 
     @Override
-    public RecordProperty getRecord() {
-        RecordProperty connection = new RecordProperty("connection");
+    public JsonSchema getRecord() {
+        JsonSchema connection = new JsonSchema("connection");
 
         List<String> binder = new ArrayList<String>();
         binder.add("Active MQ");

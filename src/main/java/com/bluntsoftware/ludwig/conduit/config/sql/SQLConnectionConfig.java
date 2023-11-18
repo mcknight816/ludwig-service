@@ -2,7 +2,7 @@ package com.bluntsoftware.ludwig.conduit.config.sql;
 
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityConfigImpl;
-import com.bluntsoftware.ludwig.conduit.schema.RecordProperty;
+import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,8 +12,8 @@ import java.util.Map;
 public class SQLConnectionConfig extends ActivityConfigImpl {
 
     @Override
-    public RecordProperty getRecord() {
-        RecordProperty connection = new RecordProperty("connection");
+    public JsonSchema getRecord() {
+        JsonSchema connection = new JsonSchema("connection");
         List<String> db = new ArrayList<String>();
         db.add("Postgres");
         db.add("SQL Server");

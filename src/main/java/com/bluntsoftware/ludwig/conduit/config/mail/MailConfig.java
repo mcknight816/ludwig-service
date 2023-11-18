@@ -2,7 +2,7 @@ package com.bluntsoftware.ludwig.conduit.config.mail;
 
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityConfigImpl;
-import com.bluntsoftware.ludwig.conduit.schema.RecordProperty;
+import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,8 +12,8 @@ import java.util.Map;
 public class MailConfig extends ActivityConfigImpl {
 
     @Override
-    public RecordProperty getRecord() {
-        RecordProperty mail = new RecordProperty("mail");
+    public JsonSchema getRecord() {
+        JsonSchema mail = new JsonSchema("mail");
         mail.addString("host","smtp.gmail.com",null);
         mail.addString("port","587",null);
         mail.addString("user",null,null);

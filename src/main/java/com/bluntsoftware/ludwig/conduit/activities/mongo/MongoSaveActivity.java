@@ -1,11 +1,13 @@
 package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 
+import com.bluntsoftware.ludwig.conduit.domain.MongoSave;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.SecurityUtils;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
@@ -29,9 +31,10 @@ public class MongoSaveActivity extends MongoActivity {
 
     @Override
     public JsonSchema getSchema() {
-        JsonSchema schema =  super.getSchema();
-        schema.addString("payload","{}","json");
-        return schema;
+        return JsonSchema.builder()
+                .title("Mongo Connection")
+                .properties(MongoSave.getSchema().getProperties())
+                .build();
     }
 
     @Override
@@ -41,6 +44,9 @@ public class MongoSaveActivity extends MongoActivity {
 
     @Override
     public Map<String, Object> run(Map<String, Object> input)throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        MongoSave mongoSave = mapper.convertValue(input,MongoSave.class);
         validateInput(input);
         MongoRepository mongoRepository = getRepository(input);
         String databaseName =  input.get("database").toString();
@@ -52,7 +58,7 @@ public class MongoSaveActivity extends MongoActivity {
             msg = (Map<String,Object>)payload;
         }else if(payload instanceof String){
             try{
-                ObjectMapper mapper = new ObjectMapper();
+
                 msg = mapper.readValue(payload.toString(), Map.class);
             }catch (Exception e){
                 msg.put("msg",payload);

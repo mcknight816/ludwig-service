@@ -1,51 +1,188 @@
 {
-  "title": "Customer",
   "type": "object",
+  "title": "User",
+  "hidden": false,
   "properties": {
-    "phone_numbers": {
-      "type": "array",
-      "items": {
-        "title": "PhoneNumber",
-        "type": "object",
-        "properties": {
-          "number": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          }
-        }
-      }
+    "first_name": {
+      "minLength": 0,
+      "title": "First Name ",
+      "type": "string",
+      "meta": {},
+      "value": "Alex",
+      "default": "Alex"
     },
-    "address": {
-      "title": "Address",
-      "type": "object",
-      "properties": {
-        "zip": {
-          "type": "string"
-        },
-        "city": {
-          "type": "string"
-        },
-        "street": {
-          "type": "string"
-        },
-        "state": {
-          "type": "string"
-        }
-      }
-    },
-    "name": {
-      "type": "string"
-    },
-    "id": {
-      "type": "string"
+    "last_name": {
+      "minLength": 0,
+      "title": "Last Name ",
+      "type": "string",
+      "meta": {},
+      "value": "Mcknight",
+      "default": "Mcknight"
     },
     "age": {
-      "type": "integer"
+      "minLength": 0,
+      "title": "Age ",
+      "type": "string",
+      "meta": {},
+      "value": "51",
+      "default": "51"
     },
-    "email": {
-      "type": "string"
+    "gender": {
+      "minLength": 0,
+      "title": "Gender ",
+      "type": "string",
+      "meta": {},
+      "value": "Male",
+      "default": "Male",
+      "enum": [
+        "Male",
+        "Female"
+      ]
+    },
+    "color": {
+      "minLength": 0,
+      "format": "color",
+      "title": "Color ",
+      "type": "string",
+      "meta": {},
+      "value": "blue",
+      "default": "blue"
+    },
+    "address": {
+      "type": "object",
+      "title": "Address",
+      "hidden": false,
+      "properties": {
+        "address1": {
+          "minLength": 0,
+          "title": "Address1 ",
+          "type": "string",
+          "meta": {},
+          "value": "816 Stonybrook",
+          "default": "816 Stonybrook"
+        },
+        "address2": {
+          "minLength": 0,
+          "title": "Address2 ",
+          "type": "string",
+          "meta": {},
+          "value": "",
+          "default": ""
+        },
+        "city": {
+          "minLength": 0,
+          "title": "City ",
+          "type": "string",
+          "meta": {},
+          "value": "W. Norriton",
+          "default": "W. Norriton"
+        },
+        "state": {
+          "minLength": 0,
+          "title": "State ",
+          "type": "string",
+          "meta": {},
+          "value": "PA",
+          "default": "PA"
+        },
+        "zip": {
+          "minLength": 0,
+          "title": "Zip ",
+          "type": "string",
+          "meta": {},
+          "value": "19403",
+          "default": "19403"
+        }
+      }
+    }
+  },
+  "secretFilter": {},
+  "secretStringProperties": {},
+  "stringPropertyPaths": {
+    "address.zip": {
+      "minLength": 0,
+      "title": "Zip ",
+      "type": "string",
+      "meta": {},
+      "value": "19403",
+      "default": "19403"
+    },
+    "address.city": {
+      "minLength": 0,
+      "title": "City ",
+      "type": "string",
+      "meta": {},
+      "value": "W. Norriton",
+      "default": "W. Norriton"
+    },
+    "gender": {
+      "minLength": 0,
+      "title": "Gender ",
+      "type": "string",
+      "meta": {},
+      "value": "Male",
+      "default": "Male",
+      "enum": [
+        "Male",
+        "Female"
+      ]
+    },
+    "color": {
+      "minLength": 0,
+      "format": "color",
+      "title": "Color ",
+      "type": "string",
+      "meta": {},
+      "value": "blue",
+      "default": "blue"
+    },
+    "address.address2": {
+      "minLength": 0,
+      "title": "Address2 ",
+      "type": "string",
+      "meta": {},
+      "value": "",
+      "default": ""
+    },
+    "address.state": {
+      "minLength": 0,
+      "title": "State ",
+      "type": "string",
+      "meta": {},
+      "value": "PA",
+      "default": "PA"
+    },
+    "last_name": {
+      "minLength": 0,
+      "title": "Last Name ",
+      "type": "string",
+      "meta": {},
+      "value": "Mcknight",
+      "default": "Mcknight"
+    },
+    "address.address1": {
+      "minLength": 0,
+      "title": "Address1 ",
+      "type": "string",
+      "meta": {},
+      "value": "816 Stonybrook",
+      "default": "816 Stonybrook"
+    },
+    "first_name": {
+      "minLength": 0,
+      "title": "First Name ",
+      "type": "string",
+      "meta": {},
+      "value": "Alex",
+      "default": "Alex"
+    },
+    "age": {
+      "minLength": 0,
+      "title": "Age ",
+      "type": "string",
+      "meta": {},
+      "value": "51",
+      "default": "51"
     }
   }
 }

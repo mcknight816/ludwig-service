@@ -4,7 +4,6 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 import com.bluntsoftware.ludwig.conduit.config.queue.QConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.RecordProperty;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +41,7 @@ public class ListenerActivity extends ActivityImpl {
         editor.addString("requested","",true);
         editor.addString("payload","",true);
 
-        RecordProperty user = new RecordProperty("");
+        JsonSchema user = new JsonSchema("");
         user.addString("role","",true);
         user.addString("email","",true);
         user.addString("first_name","",true);
