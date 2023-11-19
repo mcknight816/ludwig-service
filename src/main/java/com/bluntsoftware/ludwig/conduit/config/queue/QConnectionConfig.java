@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.config.queue;
 
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityConfigImpl;
+import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,11 @@ public class QConnectionConfig extends ActivityConfigImpl {
         connection.addString("IBMMQ-Manager","q-manager","QM1",null,false);
         connection.addString("IBMMQ-Channel","channel","DEV.APP.SVRCONN",null,false);
         return connection;
+    }
+
+    @Override
+    public EntitySchema getConfig() {
+        return null;
     }
 
     @Override

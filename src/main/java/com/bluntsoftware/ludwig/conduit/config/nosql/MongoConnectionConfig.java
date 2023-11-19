@@ -7,11 +7,16 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-public class MongoConnectionConfig extends ActivityConfigImpl {
+public class MongoConnectionConfig extends ActivityConfigImpl<MongoConnection> {
 
     @Override
     public JsonSchema getRecord() {
-        return MongoConnection.builder().build().getRecord();
+        return MongoConnection.getSchema();
+    }
+
+    @Override
+    public MongoConnection getConfig() {
+        return MongoConnection.builder().build();
     }
 
     @Override

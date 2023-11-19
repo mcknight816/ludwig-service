@@ -35,8 +35,8 @@ public abstract class MongoActivity extends ActivityImpl {
          return MongoSettings.getSchema();
     }
 
-    MongoRepository getRepository(Map<String, Object> input){
-        Map<String, Object>  connection = this.getExternalConfigByName(input.get("connection"),MongoConnectionConfig.class);
+    MongoRepository getRepository(String connectionName){
+        Map<String, Object>  connection = this.getExternalConfigByName(connectionName,MongoConnectionConfig.class);
         if(connection == null){
             connection = mongoConnectionConfig.getDefaults();
         }
@@ -71,7 +71,7 @@ public abstract class MongoActivity extends ActivityImpl {
 
     MongoCollection<Document> getCollection(){
           Map<String,Object>  in = getInput();
-          MongoRepository repository = getRepository(in);
+          MongoRepository repository = getRepository(in.get("connection").toString());
           if(repository != null){
               Object dbObj = in.get("database");
               Object collectionObj = in.get("collection");
@@ -84,7 +84,7 @@ public abstract class MongoActivity extends ActivityImpl {
 
     void validateInput(Map<String, Object> in) throws Exception{
 
-        MongoRepository repository = getRepository(in);
+        MongoRepository repository = getRepository(in.get("connection").toString());
         if(repository != null){
             Object dbObj = in.get("database");
             Object collectionObj = in.get("collection");

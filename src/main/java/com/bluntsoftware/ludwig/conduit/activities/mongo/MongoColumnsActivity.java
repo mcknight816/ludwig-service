@@ -26,7 +26,7 @@ public class MongoColumnsActivity extends MongoActivity {
     public Map<String, Object> run(Map<String, Object> input)throws Exception {
         Map<String, Object> ret = new HashMap<>();
         validateInput(input);
-        MongoRepository mongoRepository = getRepository(input);
+        MongoRepository mongoRepository = getRepository(input.get("connection").toString());
         String databaseName =  input.get("database").toString();
         String collectionName = input.get("collection").toString();
         List<String> columns = mongoRepository.columns(databaseName,collectionName);

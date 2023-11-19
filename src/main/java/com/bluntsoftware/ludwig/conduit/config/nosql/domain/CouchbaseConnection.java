@@ -1,18 +1,17 @@
 package com.bluntsoftware.ludwig.conduit.config.nosql.domain;
 
 import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
-import com.bluntsoftware.ludwig.conduit.schema.Property;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.Property;
 import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
-
 @Data
 @Builder
-public class MongoConnection  implements EntitySchema {
+public class CouchbaseConnection implements EntitySchema {
     String server = "localhost";
     String port = "27017";
     String userName;

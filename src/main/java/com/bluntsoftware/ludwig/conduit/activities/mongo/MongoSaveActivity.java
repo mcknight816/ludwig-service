@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 
 import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSave;
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
@@ -38,13 +39,20 @@ public class MongoSaveActivity extends MongoActivity {
         return getSchema().getValue();
     }
 
+
+    public Map<String, Object> run(MongoSave mongoSave) {
+        MongoSettings mongoSettings = mongoSave.getSettings();
+        MongoRepository mongoRepository = getRepository(mongoSettings.getConnection());
+        return mongoRepository.save( mongoSettings.getDatabase(),mongoSettings.getCollection(),mongoSave.getPayload(),true);
+    }
+
     @Override
     public Map<String, Object> run(Map<String, Object> input)throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         MongoSave mongoSave = mapper.convertValue(input,MongoSave.class);
         validateInput(input);
-        MongoRepository mongoRepository = getRepository(input);
+        MongoRepository mongoRepository = getRepository(input.get("connection").toString());
         String databaseName =  input.get("database").toString();
         String collectionName = input.get("collection").toString();
         Map<String,Object> msg = new HashMap<>();
@@ -60,6 +68,7 @@ public class MongoSaveActivity extends MongoActivity {
                 msg.put("msg",payload);
             }
         }
+
         if(input.containsKey("userManaged") && input.get("userManaged") != null){
             boolean userManaged = input.get("userManaged").toString().equalsIgnoreCase("true");
             if(userManaged){

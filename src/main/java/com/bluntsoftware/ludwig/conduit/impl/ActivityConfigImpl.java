@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.impl;
 
 import com.bluntsoftware.ludwig.conduit.AES;
 import com.bluntsoftware.ludwig.conduit.ActivityConfig;
+import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonPath;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-public abstract class ActivityConfigImpl implements ActivityConfig {
+public abstract class ActivityConfigImpl<T extends EntitySchema> implements ActivityConfig {
     private final static Map<String, ActivityConfig> configs = new HashMap<>();
     public static Map<String, ActivityConfig> list(){return configs;}
     public static ActivityConfig getByClassName(String className){
@@ -50,6 +51,10 @@ public abstract class ActivityConfigImpl implements ActivityConfig {
 
     @JsonIgnore
     public abstract JsonSchema getRecord();
+
+    @JsonIgnore
+    public abstract T getConfig();
+
     public abstract Map test();
     public ActivityConfigImpl() {
         if(getClass().isAnnotationPresent(Service.class)){
