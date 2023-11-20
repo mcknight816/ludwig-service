@@ -8,6 +8,8 @@ import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoConnection;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
@@ -22,14 +24,20 @@ public abstract class MongoActivity extends ActivityImpl {
 
     private final MongoConnectionConfig mongoConnectionConfig;
 
+    private final ObjectMapper mapper;
+
     private final Map<Map<String,Object>, MongoRepository> repos = new HashMap<>();
 
     public MongoActivity(MongoConnectionConfig mongoConnectionConfig , ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);
         this.mongoConnectionConfig = mongoConnectionConfig;
-
+        this.mapper = new ObjectMapper();
+        this.mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+    public <T> T convertValue(Map<String,Object> fromValue, Class<T> toValueType) throws IllegalArgumentException {
+        return mapper.convertValue(fromValue,toValueType);
+    }
     @Override
     public JsonSchema getSchema() {
          return MongoSettings.getSchema();
@@ -82,12 +90,12 @@ public abstract class MongoActivity extends ActivityImpl {
           return null;
     }
 
-    void validateInput(Map<String, Object> in) throws Exception{
+    void validateInput(MongoSettings settings) throws Exception{
 
-        MongoRepository repository = getRepository(in.get("connection").toString());
+        MongoRepository repository = getRepository(settings.getConnection());
         if(repository != null){
-            Object dbObj = in.get("database");
-            Object collectionObj = in.get("collection");
+            Object dbObj = settings.getDatabase();
+            Object collectionObj = settings.getCollection();
             if(dbObj== null || dbObj.toString().equalsIgnoreCase("")){
                 throw new Exception("Invalid Database Name");
             }

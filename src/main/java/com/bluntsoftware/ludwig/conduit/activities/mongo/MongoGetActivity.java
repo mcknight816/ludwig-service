@@ -1,14 +1,11 @@
 package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
-
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
-import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoGetById;
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.ById;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
@@ -25,20 +22,17 @@ public class MongoGetActivity extends MongoActivity {
     public MongoGetActivity(MongoConnectionConfig mongoConnectionConfig, ActivityConfigRepository activityConfigRepository) {
         super(mongoConnectionConfig,activityConfigRepository);
     }
-
     @Override
     public Map<String, Object> run(Map<String, Object> input)throws Exception {
-        validateInput(input);
-        MongoRepository mongoRepository = getRepository(input.get("connection").toString());
-        String databaseName =  input.get("database").toString();
-        String collectionName = input.get("collection").toString();
-        String id = input.get("id").toString();
-        return mongoRepository.getById(id, databaseName,collectionName);
+        ById byId = convertValue(input, ById.class);
+        MongoSettings settings  = byId.getSettings();
+        MongoRepository mongoRepository = getRepository(settings.getConnection());
+        return mongoRepository.getById(byId.getId(), settings.getDatabase(),settings.getCollection());
     }
 
     @Override
     public JsonSchema getSchema() {
-        return MongoGetById.getSchema();
+        return ById.getSchema();
     }
 
     @Override

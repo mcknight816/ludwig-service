@@ -8,8 +8,6 @@ import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.SecurityUtils;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +32,9 @@ public class MongoSaveActivity extends MongoActivity {
         return MongoSave.getSchema();
     }
 
-
-    public Map<String, Object> run(MongoSave mongoSave) {
+    @Override
+    public Map<String, Object> run(Map<String, Object> input) throws Exception {
+        MongoSave mongoSave = convertValue(input,MongoSave.class);
         MongoSettings mongoSettings = mongoSave.getSettings();
         MongoRepository mongoRepository = getRepository(mongoSettings.getConnection());
         Map<String, Object> payload = mongoSave.getPayload();
@@ -68,16 +67,6 @@ public class MongoSaveActivity extends MongoActivity {
 
         }
         return mongoRepository.save(mongoSettings.getDatabase(), mongoSettings.getCollection(), payload, true);
-    }
-
-    @Override
-    public Map<String, Object> run(Map<String, Object> input)throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        MongoSave mongoSave = mapper.convertValue(input,MongoSave.class);
-        //validateInput(input);
-        return run(mongoSave);
     }
 
     @Override

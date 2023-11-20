@@ -1,9 +1,10 @@
 package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 
-import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoDeleteById;
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.ById;
+
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
-import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoGetById;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
@@ -26,15 +27,14 @@ public class MongoDeleteActivity  extends MongoActivity {
 
     @Override
     public Map<String, Object> run(Map<String, Object> input) throws Exception{
-        validateInput(input);
-        MongoRepository mongoRepository = getRepository(input.get("connection").toString());
-        String databaseName =  input.get("database").toString();
-        String collectionName = input.get("collection").toString();
-        String id =input.get("id").toString();
-        return mongoRepository.remove( databaseName,collectionName,id);
+        ById byId = convertValue(input,ById.class);
+        MongoSettings settings = byId.getSettings();
+        //validateInput(input);
+        MongoRepository mongoRepository = getRepository(settings.getConnection());
+        return mongoRepository.remove( settings.getDatabase(),settings.getCollection(),byId.getId());
     }
     @Override
     public JsonSchema getSchema() {
-        return MongoDeleteById.getSchema();
+        return ById.getSchema();
     }
 }

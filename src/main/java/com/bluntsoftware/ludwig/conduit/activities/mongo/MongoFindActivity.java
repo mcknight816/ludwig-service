@@ -28,7 +28,7 @@ public class MongoFindActivity extends MongoActivity {
 
     @Override
     public Map<String,Object> run(Map<String, Object> input) throws Exception {
-        validateInput(input);
+        //validateInput(input);
         MongoRepository mongoRepository = getRepository(input.get("connection").toString());
         String databaseName =  input.get("database").toString();
         String collectionName = input.get("collection").toString();

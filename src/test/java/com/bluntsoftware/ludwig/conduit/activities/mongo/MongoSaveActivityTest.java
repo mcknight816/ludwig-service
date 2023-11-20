@@ -50,13 +50,13 @@ class MongoSaveActivityTest {
 
     @Test
     void run() {
-        /*MongoSave mongoSave = MongoSave.builder().payload(this.payload)
+       /* MongoSave mongoSave = MongoSave.builder().payload(this.payload)
                 .settings(MongoSettings.builder().connection("Test").collection("unit-test").database("test").build()).build();
 
         Mockito.when(mongoConnectionConfig.getDefaults()).thenReturn(Config.builder().configClass(MongoConnectionConfig.class.getTypeName()).build());
         Mockito.when(activityConfigRepository.findByNameAndConfigClass(anyString(),anyString())).thenReturn(FlowConfig.builder().build());
         MongoSaveActivity mongoSaveActivity = new MongoSaveActivity(this.mongoConnectionConfig,this.activityConfigRepository);
-        mongoSaveActivity.run(mongoSave);*/
+        mongoSaveActivity.run(mongoSave); */
     }
 
     @Test
