@@ -32,6 +32,7 @@ public class MongoSettings implements EntitySchema {
                         .format("configChooser").build());
 
         return JsonSchema.builder()
+                .title("settings")
                 .properties(props)
                 .build();
     }

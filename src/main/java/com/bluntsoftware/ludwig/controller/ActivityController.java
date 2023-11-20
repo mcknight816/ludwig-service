@@ -18,7 +18,8 @@ public class ActivityController {
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     List<Activity> findAll(){
-        return activityRepository.findAll();
+        List<Activity> activities =  activityRepository.findAll();
+        return activities;
     }
     @GetMapping(value = "{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     Activity findById(@PathVariable("id") String id){

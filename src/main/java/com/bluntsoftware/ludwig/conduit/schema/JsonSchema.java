@@ -130,21 +130,22 @@ public class JsonSchema implements Property {
     public interface StringPropertyFilter {
         Boolean hasProperty(StringProperty property);
     }
-
+    @JsonIgnore
     StringPropertyFilter secretFilter = (property) -> (property.getFormat() != null
             && property.getFormat().equalsIgnoreCase("password"));
-
+    @JsonIgnore
     public Map<String,StringProperty> getStringPropertyPaths(){
         return getStringProperties(this,null,null);
     }
+    @JsonIgnore
     public Map<String,StringProperty> getSecretStringProperties(){
         return getStringPropertyPaths(secretFilter);
     }
-
+    @JsonIgnore
     public Map<String,StringProperty> getStringPropertyPaths(StringPropertyFilter filter){
         return getStringProperties(this,null,filter);
     }
-
+    @JsonIgnore
     Map<String,StringProperty> getStringProperties(JsonSchema record, String path, StringPropertyFilter filter){
         Map<String,StringProperty> ret = new HashMap<>();
         if(path != null){
@@ -174,13 +175,14 @@ public class JsonSchema implements Property {
         List<String> gender = new ArrayList<String>();
         gender.add("Male");
         gender.add("Female");
-
-        JsonSchema form = new JsonSchema("User");
-        form.addString("first_name","Alex");
-        form.addString("last_name","Mcknight");
-        form.addString("age","51");
-        form.addEnum("gender",gender,"Male");
-        form.addString("color","blue","color");
+        JsonSchema form = new JsonSchema("UserDetails");
+        JsonSchema user = new JsonSchema("User");
+        user.addString("first_name","Alex");
+        user.addString("last_name","Mcknight");
+        user.addString("age","51");
+        user.addEnum("gender",gender,"Male");
+        user.addString("color","blue","color");
+        form.addRecord("user",user);
 
         JsonSchema address = new JsonSchema("Address");
         address.addString("address1","816 Stonybrook");
@@ -198,7 +200,7 @@ public class JsonSchema implements Property {
         for(String prop_path : paths.keySet()){
             Object val = path.getValue(prop_path);
             if(val != null){
-                System.out.println(val.toString());
+              //  System.out.println(val.toString());
             }
         }
 
@@ -207,7 +209,7 @@ public class JsonSchema implements Property {
           mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         try {
             String jsonInString = mapper.writeValueAsString(form);
-            System.out.println(jsonInString);
+          //  System.out.println(jsonInString);
             System.out.println(mapper.writeValueAsString(form.getValue()));
         } catch (JsonProcessingException e) {
             e.printStackTrace();

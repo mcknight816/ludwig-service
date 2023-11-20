@@ -2,15 +2,13 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
-import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoById;
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoGetById;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
@@ -22,7 +20,7 @@ import java.util.Map;
  */
 @Service
 public class MongoGetActivity extends MongoActivity {
-    private Logger log = LoggerFactory.getLogger(MongoGetActivity.class);
+
     @Autowired
     public MongoGetActivity(MongoConnectionConfig mongoConnectionConfig, ActivityConfigRepository activityConfigRepository) {
         super(mongoConnectionConfig,activityConfigRepository);
@@ -40,17 +38,17 @@ public class MongoGetActivity extends MongoActivity {
 
     @Override
     public JsonSchema getSchema() {
-        return MongoById.getSchema();
+        return MongoGetById.getSchema();
     }
 
     @Override
     public Map<String, Object> getOutput() {
-
-        MongoCollection<Document> col = getCollection();
+        return new HashMap<>();
+       /* MongoCollection<Document> col = getCollection();
         if(col == null){
             return new HashMap<>();
         }
         BasicDBObject sort = BasicDBObject.parse("{$natural:-1}");
-        return col.find().sort(sort).limit(1).first();
+        return col.find().sort(sort).limit(1).first(); */
     }
 }

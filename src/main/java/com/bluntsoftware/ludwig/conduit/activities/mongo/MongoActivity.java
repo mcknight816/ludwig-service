@@ -36,11 +36,11 @@ public abstract class MongoActivity extends ActivityImpl {
     }
 
     MongoRepository getRepository(String connectionName){
-        Map<String, Object>  connection = this.getExternalConfigByName(connectionName,MongoConnectionConfig.class);
-        if(connection == null){
-            connection = mongoConnectionConfig.getDefaults();
+        Map<String, Object>  config = this.getExternalConfigByName(connectionName,MongoConnectionConfig.class);
+        if(config == null){
+            config = mongoConnectionConfig.getDefaults();
         }
-       // Map<String,Object> connection = (Map<String,Object>)config.get("connection");
+        Map<String,Object> connection = (Map<String,Object>)config.get("Connection");
         if(connection != null){
             MongoRepository repo = this.repos.get(connection);
             if(repo != null){

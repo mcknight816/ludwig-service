@@ -1,8 +1,9 @@
 package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoDeleteById;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
-import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoById;
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoGetById;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
@@ -34,6 +35,6 @@ public class MongoDeleteActivity  extends MongoActivity {
     }
     @Override
     public JsonSchema getSchema() {
-        return MongoById.getSchema();
+        return MongoDeleteById.getSchema();
     }
 }

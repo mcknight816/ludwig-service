@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MongoById implements EntitySchema {
+public class MongoGetById implements EntitySchema {
     String id;
     MongoSettings settings;
     public static JsonSchema getSchema() {
-        JsonSchema ret =  JsonSchema.builder().build();
+        JsonSchema ret =  JsonSchema.builder().title("Mongo Get By Id").build();
         ret.getProperties().put("id", StringProperty.builder().build());
         ret.getProperties().put("settings", MongoSettings.getSchema());
         return ret;

@@ -15,12 +15,19 @@ public class MongoSave implements EntitySchema {
     Map<String,Object> payload;
 
     public static JsonSchema getSchema() {
-        JsonSchema ret =  JsonSchema.builder().build();
+        JsonSchema ret =  JsonSchema.builder().title("Mongo Save").build();
         ret.getProperties().put("payload", StringProperty.builder().defaultValue("{}").format("json").build());
         ret.getProperties().put("settings", MongoSettings.getSchema());
         return ret;
     }
     public static void main(String[] args) {
-        System.out.println(MongoSave.getSchema().getJson());
+        MongoSave mongoSave = MongoSave.builder().settings(MongoSettings.builder()
+                .database("Database")
+                .connection("Connection")
+                .collection("Collection")
+                .build()).build();
+
+       // System.out.println(mongoSave.getSchema().getJson());
+      //  System.out.println(mongoSave.getSchema().getValue());
     }
 }

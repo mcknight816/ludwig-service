@@ -1,188 +1,62 @@
 {
   "type": "object",
-  "title": "User",
   "hidden": false,
   "properties": {
-    "first_name": {
+    "payload": {
       "minLength": 0,
-      "title": "First Name ",
+      "format": "json",
       "type": "string",
       "meta": {},
-      "value": "Alex",
-      "default": "Alex"
+      "value": "{}",
+      "default": "{}"
     },
-    "last_name": {
-      "minLength": 0,
-      "title": "Last Name ",
-      "type": "string",
-      "meta": {},
-      "value": "Mcknight",
-      "default": "Mcknight"
-    },
-    "age": {
-      "minLength": 0,
-      "title": "Age ",
-      "type": "string",
-      "meta": {},
-      "value": "51",
-      "default": "51"
-    },
-    "gender": {
-      "minLength": 0,
-      "title": "Gender ",
-      "type": "string",
-      "meta": {},
-      "value": "Male",
-      "default": "Male",
-      "enum": [
-        "Male",
-        "Female"
-      ]
-    },
-    "color": {
-      "minLength": 0,
-      "format": "color",
-      "title": "Color ",
-      "type": "string",
-      "meta": {},
-      "value": "blue",
-      "default": "blue"
-    },
-    "address": {
+    "settings": {
       "type": "object",
-      "title": "Address",
+      "title": "settings",
       "hidden": false,
       "properties": {
-        "address1": {
+        "database": {
           "minLength": 0,
-          "title": "Address1 ",
+          "title": "Database Name",
           "type": "string",
-          "meta": {},
-          "value": "816 Stonybrook",
-          "default": "816 Stonybrook"
+          "meta": {}
         },
-        "address2": {
+        "connection": {
           "minLength": 0,
-          "title": "Address2 ",
+          "format": "configChooser",
+          "title": "Mongo Connection",
           "type": "string",
-          "meta": {},
-          "value": "",
-          "default": ""
+          "meta": {
+            "configClass": "com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig"
+          }
         },
-        "city": {
+        "collection": {
           "minLength": 0,
-          "title": "City ",
+          "title": "Collection Name",
           "type": "string",
-          "meta": {},
-          "value": "W. Norriton",
-          "default": "W. Norriton"
+          "meta": {}
         },
-        "state": {
+        "userManaged": {
           "minLength": 0,
-          "title": "State ",
+          "title": "User Managed",
           "type": "string",
           "meta": {},
-          "value": "PA",
-          "default": "PA"
+          "enum": [
+            "true",
+            "false"
+          ]
         },
-        "zip": {
+        "allowFriends": {
           "minLength": 0,
-          "title": "Zip ",
+          "title": "Allow Friends",
           "type": "string",
           "meta": {},
-          "value": "19403",
-          "default": "19403"
+          "enum": [
+            "true",
+            "false"
+          ]
         }
       }
-    }
-  },
-  "secretFilter": {},
-  "secretStringProperties": {},
-  "stringPropertyPaths": {
-    "address.zip": {
-      "minLength": 0,
-      "title": "Zip ",
-      "type": "string",
-      "meta": {},
-      "value": "19403",
-      "default": "19403"
-    },
-    "address.city": {
-      "minLength": 0,
-      "title": "City ",
-      "type": "string",
-      "meta": {},
-      "value": "W. Norriton",
-      "default": "W. Norriton"
-    },
-    "gender": {
-      "minLength": 0,
-      "title": "Gender ",
-      "type": "string",
-      "meta": {},
-      "value": "Male",
-      "default": "Male",
-      "enum": [
-        "Male",
-        "Female"
-      ]
-    },
-    "color": {
-      "minLength": 0,
-      "format": "color",
-      "title": "Color ",
-      "type": "string",
-      "meta": {},
-      "value": "blue",
-      "default": "blue"
-    },
-    "address.address2": {
-      "minLength": 0,
-      "title": "Address2 ",
-      "type": "string",
-      "meta": {},
-      "value": "",
-      "default": ""
-    },
-    "address.state": {
-      "minLength": 0,
-      "title": "State ",
-      "type": "string",
-      "meta": {},
-      "value": "PA",
-      "default": "PA"
-    },
-    "last_name": {
-      "minLength": 0,
-      "title": "Last Name ",
-      "type": "string",
-      "meta": {},
-      "value": "Mcknight",
-      "default": "Mcknight"
-    },
-    "address.address1": {
-      "minLength": 0,
-      "title": "Address1 ",
-      "type": "string",
-      "meta": {},
-      "value": "816 Stonybrook",
-      "default": "816 Stonybrook"
-    },
-    "first_name": {
-      "minLength": 0,
-      "title": "First Name ",
-      "type": "string",
-      "meta": {},
-      "value": "Alex",
-      "default": "Alex"
-    },
-    "age": {
-      "minLength": 0,
-      "title": "Age ",
-      "type": "string",
-      "meta": {},
-      "value": "51",
-      "default": "51"
     }
   }
 }
