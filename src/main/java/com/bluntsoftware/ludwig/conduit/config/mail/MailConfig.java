@@ -14,11 +14,6 @@ public class MailConfig extends ActivityConfigImpl<Mail> {
     }
 
     @Override
-    public Mail getConfig() {
-        return Mail.builder().build();
-    }
-
-    @Override
     public Map test() {
         return null;
     }

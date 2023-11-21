@@ -17,10 +17,7 @@ public class SQLConnectionConfig extends ActivityConfigImpl<SQLConnection> {
        return SQLConnection.getSchema();
     }
 
-    @Override
-    public SQLConnection getConfig() {
-        return SQLConnection.builder().build();
-    }
+
 
     @Override
     public Map test() {

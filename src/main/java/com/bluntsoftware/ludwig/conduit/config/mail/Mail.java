@@ -27,8 +27,7 @@ public class Mail implements EntitySchema {
     private String testEmail;
 
     static JsonSchema getSchema() {
-
-        JsonSchema mail = new JsonSchema("mail");
+        JsonSchema mail = JsonSchema.builder().title("mail").build();
         mail.addString("host","smtp.gmail.com",null);
         mail.addString("port","587",null);
         mail.addString("user",null,null);
@@ -42,7 +41,6 @@ public class Mail implements EntitySchema {
         truefalse.add("false");
         mail.addEnum("tls","tls",truefalse,"false");
         mail.addEnum("auth","auth",truefalse,"true");
-
         return mail;
     }
 

@@ -2,11 +2,14 @@ package com.bluntsoftware.ludwig.conduit.config.model.domain;
 
 import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.Property;
+import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.Map;
 @Data
 @Builder
@@ -15,8 +18,11 @@ import java.util.Map;
 public class PayloadSchema implements EntitySchema {
     Map<String,Object> schema;
     public static JsonSchema getSchema() {
-        JsonSchema schema = new JsonSchema("PayloadSchema");
-        schema.addString("Schema","schema","{\n" +
+        Map<String, Property> props = new HashMap<>();
+        props.put("schema", StringProperty.builder()
+                .title("Schema")
+                .format("json")
+                .defaultValue("{\n" +
                 "    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n" +
                 "    \"title\": \"Product\",\n" +
                 "    \"description\": \"A product from the catalog\",\n" +
@@ -28,8 +34,7 @@ public class PayloadSchema implements EntitySchema {
                 "        }\n" +
                 "    },\n" +
                 "    \"required\": [ \"name\"]\n" +
-                "}","json",false);
-        return schema;
-
+                "}").build());
+        return JsonSchema.builder().properties(props).build();
     }
 }

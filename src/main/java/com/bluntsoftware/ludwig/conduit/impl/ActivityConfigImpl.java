@@ -38,10 +38,10 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
         return configSchema;
     }
     public JsonSchema getSchema(){
-        JsonSchema schema = new JsonSchema(getName());
+       /* JsonSchema schema = new JsonSchema(getName());
         JsonSchema recordProperty = getRecord();
-        schema.addRecord(recordProperty.getTitle(),recordProperty);
-        return schema;
+        schema.addRecord(recordProperty.getTitle(),recordProperty);*/
+        return getRecord();
     }
 
     @Override
@@ -51,9 +51,6 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
 
     @JsonIgnore
     public abstract JsonSchema getRecord();
-
-    @JsonIgnore
-    public abstract T getConfig();
 
     public abstract Map test();
     public ActivityConfigImpl() {

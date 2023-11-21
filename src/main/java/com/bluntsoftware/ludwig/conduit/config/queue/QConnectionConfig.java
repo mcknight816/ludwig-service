@@ -33,10 +33,7 @@ public class QConnectionConfig extends ActivityConfigImpl {
         return connection;
     }
 
-    @Override
-    public EntitySchema getConfig() {
-        return null;
-    }
+
 
     @Override
     public Map test() {

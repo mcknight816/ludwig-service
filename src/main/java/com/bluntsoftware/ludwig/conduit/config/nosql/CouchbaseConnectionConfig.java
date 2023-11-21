@@ -16,10 +16,7 @@ public class CouchbaseConnectionConfig extends ActivityConfigImpl<CouchbaseConne
          return CouchbaseConnection.getSchema();
     }
 
-    @Override
-    public CouchbaseConnection getConfig() {
-        return CouchbaseConnection.builder().build();
-    }
+
 
     @Override
     public Map test() {

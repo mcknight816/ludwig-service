@@ -13,12 +13,6 @@ public class MongoConnectionConfig extends ActivityConfigImpl<MongoConnection> {
     public JsonSchema getRecord() {
         return MongoConnection.getSchema();
     }
-
-    @Override
-    public MongoConnection getConfig() {
-        return MongoConnection.builder().build();
-    }
-
     @Override
     public Map test() {
         return null;

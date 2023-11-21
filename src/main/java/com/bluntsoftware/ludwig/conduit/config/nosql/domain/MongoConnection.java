@@ -4,14 +4,19 @@ import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.Property;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
 @Builder
+@Slf4j
+@AllArgsConstructor
+@NoArgsConstructor
 public class MongoConnection  implements EntitySchema {
     String server = "localhost";
     String port = "27017";
@@ -20,12 +25,11 @@ public class MongoConnection  implements EntitySchema {
 
     public static JsonSchema getSchema() {
         Map<String, Property> props = new HashMap<>();
-        props.put("server", StringProperty.builder().title("Server Name").build());
+        props.put("server", StringProperty.builder().title("Server Name").defaultValue("localhost").build());
         props.put("port", StringProperty.builder().title("Port").build());
         props.put("userName", StringProperty.builder().title("User Name").build());
         props.put("password", StringProperty.builder().title("Password").format("password").build());
-        return  JsonSchema.builder()
-                .title("Connection")
+        return  JsonSchema.builder().title("Connection")
                 .properties(props)
                 .build();
     }

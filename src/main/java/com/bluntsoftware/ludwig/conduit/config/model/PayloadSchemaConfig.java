@@ -16,11 +16,6 @@ public class PayloadSchemaConfig extends ActivityConfigImpl<PayloadSchema> {
     }
 
     @Override
-    public PayloadSchema getConfig() {
-        return PayloadSchema.builder().build();
-    }
-
-    @Override
     public Map test() {
         return null;
     }
