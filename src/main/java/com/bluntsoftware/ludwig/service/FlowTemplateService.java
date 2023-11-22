@@ -9,6 +9,7 @@ import com.bluntsoftware.ludwig.conduit.activities.mongo.MongoDeleteActivity;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.MongoFindActivity;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.MongoGetActivity;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.MongoSaveActivity;
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
 import com.bluntsoftware.ludwig.conduit.activities.output.HttpResponseActivity;
 import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
@@ -40,6 +41,8 @@ public class FlowTemplateService {
         List<FlowActivity> activities = new ArrayList<>();
 
         MongoConnectionConfig mongoConnectionConfig = new MongoConnectionConfig();
+
+        MongoSettings mongoSettings = MongoSettings.builder().collection(collection).database(database).connection(connection).build();
 
         //Post - Save
         activities.add(flowActivity(new PostActivity(new PayloadSchemaConfig(),activityConfigRepository)));
@@ -83,10 +86,8 @@ public class FlowTemplateService {
 
     public static void main(String[] args) {
         FlowTemplateService service = new FlowTemplateService(null);
-
         log.info("{}",service.createMongoCrudFlow("Test Flow","Mongo Default","test-db","customer"));
         log.info("{}",service.createMongoCrudFlow("Wow Flow","Mongo Default","test-db","customer"));
-
     }
 
 

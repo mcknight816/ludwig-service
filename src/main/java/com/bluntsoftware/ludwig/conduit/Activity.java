@@ -1,4 +1,6 @@
 package com.bluntsoftware.ludwig.conduit;
+import com.bluntsoftware.ludwig.conduit.impl.ActivityProperties;
+
 import java.util.Map;
 public interface Activity {
     Map<String,Object> getInput();
@@ -9,5 +11,5 @@ public interface Activity {
     String getIcon();
     Boolean fireAndForget();
 
-
+    ActivityProperties getActivityProperties();
 }

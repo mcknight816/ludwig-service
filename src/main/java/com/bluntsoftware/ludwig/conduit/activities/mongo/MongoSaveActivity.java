@@ -4,6 +4,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSave;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
+import com.bluntsoftware.ludwig.conduit.impl.ActivityProperties;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.SecurityUtils;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ConcurrentModel;
+
 import java.util.HashMap;
 import java.util.Map;
 

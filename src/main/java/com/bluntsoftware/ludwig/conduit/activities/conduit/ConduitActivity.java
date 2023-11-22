@@ -19,12 +19,6 @@ public class ConduitActivity extends ActivityImpl {
     public ConduitActivity(ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);
     }
-/*
-    private final ConduitService conduitService;
-    ConduitActivity(ConduitService conduitService){
-        this.conduitService = conduitService;
-    }
-*/
 
     @Override
     public JsonSchema getSchema() {

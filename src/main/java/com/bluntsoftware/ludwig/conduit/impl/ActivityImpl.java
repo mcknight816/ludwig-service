@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.impl;
 
 
 import com.bluntsoftware.ludwig.conduit.Activity;
+import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -39,6 +40,18 @@ public abstract class ActivityImpl implements Activity {
 
     public enum Category{
         Conduit,Input,FileAndFolders
+    }
+    @Override
+    public ActivityProperties getActivityProperties(){
+        return ActivityProperties.builder()
+                .activityClass(getActivityClass())
+                .output(getOutput())
+                .icon(getIcon())
+                .category(getCategory())
+                .fireAndForget(fireAndForget())
+                .input(getInput())
+                .schema(getSchema())
+                .build();
     }
     public abstract Map<String,Object> run(Map<String,Object> input) throws Exception;
     public abstract JsonSchema getSchema();

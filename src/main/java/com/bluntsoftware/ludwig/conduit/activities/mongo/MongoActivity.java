@@ -6,6 +6,7 @@ import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoConnection;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
+import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -20,7 +21,7 @@ import java.util.Map;
  * Created by Alex Mcknight on 2/14/2017.
  *
  */
-public abstract class MongoActivity extends ActivityImpl {
+public abstract class MongoActivity extends ActivityImpl  {
 
     private final MongoConnectionConfig mongoConnectionConfig;
 
