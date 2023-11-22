@@ -44,6 +44,7 @@ public abstract class ActivityImpl implements Activity {
     @Override
     public ActivityProperties getActivityProperties(){
         return ActivityProperties.builder()
+                .name(getName())
                 .activityClass(getActivityClass())
                 .output(getOutput())
                 .icon(getIcon())
