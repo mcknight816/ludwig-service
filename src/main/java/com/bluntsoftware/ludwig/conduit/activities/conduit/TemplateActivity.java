@@ -26,7 +26,7 @@ public class TemplateActivity extends ActivityImpl {
 
     @Override
     public JsonSchema getSchema() {
-        JsonSchema schema = new JsonSchema("Template");
+        JsonSchema schema = JsonSchema.builder().title("Template").build();
         schema.addString("","context","",null,true);
         schema.addString("Template","template","hello {{name}}","html",false);
         return schema;

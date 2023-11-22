@@ -30,7 +30,7 @@ public class PublisherActivity extends ActivityImpl {
     @Override
     public JsonSchema getSchema() {
         //Config Parameters
-        JsonSchema editor = new JsonSchema("Event Publisher");
+        JsonSchema editor = JsonSchema.builder().title("Event Publisher").build();
         List<String> type = new ArrayList<String>();
         type.add("Queue");
         type.add("Topic");

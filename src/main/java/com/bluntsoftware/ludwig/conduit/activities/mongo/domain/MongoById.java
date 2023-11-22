@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ById implements EntitySchema {
+public class MongoById implements EntitySchema {
     String id;
     MongoSettings settings;
     public static JsonSchema getSchema() {

@@ -53,7 +53,7 @@ public class HttpClientActivity extends ActivityImpl {
 
     @Override
     public JsonSchema getSchema() {
-        JsonSchema schema = new JsonSchema(this.getName());
+        JsonSchema schema = JsonSchema.builder().title(this.getName()).build();
         List<String> type = new ArrayList<String>();
         type.add("post");
         type.add("get");

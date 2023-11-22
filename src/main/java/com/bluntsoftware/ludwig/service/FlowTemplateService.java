@@ -9,19 +9,19 @@ import com.bluntsoftware.ludwig.conduit.activities.mongo.MongoDeleteActivity;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.MongoFindActivity;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.MongoGetActivity;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.MongoSaveActivity;
-import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.*;
 import com.bluntsoftware.ludwig.conduit.activities.output.HttpResponseActivity;
 import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
-import com.bluntsoftware.ludwig.conduit.config.nosql.domain.MongoConnection;
 import com.bluntsoftware.ludwig.domain.Flow;
 import com.bluntsoftware.ludwig.domain.FlowActivity;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import org.springframework.ui.ConcurrentModel;
+
+import java.util.*;
 
 @Service
 @Slf4j
@@ -37,31 +37,37 @@ public class FlowTemplateService {
        return Flow.builder().build();
     }
 
+    Map<String,Object> toMap(Object obj) {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.convertValue(obj, ConcurrentModel.class);
+    }
     Flow createMongoCrudFlow(String name, String connection, String database, String collection) {
         List<FlowActivity> activities = new ArrayList<>();
 
         MongoConnectionConfig mongoConnectionConfig = new MongoConnectionConfig();
 
         MongoSettings mongoSettings = MongoSettings.builder().collection(collection).database(database).connection(connection).build();
-
+        MongoSave mongoSave = MongoSave.builder().settings(mongoSettings).payload(new HashMap<>()).build();
+        MongoById byId = MongoById.builder().settings(mongoSettings).build();
+        MongoFind mongoFind = MongoFind.builder().query(DBQuery.builder().build()).settings(mongoSettings).build();
         //Post - Save
         activities.add(flowActivity(new PostActivity(new PayloadSchemaConfig(),activityConfigRepository)));
-        activities.add(flowActivity(new MongoSaveActivity(mongoConnectionConfig,activityConfigRepository)));
+        activities.add(flowActivity(new MongoSaveActivity(mongoConnectionConfig,activityConfigRepository),toMap(mongoSave)));
         activities.add(flowActivity(new HttpResponseActivity(activityConfigRepository)));
 
         //Get - Find
         activities.add(flowActivity(new GetActivity(activityConfigRepository)));
-        activities.add(flowActivity(new MongoFindActivity(mongoConnectionConfig,activityConfigRepository)));
+        activities.add(flowActivity(new MongoFindActivity(mongoConnectionConfig,activityConfigRepository),toMap(mongoFind)));
         activities.add(flowActivity(new HttpResponseActivity(activityConfigRepository)));
 
         //Get By id - Find By id
         activities.add(flowActivity(new GetByIdActivity(activityConfigRepository)));
-        activities.add(flowActivity(new MongoGetActivity(mongoConnectionConfig,activityConfigRepository)));
+        activities.add(flowActivity(new MongoGetActivity(mongoConnectionConfig,activityConfigRepository),toMap(byId)));
         activities.add(flowActivity(new HttpResponseActivity(activityConfigRepository)));
 
         //Delete By id
         activities.add(flowActivity(new DeleteActivity(activityConfigRepository)));
-        activities.add(flowActivity(new MongoDeleteActivity(mongoConnectionConfig,activityConfigRepository)));
+        activities.add(flowActivity(new MongoDeleteActivity(mongoConnectionConfig,activityConfigRepository),toMap(byId)));
         activities.add(flowActivity(new HttpResponseActivity(activityConfigRepository)));
 
         return Flow.builder()
@@ -71,9 +77,13 @@ public class FlowTemplateService {
     }
 
     FlowActivity flowActivity(Activity activity){
+        return flowActivity(activity,activity.getInput());
+    }
+
+    FlowActivity flowActivity(Activity activity, Map<String,Object> input){
         return FlowActivity.builder()
                 .activityClass(activity.getClass().getName())
-                .input(activity.getInput())
+                .input(input)
                 .output(activity.getOutput())
                 .name(activity.getName())
                 .x(0)
@@ -89,7 +99,4 @@ public class FlowTemplateService {
         log.info("{}",service.createMongoCrudFlow("Test Flow","Mongo Default","test-db","customer"));
         log.info("{}",service.createMongoCrudFlow("Wow Flow","Mongo Default","test-db","customer"));
     }
-
-
-
 }

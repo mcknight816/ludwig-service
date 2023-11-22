@@ -21,7 +21,7 @@ public class JavascriptActivity extends ActivityImpl {
 
     @Override
     public JsonSchema getSchema() {
-        JsonSchema schema = new JsonSchema("Javascript Runner");
+        JsonSchema schema = JsonSchema.builder().title("Javascript Runner").build();
         schema.addString("","context","",null,true);
         schema.addString("Javascript","js","var run = function(context){\n \treturn context;\n};","javascript",false);
         return schema;

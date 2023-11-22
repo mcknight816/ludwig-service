@@ -2,12 +2,13 @@ package com.bluntsoftware.ludwig.conduit.impl;
 
 
 import com.bluntsoftware.ludwig.conduit.Activity;
-import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public abstract class ActivityImpl implements Activity {
         }
     }
 
-    public Map<String, Object> getExternalConfigByName(Object configName,Class clazz){
+    public <T> Map<String, Object> getExternalConfigByName(Object configName,Class<T> clazz){
         if(configName != null){
             if(activityConfigRepository != null){
                return activityConfigRepository.findByNameAndConfigClass(configName.toString(), clazz.getName()).getConfig();
@@ -61,11 +62,13 @@ public abstract class ActivityImpl implements Activity {
         Activity activity = activities.get(className);
         try {
             if(activity == null){
-                activity =  (Activity)Class.forName(className).newInstance();
+                activity =  (Activity)Class.forName(className).getDeclaredConstructor().newInstance();
                 activities.put(className,activity);
             }
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
+        } catch (NoSuchMethodException | InvocationTargetException e) {
+            throw new RuntimeException(e);
         }
         return activity;
     }

@@ -22,7 +22,7 @@ public class InputActivity extends ActivityImpl {
     @Override
     public JsonSchema getSchema() {
         //Config Parameters
-        JsonSchema editor = new JsonSchema(this.getName());
+        JsonSchema editor = JsonSchema.builder().title(this.getName()).build();
        /* List<String> roles = new ArrayList<String>();
         roles.add("anonymous");
         roles.add("authenticated");

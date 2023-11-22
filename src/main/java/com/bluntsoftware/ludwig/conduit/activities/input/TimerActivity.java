@@ -18,7 +18,7 @@ public class TimerActivity extends InputActivity {
 
     @Override
     public JsonSchema getSchema() {
-        JsonSchema schema = new JsonSchema("Scheduler Properties");
+        JsonSchema schema = JsonSchema.builder().title("Scheduler Properties").build();
         //every 1 seconds
 
         List<String> second = new ArrayList<>();

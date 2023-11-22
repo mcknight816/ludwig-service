@@ -34,7 +34,7 @@ public abstract class CouchActivity extends ActivityImpl {
 
     @Override
     public JsonSchema getSchema() {
-        JsonSchema schema = new JsonSchema("Couch Properties");
+        JsonSchema schema = JsonSchema.builder().title("Couch Properties").build();
         schema.addString("database","test",null);
         schema.addString("collection","",null);
         List<String> truefalse = new ArrayList<String>();

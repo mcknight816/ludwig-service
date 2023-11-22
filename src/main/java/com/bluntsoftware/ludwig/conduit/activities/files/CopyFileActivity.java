@@ -30,7 +30,7 @@ public class CopyFileActivity extends ActivityImpl {
 
     @Override
     public JsonSchema getSchema() {
-        JsonSchema schema = new JsonSchema("Copy File");
+        JsonSchema schema = JsonSchema.builder().title("Copy File").build();
         schema.addString("fileInputPath","/working/uploads/somefile.txt","");
         schema.addString("outputFolder","/","folderChooser");
         schema.addString("filename","somefile.txt","");

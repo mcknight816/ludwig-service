@@ -37,7 +37,7 @@ public class ValidationActivity extends ActivityImpl {
 
     @Override
     public JsonSchema getSchema() {
-        JsonSchema schema = new JsonSchema("Schema");
+        JsonSchema schema = JsonSchema.builder().title("Schema").build();
         schema.addString("","payload","",null,true);
         schema.addString("Schema","schema","{\n" +
                 "    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n" +

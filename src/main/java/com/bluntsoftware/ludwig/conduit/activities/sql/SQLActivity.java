@@ -21,7 +21,7 @@ public class SQLActivity extends ActivityImpl {
 
     @Override
     public JsonSchema getSchema() {
-        JsonSchema schema = new JsonSchema("SQL Properties");
+        JsonSchema schema = JsonSchema.builder().title("SQL Properties").build();
         schema.addConfig(sqlConnectionConfig);
         schema.addString("sql","select * from table","sql");
         return schema;

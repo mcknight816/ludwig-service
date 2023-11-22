@@ -26,7 +26,7 @@ public class ListenerActivity extends ActivityImpl {
     @Override
     public JsonSchema getSchema() {
         //Config Parameters
-        JsonSchema editor = new JsonSchema("Event Listener");
+        JsonSchema editor = JsonSchema.builder().title("Event Listener").build();
         editor.addConfig(qConnectionConfig);
         editor.addString("destination","dev.q.test",null);
         List<String> requests = new ArrayList<String>();

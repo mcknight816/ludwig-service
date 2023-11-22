@@ -1,6 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 
+import com.bluntsoftware.ludwig.conduit.Activity;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSave;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
@@ -33,6 +34,10 @@ public class MongoSaveActivity extends MongoActivity {
     @Override
     public JsonSchema getSchema() {
         return MongoSave.getSchema();
+    }
+
+    public static Activity get(){
+        return getByClassName(MongoSaveActivity.class.getName());
     }
 
     @Override

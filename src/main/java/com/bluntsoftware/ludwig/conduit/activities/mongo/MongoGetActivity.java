@@ -2,7 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
-import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.ById;
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoById;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
@@ -24,7 +24,7 @@ public class MongoGetActivity extends MongoActivity {
     }
     @Override
     public Map<String, Object> run(Map<String, Object> input)throws Exception {
-        ById byId = convertValue(input, ById.class);
+        MongoById byId = convertValue(input, MongoById.class);
         MongoSettings settings  = byId.getSettings();
         MongoRepository mongoRepository = getRepository(settings.getConnection());
         return mongoRepository.getById(byId.getId(), settings.getDatabase(),settings.getCollection());
@@ -32,7 +32,7 @@ public class MongoGetActivity extends MongoActivity {
 
     @Override
     public JsonSchema getSchema() {
-        return ById.getSchema();
+        return MongoById.getSchema();
     }
 
     @Override
