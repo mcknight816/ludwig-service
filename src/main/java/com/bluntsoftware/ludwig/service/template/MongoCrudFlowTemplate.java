@@ -16,11 +16,9 @@ import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.domain.Connection;
 import com.bluntsoftware.ludwig.domain.Flow;
 import com.bluntsoftware.ludwig.domain.FlowActivity;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.ConcurrentModel;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -96,7 +94,6 @@ public class MongoCrudFlowTemplate {
 
         return flow;
     }
-
 
     Connection connect(FlowActivity src,FlowActivity tgt){
         return Connection.builder().src(src.getId()).tgt(tgt.getId()).build();
