@@ -17,5 +17,5 @@ public class FlowTemplate {
     String name;
     String type;
     JsonSchema schema;
-    Map<String,Object> props;
+    Map<String,Object> context;
 }

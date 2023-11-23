@@ -35,8 +35,8 @@ public class MongoCrudFlowTemplate {
         MongoSave mongoSave = MongoSave.builder().settings(mongoSettings).payload(new HashMap<>()).build();
 
         FlowActivity postActivity = flowActivity(x,20,new PostActivity(new PayloadSchemaConfig(),null));
-        FlowActivity mongoSaveActivity = flowActivity(x,70,new MongoSaveActivity(mongoConnectionConfig,null),toMap(mongoSave));
-        FlowActivity httpResponseActivity = flowActivity(x,120,new HttpResponseActivity(null));
+        FlowActivity mongoSaveActivity = flowActivity(x,120,new MongoSaveActivity(mongoConnectionConfig,null),toMap(mongoSave));
+        FlowActivity httpResponseActivity = flowActivity(x,220,new HttpResponseActivity(null));
 
         Connection postSaveConnection = connect(postActivity,mongoSaveActivity);
         Connection saveResponseConnection = connect(mongoSaveActivity,httpResponseActivity);
@@ -53,8 +53,8 @@ public class MongoCrudFlowTemplate {
         MongoFind mongoFind = MongoFind.builder().query(DBQuery.builder().build()).settings(mongoSettings).build();
         //Get - Find
         flow.getActivities().add(flowActivity(x,20,new GetActivity(null)));
-        flow.getActivities().add(flowActivity(x,70,new MongoFindActivity(mongoConnectionConfig,null),toMap(mongoFind)));
-        flow.getActivities().add(flowActivity(x,120,new HttpResponseActivity(null)));
+        flow.getActivities().add(flowActivity(x,120,new MongoFindActivity(mongoConnectionConfig,null),toMap(mongoFind)));
+        flow.getActivities().add(flowActivity(x,220,new HttpResponseActivity(null)));
     }
 
     private void buildMongoGetById(Flow flow,MongoSettings mongoSettings,MongoConnectionConfig mongoConnectionConfig,Integer x){
@@ -62,19 +62,19 @@ public class MongoCrudFlowTemplate {
         MongoById byId = MongoById.builder().settings(mongoSettings).build();
         //Get By id - Find By id
         flow.getActivities().add(flowActivity(x,20,new GetByIdActivity(null)));
-        flow.getActivities().add(flowActivity(x,70,new MongoGetActivity(mongoConnectionConfig,null),toMap(byId)));
-        flow.getActivities().add(flowActivity(x,120,new HttpResponseActivity(null)));
+        flow.getActivities().add(flowActivity(x,120,new MongoGetActivity(mongoConnectionConfig,null),toMap(byId)));
+        flow.getActivities().add(flowActivity(x,220,new HttpResponseActivity(null)));
     }
     private void buildMongoDeleteById(Flow flow,MongoSettings mongoSettings,MongoConnectionConfig mongoConnectionConfig,Integer x){
 
         MongoById byId = MongoById.builder().settings(mongoSettings).build();
         //Delete By id
         flow.getActivities().add(flowActivity(x,20,new DeleteActivity(null)));
-        flow.getActivities().add(flowActivity(x,70,new MongoDeleteActivity(mongoConnectionConfig,null),toMap(byId)));
-        flow.getActivities().add(flowActivity(x,120,new HttpResponseActivity(null)));
+        flow.getActivities().add(flowActivity(x,120,new MongoDeleteActivity(mongoConnectionConfig,null),toMap(byId)));
+        flow.getActivities().add(flowActivity(x,220,new HttpResponseActivity(null)));
     }
 
-    public Flow createMongoCrudFlow(String name, String connection, String database, String collection) {
+    public Flow createMongoCrudFlow(String name,MongoSettings mongoSettings ) {
 
         Flow flow = Flow.builder()
                 .name(name)
@@ -85,12 +85,10 @@ public class MongoCrudFlowTemplate {
 
         MongoConnectionConfig mongoConnectionConfig = new MongoConnectionConfig();
 
-        MongoSettings mongoSettings = MongoSettings.builder().collection(collection).database(database).connection(connection).build();
-
         buildMongoSave(flow,mongoSettings,mongoConnectionConfig,30);
-        buildMongoFind(flow,mongoSettings,mongoConnectionConfig,80);
-        buildMongoGetById(flow,mongoSettings,mongoConnectionConfig,130);
-        buildMongoDeleteById(flow,mongoSettings,mongoConnectionConfig,180);
+        buildMongoFind(flow,mongoSettings,mongoConnectionConfig,130);
+        buildMongoGetById(flow,mongoSettings,mongoConnectionConfig,230);
+        buildMongoDeleteById(flow,mongoSettings,mongoConnectionConfig,330);
 
         return flow;
     }
@@ -101,7 +99,7 @@ public class MongoCrudFlowTemplate {
     FlowActivity flowActivity(Integer x, Integer y, Activity activity){
         return flowActivity(x,y,activity,activity.getInput());
     }
-    FlowActivity flowActivity(Integer x,Integer y, Activity activity, Map<String,Object> input){
+    FlowActivity flowActivity(Integer y,Integer x, Activity activity, Map<String,Object> input){
         return FlowActivity.builder()
                 .activityClass(activity.getClass().getName())
                 .input(input)
@@ -116,8 +114,7 @@ public class MongoCrudFlowTemplate {
     }
 
     public static void main(String[] args) {
-        MongoCrudFlowTemplate service = new MongoCrudFlowTemplate();
-         log.info("{}",service.createMongoCrudFlow("Test Flow","Mongo Default","test-db","customer"));
+
 
     }
 }

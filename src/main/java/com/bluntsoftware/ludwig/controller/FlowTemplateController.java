@@ -23,7 +23,7 @@ public class FlowTemplateController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Flow createFlow(FlowTemplate flowTemplate){
+    public Flow createFlow(@RequestBody FlowTemplate flowTemplate){
         return this.flowTemplateService.createFlow(flowTemplate);
     }
 }
