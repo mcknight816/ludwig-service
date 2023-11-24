@@ -15,7 +15,9 @@ public class DeleteActivity extends InputActivity {
     }
     @Override
     public JsonSchema getSchema() {
-        return MongoById.getSchema();
+        JsonSchema schema = super.getSchema();
+        schema.addString("id","");
+        return schema;
     }
     @Override
     public String getIcon() {

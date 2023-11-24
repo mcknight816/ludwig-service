@@ -17,7 +17,9 @@ public class GetByIdActivity extends InputActivity {
 
     @Override
     public JsonSchema getSchema() {
-        return MongoById.getSchema();
+        JsonSchema schema = super.getSchema();
+        schema.addString("id","");
+        return schema;
     }
 
     @Override

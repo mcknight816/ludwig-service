@@ -1,8 +1,8 @@
 package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.*;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
-import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoFind;
 import com.bluntsoftware.ludwig.conduit.nosql.NoSqlResult;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
@@ -29,20 +29,15 @@ public class MongoFindActivity extends MongoActivity {
     @Override
     public Map<String,Object> run(Map<String, Object> input) throws Exception {
         //validateInput(input);
-        MongoRepository mongoRepository = getRepository(input.get("connection").toString());
-        String databaseName =  input.get("database").toString();
-        String collectionName = input.get("collection").toString();
+        MongoFind mongoFind = convertValue(input,MongoFind.class);
+        MongoSettings mongoSettings = mongoFind.getSettings();
+        MongoRepository mongoRepository = getRepository(mongoSettings.getConnection());
+        DBQuery query = mongoFind.getQuery();
+        String filterByFields = query.getFilter();
 
-        Map<String,Object> query =((Map<String,Object>)input.get("query"));
-        String filterByFields = "{}";
-        Object qry =  query.get("filter");
-        if(qry != null){
-            filterByFields = qry.toString();
-        }
-
-        if(!SecurityUtils.isAdmin() && input.containsKey("userManaged") && input.get("userManaged") != null) {
-            Boolean userManaged = input.get("userManaged").toString().equalsIgnoreCase("true");
-            Boolean allowFriends = input.containsKey("allowFriends") && input.get("allowFriends").toString().equalsIgnoreCase("true");
+        if(!SecurityUtils.isAdmin() && mongoSettings.getUserManaged() != null) {
+            boolean userManaged = mongoSettings.getUserManaged().equalsIgnoreCase("true");
+            boolean allowFriends = mongoSettings.getAllowFriends() != null && mongoSettings.getAllowFriends().equalsIgnoreCase("true");
             if (userManaged) {
                 String login = "anonymous";
                 try{
@@ -77,25 +72,16 @@ public class MongoFindActivity extends MongoActivity {
             }
         }
 
-        String rows = "20";
-        if(query.containsKey("rows") && query.get("rows") != null){
-            rows = query.get("rows").toString();
-        }
+        String rows = query.getRows() != null ? query.getRows() : "20";
 
-        String page = "1";
-        if(query.containsKey("page") && query.get("page") != null){
-            page = query.get("page").toString();
-        }
-        String sidx = null;
-        if(query.containsKey("sidx") && query.get("sidx") != null){
-            sidx = query.get("sidx").toString();
-        }
-        String sord = null;
-        if(query.containsKey("sord") && query.get("sord") != null){
-            sord = query.get("sord").toString();
-        }
+        String page = query.getPage() != null ? query.getPage() : "1";
 
-        NoSqlResult ret = mongoRepository.findAll( databaseName,collectionName,filterByFields,null,sidx,sord,rows,page );
+        String sidx = query.getSidx() != null ? query.getSidx() : null;
+
+        String sord = query.getSord() != null ? query.getSord() : null;
+
+
+        NoSqlResult ret = mongoRepository.findAll( mongoSettings.getDatabase(),mongoSettings.getCollection(),filterByFields,null,sidx,sord,rows,page );
         ObjectMapper mapper = new ObjectMapper();
 
         return  (Map<String, Object>) mapper.convertValue(ret,Map.class);

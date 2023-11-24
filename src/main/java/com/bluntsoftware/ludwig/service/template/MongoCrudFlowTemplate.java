@@ -14,6 +14,7 @@ import com.bluntsoftware.ludwig.conduit.activities.output.HttpResponseActivity;
 import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.domain.Connection;
+import com.bluntsoftware.ludwig.domain.ConnectionMap;
 import com.bluntsoftware.ludwig.domain.Flow;
 import com.bluntsoftware.ludwig.domain.FlowActivity;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,6 +43,15 @@ public class MongoCrudFlowTemplate {
         Connection saveResponseConnection = connect(mongoSaveActivity,httpResponseActivity);
         flow.getConnections().add(postSaveConnection);
         flow.getConnections().add(saveResponseConnection);
+
+         flow.getConnectionMaps().add(ConnectionMap.builder()
+                 .src("['" + postActivity.getId() + "']['output']['payload']")
+                 .tgt("['" + mongoSaveActivity.getId() + "']['input']['payload']").build());
+
+        flow.getConnectionMaps().add(ConnectionMap.builder()
+                .src("['" + mongoSaveActivity.getId() + "']['output']")
+                .tgt("['" + httpResponseActivity.getId() + "']['input']['payload']").build());
+
 
         //Post - Save
         flow.getActivities().add(postActivity);
