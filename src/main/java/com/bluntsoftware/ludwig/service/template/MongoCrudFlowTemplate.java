@@ -52,7 +52,6 @@ public class MongoCrudFlowTemplate {
                 .src("['" + mongoSaveActivity.getId() + "']['output']")
                 .tgt("['" + httpResponseActivity.getId() + "']['input']['payload']").build());
 
-
         //Post - Save
         flow.getActivities().add(postActivity);
         flow.getActivities().add(mongoSaveActivity);
@@ -69,6 +68,13 @@ public class MongoCrudFlowTemplate {
         flow.getConnections().add(connect(getActivity,findActivity));
         flow.getConnections().add(connect(findActivity,httpResponseActivity));
 
+        flow.getConnectionMaps().add(ConnectionMap.builder()
+                .src("['" + getActivity.getId() + "']['output']['payload']")
+                .tgt("['" + findActivity.getId() + "']['input']['query']").build());
+
+        flow.getConnectionMaps().add(ConnectionMap.builder()
+                .src("['" + findActivity.getId() + "']['output']")
+                .tgt("['" + httpResponseActivity.getId() + "']['input']['payload']").build());
         //Get - Find
         flow.getActivities().add(getActivity);
         flow.getActivities().add(findActivity);
@@ -85,6 +91,15 @@ public class MongoCrudFlowTemplate {
         flow.getConnections().add(connect(getByIdActivity,mongoGetActivity));
         flow.getConnections().add(connect(mongoGetActivity,httpResponseActivity));
 
+        flow.getConnectionMaps().add(ConnectionMap.builder()
+                .src("['" + getByIdActivity.getId() + "']['output']['id']")
+                .tgt("['" + mongoGetActivity.getId() + "']['input']['id']").build());
+
+        flow.getConnectionMaps().add(ConnectionMap.builder()
+                .src("['" + mongoGetActivity.getId() + "']['output']")
+                .tgt("['" + httpResponseActivity.getId() + "']['input']['payload']").build());
+
+
         //Get By id - Find By id
         flow.getActivities().add(getByIdActivity);
         flow.getActivities().add(mongoGetActivity);
@@ -99,7 +114,13 @@ public class MongoCrudFlowTemplate {
 
         flow.getConnections().add(connect(deleteByIdActivity,mongoDeleteActivity));
         flow.getConnections().add(connect(mongoDeleteActivity,httpResponseActivity));
+        flow.getConnectionMaps().add(ConnectionMap.builder()
+                .src("['" + deleteByIdActivity.getId() + "']['output']['id']")
+                .tgt("['" + mongoDeleteActivity.getId() + "']['input']['id']").build());
 
+        flow.getConnectionMaps().add(ConnectionMap.builder()
+                .src("['" + mongoDeleteActivity.getId() + "']['output']")
+                .tgt("['" + httpResponseActivity.getId() + "']['input']['payload']").build());
         //Delete By id
         flow.getActivities().add(deleteByIdActivity);
         flow.getActivities().add(mongoDeleteActivity);
