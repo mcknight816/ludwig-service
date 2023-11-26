@@ -17,7 +17,7 @@ public class MongoById implements EntitySchema {
     MongoSettings settings;
     public static JsonSchema getSchema() {
         JsonSchema ret =  JsonSchema.builder().title("Mongo Get By Id").build();
-        ret.getProperties().put("id", StringProperty.builder().title("Id").build());
+        ret.getProperties().put("id", StringProperty.builder().title("Id").defaultValue("").build());
         ret.getProperties().put("settings", MongoSettings.getSchema());
         return ret;
     }

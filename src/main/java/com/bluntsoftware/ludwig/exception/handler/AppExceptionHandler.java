@@ -23,10 +23,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
 @Slf4j
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
@@ -70,7 +68,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         //
         final String error = ex.getValue() + " value for " + ex.getPropertyName() + " should be of type " + ex.getRequiredType();
 
-        final AppError appError = new AppError(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), List.of(error));
+        final AppError appError = new AppError(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(),  Collections.singletonList(error));
         return new ResponseEntity<Object>(appError, new HttpHeaders(), appError.getStatus());
     }
 
@@ -80,7 +78,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         log.info(ex.getClass().getName());
         //
         final String error = ex.getRequestPartName() + " part is missing";
-        final AppError appError = new AppError(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), List.of(error));
+        final AppError appError = new AppError(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(),  Collections.singletonList(error));
         return new ResponseEntity<Object>(appError, new HttpHeaders(), appError.getStatus());
     }
 
@@ -90,7 +88,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         log.info(ex.getClass().getName());
         //
         final String error = ex.getParameterName() + " parameter is missing";
-        final AppError appError = new AppError(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), List.of(error));
+        final AppError appError = new AppError(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), Collections.singletonList(error));
         return new ResponseEntity<Object>(appError, new HttpHeaders(), appError.getStatus());
     }
 
@@ -102,7 +100,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         //
         final String error = ex.getName() + " should be of type " + Objects.requireNonNull(ex.getRequiredType()).getName();
 
-        final AppError appError = new AppError(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), List.of(error));
+        final AppError appError = new AppError(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), Collections.singletonList(error));
         return new ResponseEntity<Object>(appError, new HttpHeaders(), appError.getStatus());
     }
 
@@ -127,7 +125,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         //
         final String error = "No handler found for " + ex.getHttpMethod() + " " + ex.getRequestURL();
 
-        final AppError appError = new AppError(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND, ex.getLocalizedMessage(), List.of(error));
+        final AppError appError = new AppError(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND, ex.getLocalizedMessage(),  Collections.singletonList(error));
         return new ResponseEntity<Object>(appError, new HttpHeaders(), appError.getStatus());
     }
 
@@ -142,7 +140,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         builder.append(" method is not supported for this request. Supported methods are ");
         Objects.requireNonNull(ex.getSupportedHttpMethods()).forEach(t -> builder.append(t).append(" "));
 
-        final AppError appError = new AppError(HttpStatus.METHOD_NOT_ALLOWED.value(),HttpStatus.METHOD_NOT_ALLOWED, ex.getLocalizedMessage(), List.of(builder.toString()));
+        final AppError appError = new AppError(HttpStatus.METHOD_NOT_ALLOWED.value(),HttpStatus.METHOD_NOT_ALLOWED, ex.getLocalizedMessage(),  Collections.singletonList(builder.toString()));
         return new ResponseEntity<Object>(appError, new HttpHeaders(), appError.getStatus());
     }
 
@@ -167,7 +165,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         log.info(ex.getClass().getName());
         log.error("error", ex);
         //
-        final AppError appError = new AppError(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), List.of("error occurred"));
+        final AppError appError = new AppError(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(),  Collections.singletonList("error occurred"));
         return new ResponseEntity<Object>(appError, new HttpHeaders(), appError.getStatus());
     }
 

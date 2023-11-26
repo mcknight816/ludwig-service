@@ -87,10 +87,10 @@ public class MongoCrudFlowTemplate {
         FlowActivity getByIdActivity = flowActivity(x,20,new GetByIdActivity(null));
         FlowActivity mongoGetActivity = flowActivity(x,120,new MongoGetActivity(mongoConnectionConfig,null),toMap(byId));
         FlowActivity httpResponseActivity = flowActivity(x,220,new HttpResponseActivity(null));
-
+        //connections
         flow.getConnections().add(connect(getByIdActivity,mongoGetActivity));
         flow.getConnections().add(connect(mongoGetActivity,httpResponseActivity));
-
+        //connection maps
         flow.getConnectionMaps().add(ConnectionMap.builder()
                 .src("['" + getByIdActivity.getId() + "']['output']['id']")
                 .tgt("['" + mongoGetActivity.getId() + "']['input']['id']").build());
@@ -98,7 +98,6 @@ public class MongoCrudFlowTemplate {
         flow.getConnectionMaps().add(ConnectionMap.builder()
                 .src("['" + mongoGetActivity.getId() + "']['output']")
                 .tgt("['" + httpResponseActivity.getId() + "']['input']['payload']").build());
-
 
         //Get By id - Find By id
         flow.getActivities().add(getByIdActivity);
@@ -166,8 +165,4 @@ public class MongoCrudFlowTemplate {
                 .build();
     }
 
-    public static void main(String[] args) {
-
-
-    }
 }

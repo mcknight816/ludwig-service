@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.exception.type;
 import com.bluntsoftware.ludwig.exception.handler.AppError;
 import org.springframework.http.HttpStatus;
 
+import java.util.Arrays;
 import java.util.List;
 
 public enum ErrorType {
@@ -11,7 +12,7 @@ public enum ErrorType {
 
     final public AppError error;
     ErrorType(int code, HttpStatus status, String message, String errors){
-        error = new AppError(code,status,message, List.of(errors.split(",")));
+        error = new AppError(code,status,message, Arrays.asList(errors.split(",")));
     }
 
 }

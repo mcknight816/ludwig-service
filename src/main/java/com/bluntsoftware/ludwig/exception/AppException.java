@@ -5,6 +5,8 @@ import com.bluntsoftware.ludwig.exception.type.ErrorType;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -28,7 +30,7 @@ public class AppException extends RuntimeException implements Supplier<AppExcept
         this.appError = AppError.builder()
                 .status(status)
                 .code(status.value())
-                .errors(List.of())
+                .errors(Collections.emptyList())
                 .message(message).build();
     }
 
@@ -36,7 +38,7 @@ public class AppException extends RuntimeException implements Supplier<AppExcept
         this.appError = AppError.builder()
                 .status(HttpStatus.BAD_REQUEST)
                 .code(HttpStatus.BAD_REQUEST.value())
-                .errors(List.of())
+                .errors(Collections.emptyList())
                 .message(message).build();
     }
 
@@ -44,7 +46,7 @@ public class AppException extends RuntimeException implements Supplier<AppExcept
         this.appError = AppError.builder()
                 .status(HttpStatus.BAD_REQUEST)
                 .code(HttpStatus.BAD_REQUEST.value())
-                .errors(List.of())
+                .errors(Collections.emptyList())
                 .message( String.format(format, arguments)).build();
     }
 

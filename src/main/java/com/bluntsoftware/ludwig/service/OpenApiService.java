@@ -1,6 +1,7 @@
 package com.bluntsoftware.ludwig.service;
 
 import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
+import com.bluntsoftware.ludwig.config.AppConfig;
 import com.bluntsoftware.ludwig.domain.*;
 import com.bluntsoftware.ludwig.repository.ApplicationRepository;
 import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
@@ -16,11 +17,12 @@ import java.util.*;
 
 @Service
 public class OpenApiService {
-
+    private final AppConfig appConfig;
     private final ApplicationRepository applicationRepository;
     private final PayloadSchemaConfig payloadSchemaConfig;
     private final FlowConfigRepository configRepository;
-    public OpenApiService(ApplicationRepository applicationRepository, PayloadSchemaConfig payloadSchemaConfig, FlowConfigRepository configRepository) {
+    public OpenApiService(AppConfig appConfig, ApplicationRepository applicationRepository, PayloadSchemaConfig payloadSchemaConfig, FlowConfigRepository configRepository) {
+        this.appConfig = appConfig;
         this.applicationRepository = applicationRepository;
         this.payloadSchemaConfig = payloadSchemaConfig;
         this.configRepository = configRepository;
@@ -355,7 +357,7 @@ public class OpenApiService {
             Map<String, Object> info = new HashMap<>();
             Map<String, Object> server = new HashMap<>();
             Map<String, Object> externalDocs = new HashMap<>();
-            server.put("url", "http://localhost:9094");
+            server.put("url", appConfig.getHost());
             List<Map<String, Object>> servers = new ArrayList<>();
             servers.add(server);
             info.put("description", application.getDescription());
@@ -364,10 +366,10 @@ public class OpenApiService {
             openApi.put("openapi", "3.0.0");
             openApi.put("info", info);
             openApi.put("servers", servers);
-            openApi.put("url", "http://localhost:9094");
+            openApi.put("url",appConfig.getHost());
             openApi.put("paths",paths(application));
             openApi.put("components",components(application));
-            String jsonUrl = "http://localhost:9094/api/swagger/" + id + "/" + TenantResolver.resolve();
+            String jsonUrl = appConfig.getHost() + "/api/swagger/" + id + "/" + TenantResolver.resolve();
             externalDocs.put("description","Open API Json");
             externalDocs.put("url",jsonUrl);
             openApi.put("externalDocs",externalDocs);

@@ -16,6 +16,8 @@ import reactor.core.publisher.Mono;
 import org.mockito.Mockito;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyString;
+
 
 @ExtendWith(SpringExtension.class)
 @Scope("test")
@@ -39,7 +41,8 @@ class FlowServiceTest {
   @Test
   void shouldSave(){
     Mockito.when(repo.save(Mockito.any(Flow.class))).thenReturn(Mono.just(item1));
-    Mono<Flow> data = service.save(Flow.builder().build());
+    Mockito.when(repo.getByName(anyString())).thenReturn(Mono.empty());
+    Mono<Flow> data = service.save(Flow.builder().name("test-flow").build());
     Assertions.assertEquals(data.block(),item1);
   }
 
