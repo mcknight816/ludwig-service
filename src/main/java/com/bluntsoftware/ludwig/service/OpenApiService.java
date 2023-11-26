@@ -221,16 +221,14 @@ public class OpenApiService {
     }
     Map<String,Object> getPayloadSchema(Object name){
         Map<String,Object> schema = null;
-        Mono<FlowConfig> flowConfig = configRepository.findByNameAndConfigClass(name.toString(), PayloadSchemaConfig.class.getName());
-        FlowConfig config = flowConfig.block();
-        if(config != null){
-            Map<String,Object> payload = Optional.of(config.getConfig()).orElse(null);
-            if(payload != null && payload.containsKey("PayloadSchema")){
-                Map<String,Object> payloadSchema = (Map<String,Object>)payload.get("PayloadSchema");
-                //if(payloadSchema.containsKey("schema")){
+        Mono<FlowConfig> flowConfigMono = configRepository.findByNameAndConfigClass(name.toString(), PayloadSchemaConfig.class.getName());
+        FlowConfig flowConfig = flowConfigMono.block();
+        if(flowConfig != null){
+            Map<String,Object> config = Optional.of(flowConfig.getConfig()).orElse(null);
+            if(config != null && config.containsKey("schema")){
                 ObjectMapper mapper = new ObjectMapper();
                 try {
-                    schema = mapper.readValue(payloadSchema.get("schema").toString(),HashMap.class);
+                    schema = mapper.readValue(config.get("schema").toString(),HashMap.class);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
