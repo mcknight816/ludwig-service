@@ -22,11 +22,12 @@ public class MongoConnection  implements EntitySchema {
     String port = "27017";
     String userName;
     String password;
-
+    String uri = "mongodb://localhost:27017";
     public static JsonSchema getSchema() {
         Map<String, Property> props = new HashMap<>();
         props.put("server", StringProperty.builder().title("Server Name").defaultValue("localhost").build());
         props.put("port", StringProperty.builder().title("Port").build());
+        props.put("uri", StringProperty.builder().title("uri").defaultValue("mongodb://localhost:27017").build());
         props.put("userName", StringProperty.builder().title("User Name").build());
         props.put("password", StringProperty.builder().title("Password").format("password").build());
         return  JsonSchema.builder().title("Connection")

@@ -55,13 +55,17 @@ public abstract class MongoActivity extends ActivityImpl  {
                 return repo;
             }
 
-            String strPort = connection.get("port").toString();
-            String server = connection.get("server").toString();
-            if(strPort != null && !strPort.equalsIgnoreCase("")) {
-                Integer port = Integer.parseInt(strPort);
-                repo =  new MongoRepository(new MongoConnection(server,port));
+            if(connection.containsKey("uri")){
+                repo = new MongoRepository(new MongoConnection(connection.get("uri").toString()));
             }else{
-                repo = new MongoRepository(new MongoConnection(server,null));
+                String strPort = connection.get("port").toString();
+                String server = connection.get("server").toString();
+                if(strPort != null && !strPort.equalsIgnoreCase("")) {
+                    Integer port = Integer.parseInt(strPort);
+                    repo =  new MongoRepository(new MongoConnection(server,port));
+                }else{
+                    repo = new MongoRepository(new MongoConnection(server,null));
+                }
             }
             this.repos.put(connection,repo);
             return repo;
