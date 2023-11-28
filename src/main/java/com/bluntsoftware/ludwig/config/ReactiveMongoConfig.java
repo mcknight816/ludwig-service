@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.mongo.MongoClientSettingsBuilderCu
 import org.springframework.boot.autoconfigure.mongo.ReactiveMongoClientFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.mongodb.core.SimpleReactiveMongoDatabaseFactory;
 import reactor.core.publisher.Mono;
