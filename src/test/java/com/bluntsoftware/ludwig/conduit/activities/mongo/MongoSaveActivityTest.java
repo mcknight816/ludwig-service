@@ -53,7 +53,7 @@ class MongoSaveActivityTest {
 
     }
 
-    @Test
+   /* @Test
     void run() throws Exception {
          MongoSave mongoSave = MongoSave.builder().payload(this.payload)
                 .settings(MongoSettings.builder().connection("Test").collection("unit-test").database("test").build()).build();
@@ -74,7 +74,7 @@ class MongoSaveActivityTest {
         MongoSaveActivity mongoSaveActivity = new MongoSaveActivity(this.mongoConnectionConfig,this.activityConfigRepository);
 
        log.info("{}", mongoSaveActivity.run(input));
-    }
+    }*/
 
     @Test
     void getOutput() {

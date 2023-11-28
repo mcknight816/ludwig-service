@@ -7,6 +7,7 @@ import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoConnection;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.exception.AppException;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,7 +47,7 @@ public abstract class MongoActivity extends ActivityImpl  {
     MongoRepository getRepository(String connectionName){
         Map<String, Object>  connection = this.getExternalConfigByName(connectionName,MongoConnectionConfig.class);
         if(connection == null){
-            connection = mongoConnectionConfig.getDefaults();
+            throw new AppException("connection " + connectionName + " not found");
         }
       //  Map<String,Object> connection = (Map<String,Object>)config.get("Connection");
         if(connection != null){

@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.config;
 import com.bluntsoftware.ludwig.tenant.TenantResolver;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.reactivestreams.client.MongoClient;
+import com.mongodb.reactivestreams.client.MongoClients;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,10 @@ import java.util.stream.Collectors;
 
 @Configuration
 public class ReactiveMongoConfig {
+
+    @Value("${spring.data.mongodb.uri}")
+    private String uri;
+
     @Value("${spring.data.mongodb.database}")
     String dbName;
     @Bean
@@ -32,16 +37,21 @@ public class ReactiveMongoConfig {
             }
         };
     }
-    @Bean
+   /* @Bean
     public MongoClient mongo(ObjectProvider<MongoClientSettingsBuilderCustomizer> builderCustomizers,
                              MongoClientSettings settings) {
         return new ReactiveMongoClientFactory(builderCustomizers.orderedStream().collect(Collectors.toList()))
                 .createMongoClient(settings);
-    }
-
+    }*/
     @Bean
-    MongoClientSettings mongoClientSettings() {
-        return MongoClientSettings.builder().build();
+    public MongoClient mongoClient() {
+        return MongoClients.create(uri);
     }
+    /*@Bean
+    MongoClientSettings mongoClientSettings() {
+
+
+        return MongoClientSettings.builder().build();
+    }*/
 }
 
