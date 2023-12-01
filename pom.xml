@@ -250,7 +250,7 @@
         <configuration>
           <username>antsle</username>
           <password>${env.TOMCAT_PASSWORD}</password>
-          <url>https://ludwigservice.bluntsoftware.com/manager/text</url>
+          <url>https://ludwig-service.bluntsoftware.com/manager/text</url>
           <path>/</path>
         </configuration>
       </plugin>
