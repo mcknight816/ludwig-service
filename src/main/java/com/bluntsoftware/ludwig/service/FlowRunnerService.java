@@ -40,6 +40,7 @@ public class FlowRunnerService {
         Map<String,Object> payload = new HashMap<>();
         payload.put("id",id);
         in.put("payload",payload);
+        log.info("Received Api Get by ID Request");
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
     }
@@ -52,6 +53,7 @@ public class FlowRunnerService {
         Map<String,Object> payload = new HashMap<>();
         payload.put("id",id);
         in.put("payload",payload);
+        log.info("Received Api Delete by ID Request");
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
     }
@@ -61,6 +63,7 @@ public class FlowRunnerService {
         InputActivity activity = (InputActivity)activityRepository.getByKlass(GetActivity.class.getName());
         Map<String,Object> in = new HashMap<>();
         in.put("payload",transform(input));
+        log.info("Received Api Get Request");
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
     }
@@ -71,6 +74,7 @@ public class FlowRunnerService {
         Map<String,Object> in = new HashMap<>();
         in.put("user", SecurityUtils.getUserInfo());
         in.put("payload",transform(input));
+        log.info("Received Api Post Request");
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,70,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
     }
@@ -250,7 +254,7 @@ public class FlowRunnerService {
         getTargetFlowActivities(flow,flowActivity).forEach(t-> run(flow,t,flowActivities));
         log.info("{}", flowActivities);
     }
-    private void runFlowActivity(FlowActivity flowActivity) throws Exception {
+    private void runFlowActivity(FlowActivity flowActivity)  {
         ActivityImpl activity = (ActivityImpl)activityRepository.getByKlass(flowActivity.getActivityClass());
         Map<String,Object> out = new HashMap<>();
         try{

@@ -33,41 +33,42 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NotNull HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull FilterChain filterChain) throws ServletException, IOException {
         String[] pathInfo = httpServletRequest.getServletPath().split("/");
         boolean isApiCall = pathInfo[1] != null && pathInfo[1].equalsIgnoreCase("api");
-        boolean hasError = false;
+
         if (isApiCall && pathInfo[2] != null && !pathInfo[2].equalsIgnoreCase("swagger")) {
             String appPath = pathInfo[2];
             String flowName = pathInfo[3];
             Application app = applicationService.findByPath(appPath);
             if (app != null && app.getJwkUri() != null) {
+                log.info("checking token for secured api request... ");
                 Flow flow = app.getFlows().stream().filter(f -> f.getName().equalsIgnoreCase(flowName)).findFirst().orElse(null);
                 if (flow != null && flow.getLocked()) {
                     String jwkUri = app.getJwkUri();
-                    String token = httpServletRequest.getHeader("Authorization");
+                    String token = httpServletRequest.getHeader("x-jwt-token");
                     if (token != null && !token.equalsIgnoreCase("")){
                         JwtDecoder decoder = selectDecoder(jwkUri);
                         try {
-                            Jwt jwt = decoder.decode(token.replace("Bearer ", ""));
+                            Jwt jwt = decoder.decode(token);
                             if (jwt != null) {
                                 SecurityContext securityContext = SecurityContextHolder.getContext();
-                                securityContext.setAuthentication(JwtAuthentication.builder().jwt(jwt).build());
+                                JwtAuthentication jwtAuthentication = JwtAuthentication.builder().jwt(jwt).build();
+                                jwtAuthentication.setAuthenticated(true);
+                                securityContext.setAuthentication(jwtAuthentication);
+                                log.info("token is valid for secured api request.");
                             }
-                        }catch(Exception e){
+                        } catch(Exception e){
                             httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid token " + e.getMessage());
-                            hasError = true;
                         }
                     } else {
-                        httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), " JWT Bearer token not found in Authorization header");
-                        hasError = true;
+                        httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), " API Key x-jwt-token not found in header");
                     }
                 }
             } else if(app == null){
                 httpServletResponse.sendError(HttpStatus.NOT_FOUND.value(), "Application with path /api/" + appPath + " not found");
-                hasError = true;
+            } else {
+                log.info("api request is un secured");
             }
         }
-        if(!hasError){
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
-        }
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
     private JwtDecoder selectDecoder(String jwkUri) {

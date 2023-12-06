@@ -44,10 +44,11 @@ public class OpenApiService {
         details.put("description",description);
         return details;
     }
+
     public Map<String,Object> paths(Application app){
         String securitySchema = null;
         if(app.getJwkUri() != null && !app.getJwkUri().equalsIgnoreCase("")){
-            securitySchema = "bearerAuth";
+            securitySchema = "apiJwtAuth";
         }
         List<Flow> flows = Objects.requireNonNull(app).getFlows();
         Map<String,Object> ret = new HashMap<>();
@@ -327,6 +328,22 @@ public class OpenApiService {
      },
      */
 
+
+    /*
+     ApiKeyAuth:        # arbitrary name for the security scheme
+      type: apiKey
+      in: header       # can be "header", "query" or "cookie"
+      name: X-API-KEY  # name of the header, query parameter or cookie
+     */
+
+    public Map<String,Object> apiJwtToken(){
+        Map<String,Object> bearer = new HashMap<>();
+        bearer.put("type","apiKey");
+        bearer.put("in","header");
+        bearer.put("name","x-jwt-token");
+        return bearer;
+    }
+
     public Map<String,Object> bearerJwtToken(){
         Map<String,Object> bearer = new HashMap<>();
         bearer.put("type","http");
@@ -379,7 +396,7 @@ public class OpenApiService {
         Map<String,Object> components = new HashMap<>();
         if(application.getJwkUri() != null && !application.getJwkUri().equalsIgnoreCase("")){
             Map<String,Object> securitySchemas = new HashMap<>();
-            securitySchemas.put( "bearerAuth",bearerJwtToken());
+            securitySchemas.put( "apiJwtAuth",apiJwtToken());
             components.put("securitySchemes",securitySchemas);
         }
         return components;
