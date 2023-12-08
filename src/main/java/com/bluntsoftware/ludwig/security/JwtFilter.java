@@ -38,7 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
             String appPath = pathInfo[2];
             String flowName = pathInfo[3];
             Application app = applicationService.findByPath(appPath);
-            if (app != null && app.getJwkUri() != null) {
+            if (app != null && app.getJwkUri() != null && !app.getJwkUri().isEmpty()) {
                 log.info("checking token for secured api request... ");
                 Flow flow = app.getFlows().stream().filter(f -> f.getName().equalsIgnoreCase(flowName)).findFirst().orElse(null);
                 if (flow != null && flow.getLocked()) {
