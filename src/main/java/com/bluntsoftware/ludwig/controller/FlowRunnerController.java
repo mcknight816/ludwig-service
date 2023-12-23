@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +35,18 @@ public class FlowRunnerController {
     @PostMapping(value = {"/{flowName}","/{flowName}/action/{context}"})
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<Object> postToFlow(@PathVariable String appPath,@PathVariable String flowName, @PathVariable(required = false) String context, @RequestBody Map<String, Object> object)  {
-        return response(flowRunnerService.handlePost(appPath,flowName,context,object));
+    ResponseEntity<Object> postToFlow(@PathVariable String appPath,@PathVariable String flowName, @PathVariable(required = false) String context, @RequestBody Map<String, Object> object, HttpServletRequest request)  {
+        return response(flowRunnerService.handlePost(appPath,flowName,context,object,getHeaders(request)));
+    }
+
+    Map<String,Object> getHeaders(HttpServletRequest request){
+        Map<String,Object> headers = new HashMap<>();
+        Enumeration<String> headerNames =  request.getHeaderNames();
+        while(headerNames.hasMoreElements()){
+            String key = headerNames.nextElement();
+            headers.put(key,request.getHeader(key));
+        }
+        return headers;
     }
 
     @GetMapping(value = {"/{flowName}","/{flowName}/action/{context}"})
@@ -46,20 +57,22 @@ public class FlowRunnerController {
         for(String key:request.getParameterMap().keySet()){
             payload.put(key,request.getParameter(key));
         }
-        return response(flowRunnerService.handleGet(appPath,flowName,context,payload));
+        return response(flowRunnerService.handleGet(appPath,flowName,context,payload,getHeaders(request)));
     }
     @GetMapping(value = {"/{flowName}/{id}","/{flowName}/action/{context}/{id}"})
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<Object> getById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context) {
-        return response(flowRunnerService.handelGetById(appPath,flowName,context,id)) ;
+    ResponseEntity<Object> getById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context, HttpServletRequest request) {
+        return response(flowRunnerService.handelGetById(appPath,flowName,context,id,getHeaders(request))) ;
     }
 
     @DeleteMapping (value = {"/{flowName}/{id}","/{flowName}/action/{context}/{id}"})
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<Object> deleteById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context) {
-        return response(flowRunnerService.handelDeleteById(appPath,flowName,context,id)) ;
+    ResponseEntity<Object> deleteById(@PathVariable String appPath,@PathVariable String flowName, @PathVariable String id, @PathVariable(required=false) String context, HttpServletRequest request) {
+
+
+        return response(flowRunnerService.handelDeleteById(appPath,flowName,context,id,getHeaders(request))) ;
     }
     @GetMapping( value = {"/{flowName}/columns","/{flowName}/columns/action/{context}"})
     @ResponseBody

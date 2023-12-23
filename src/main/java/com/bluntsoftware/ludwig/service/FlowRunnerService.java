@@ -32,20 +32,21 @@ public class FlowRunnerService {
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
     }
 
-    public List<FlowActivity> handelGetById(String appPath, String flowName, String context, String id) {
+    public List<FlowActivity> handelGetById(String appPath, String flowName, String context, String id, Map<String,Object> headers) {
         Application application = applicationRepository.findByPath(appPath).block();
         InputActivity activity = (InputActivity)activityRepository.getByKlass(GetByIdActivity.class.getName());
         Map<String,Object> in = new HashMap<>();
         in.put("id",id);
         Map<String,Object> payload = new HashMap<>();
         payload.put("id",id);
+        in.put("headers",headers);
         in.put("payload",payload);
         log.info("Received Api Get by ID Request");
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
     }
 
-    public List<FlowActivity> handelDeleteById(String appPath, String flowName, String context, String id) {
+    public List<FlowActivity> handelDeleteById(String appPath, String flowName, String context, String id, Map<String,Object> headers) {
         Application application = applicationRepository.findByPath(appPath).block();
         InputActivity activity = (InputActivity)activityRepository.getByKlass(DeleteActivity.class.getName());
         Map<String,Object> in = new HashMap<>();
@@ -53,27 +54,30 @@ public class FlowRunnerService {
         Map<String,Object> payload = new HashMap<>();
         payload.put("id",id);
         in.put("payload",payload);
+        in.put("headers",headers);
         log.info("Received Api Delete by ID Request");
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
     }
 
-    public List<FlowActivity> handleGet(String appPath, String flowName, String context,Map<String,Object> input) {
+    public List<FlowActivity> handleGet(String appPath, String flowName, String context,Map<String,Object> input, Map<String,Object> headers) {
         Application application = applicationRepository.findByPath(appPath).block();
         InputActivity activity = (InputActivity)activityRepository.getByKlass(GetActivity.class.getName());
         Map<String,Object> in = new HashMap<>();
         in.put("payload",transform(input));
+        in.put("headers",headers);
         log.info("Received Api Get Request");
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
     }
 
-    public List<FlowActivity> handlePost(String appPath,String flowName, String context, Map<String,Object> input){
+    public List<FlowActivity> handlePost(String appPath,String flowName, String context, Map<String,Object> input, Map<String,Object> headers){
         Application application = applicationRepository.findByPath(appPath).block();
         InputActivity activity = (InputActivity)activityRepository.getByKlass(PostActivity.class.getName());
         Map<String,Object> in = new HashMap<>();
         in.put("user", SecurityUtils.getUserInfo());
         in.put("payload",transform(input));
+        in.put("headers",headers);
         log.info("Received Api Post Request");
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,70,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);

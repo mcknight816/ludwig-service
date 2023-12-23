@@ -42,6 +42,7 @@ public class InputActivity extends ActivityImpl {
         editor.addString("flow","",true);
         editor.addString("requested","",true);
         editor.addString("payload","",true);
+        editor.addString("headers","",true);
 /*
         RecordProperty user = new RecordProperty("");
         user.addString("role","",true);
