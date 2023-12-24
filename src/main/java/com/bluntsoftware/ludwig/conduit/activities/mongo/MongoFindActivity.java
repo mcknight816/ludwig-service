@@ -21,7 +21,7 @@ import java.util.Map;
 @Service
 public class MongoFindActivity extends MongoActivity {
 
-    @Autowired
+
     public MongoFindActivity(MongoConnectionConfig mongoConnectionConfig, ActivityConfigRepository activityConfigRepository) {
         super(mongoConnectionConfig,activityConfigRepository);
     }
