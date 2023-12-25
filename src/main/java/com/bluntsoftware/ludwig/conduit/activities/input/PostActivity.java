@@ -1,6 +1,8 @@
 package com.bluntsoftware.ludwig.conduit.activities.input;
 
 
+import com.bluntsoftware.ludwig.conduit.activities.input.domain.PostInput;
+import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoFind;
 import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.ValidationUtils;
@@ -25,13 +27,18 @@ public class PostActivity extends InputActivity {
 
     @Override
     public JsonSchema getSchema() {
-        JsonSchema schema = super.getSchema();
+       /* JsonSchema schema = super.getSchema();
+        schema.getProperties().put("payload", JsonSchema.builder().title("payload").hidden(true).build());
         schema.addConfig(payloadSchemaConfig);
-        return schema;
+        return schema; */
+        return PostInput.getSchema();
     }
 
     @Override
     public Map<String, Object> run(Map<String, Object> input) throws Exception {
+
+        PostInput postInput = convertValue(input,PostInput.class);
+
         Map<String, Object> config = this.getExternalConfigByName(input.get(payloadSchemaConfig.getPropertyName()),PayloadSchemaConfig.class);
         if(config != null && config.containsKey("PayloadSchema")){
             Map<String,Object> payloadSchema = (Map<String,Object>)config.get("PayloadSchema");

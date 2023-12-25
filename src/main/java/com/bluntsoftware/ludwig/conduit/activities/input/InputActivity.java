@@ -2,9 +2,12 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 
 
 
+import com.bluntsoftware.ludwig.conduit.activities.input.domain.InputSettings;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +17,21 @@ import java.util.Map;
  * Created by Alex Mcknight on 1/5/2017.
  */
 public class InputActivity extends ActivityImpl {
-
+    private final ObjectMapper mapper;
     public InputActivity(ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);
+        this.mapper = new ObjectMapper();
+        this.mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    @Override
+@Override
     public JsonSchema getSchema() {
+        return InputSettings.getSchema();
+    }
+    public <T> T convertValue(Map<String,Object> fromValue, Class<T> toValueType) throws IllegalArgumentException {
+        return mapper.convertValue(fromValue,toValueType);
+    }
+    public JsonSchema getSchemaOld() {
         //Config Parameters
         JsonSchema editor = JsonSchema.builder().title(this.getName()).build();
        /* List<String> roles = new ArrayList<String>();

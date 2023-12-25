@@ -156,7 +156,7 @@ public class OpenApiService {
                 break;
             case "Post":
                 if(input.containsKey("payload")){
-                    Object schemaName = input.get(payloadSchemaConfig.getPropertyName());
+                    Object schemaName = input.get("payloadSchema");
                     ret.put("requestBody" ,getJsonPostRequestBody(input.get("payload"),  getPayloadSchema(schemaName)));
 
                 }
@@ -222,25 +222,27 @@ public class OpenApiService {
     }
     Map<String,Object> getPayloadSchema(Object name){
         Map<String,Object> schema = null;
-        Mono<FlowConfig> flowConfigMono = configRepository.findByNameAndConfigClass(name.toString(), PayloadSchemaConfig.class.getName());
-        FlowConfig flowConfig = flowConfigMono.block();
-        if(flowConfig != null){
-            Map<String,Object> config = Optional.of(flowConfig.getConfig()).orElse(null);
-            if(config != null && config.containsKey("schema")){
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    schema = mapper.readValue(config.get("schema").toString(),HashMap.class);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
+        if(name != null && !name.toString().equalsIgnoreCase("")) {
+            Mono<FlowConfig> flowConfigMono = configRepository.findByNameAndConfigClass(name.toString(), PayloadSchemaConfig.class.getName());
+            FlowConfig flowConfig = flowConfigMono.block();
+            if (flowConfig != null) {
+                Map<String, Object> config = Optional.of(flowConfig.getConfig()).orElse(null);
+                if (config != null && config.containsKey("schema")) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    try {
+                        schema = mapper.readValue(config.get("schema").toString(), HashMap.class);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                    //}
                 }
-                //}
             }
-        }
 
-        if(schema == null){
-            schema = new HashMap<>();
-            schema.put("type","object");
-            schema.put("additionalProperties",true);
+            if (schema == null) {
+                schema = new HashMap<>();
+                schema.put("type", "object");
+                schema.put("additionalProperties", true);
+            }
         }
         return schema;
     }
