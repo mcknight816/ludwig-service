@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class AIChoice {
-
-	private String text;
+	private AIMessage message;
 	private Integer index;
 	private String finish_reason;
 }

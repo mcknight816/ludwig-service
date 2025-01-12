@@ -22,8 +22,8 @@ import java.util.Map;
 public class MongoFindActivity extends MongoActivity {
 
 
-    public MongoFindActivity(MongoConnectionConfig mongoConnectionConfig, ActivityConfigRepository activityConfigRepository) {
-        super(mongoConnectionConfig,activityConfigRepository);
+    public MongoFindActivity( ActivityConfigRepository activityConfigRepository) {
+        super(activityConfigRepository);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class MongoFindActivity extends MongoActivity {
 
         if(!SecurityUtils.isAdmin() && mongoSettings.getUserManaged() != null) {
             boolean userManaged = mongoSettings.getUserManaged().equalsIgnoreCase("true");
-            boolean allowFriends = mongoSettings.getAllowFriends() != null && mongoSettings.getAllowFriends().equalsIgnoreCase("true");
+          //  boolean allowFriends = mongoSettings.getAllowFriends() != null && mongoSettings.getAllowFriends().equalsIgnoreCase("true");
             if (userManaged) {
                 String login = "anonymous";
                 try{
@@ -46,7 +46,7 @@ public class MongoFindActivity extends MongoActivity {
                     }
                     BasicDBObject q = BasicDBObject.parse(filterByFields);
                     login = SecurityUtils.getCurrentLogin();
-                    if(allowFriends){
+                   // if(allowFriends){
                         /*
                         User user = accountService.getByLogin(login);
                         List<Friend> friends = user.getFriends();
@@ -62,9 +62,9 @@ public class MongoFindActivity extends MongoActivity {
                         q.put("$or", or);
                         */
                         q.put("user_info.login",login);
-                    }else{
+                   // }else{
                         q.put("user_info.login",login);
-                    }
+                    //}
                     filterByFields = q.toJson();
                 }catch(Exception e){
 

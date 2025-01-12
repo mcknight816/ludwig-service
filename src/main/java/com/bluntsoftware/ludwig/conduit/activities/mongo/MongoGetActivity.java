@@ -19,8 +19,8 @@ import java.util.Map;
 public class MongoGetActivity extends MongoActivity {
 
     @Autowired
-    public MongoGetActivity(MongoConnectionConfig mongoConnectionConfig, ActivityConfigRepository activityConfigRepository) {
-        super(mongoConnectionConfig,activityConfigRepository);
+    public MongoGetActivity( ActivityConfigRepository activityConfigRepository) {
+        super(activityConfigRepository);
     }
     @Override
     public Map<String, Object> run(Map<String, Object> input)throws Exception {

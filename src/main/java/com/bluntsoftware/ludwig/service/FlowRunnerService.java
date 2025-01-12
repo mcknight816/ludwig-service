@@ -256,7 +256,7 @@ public class FlowRunnerService {
             }
         }
         getTargetFlowActivities(flow,flowActivity).forEach(t-> run(flow,t,flowActivities));
-        log.info("{}", flowActivities);
+        //log.info("{}", flowActivities);
     }
     private void runFlowActivity(FlowActivity flowActivity)  {
         ActivityImpl activity = (ActivityImpl)activityRepository.getByKlass(flowActivity.getActivityClass());

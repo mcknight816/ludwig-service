@@ -9,6 +9,7 @@ import com.bluntsoftware.ludwig.conduit.schema.ValidationUtils;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -20,7 +21,7 @@ import java.util.Map;
 public class PostActivity extends InputActivity {
     PayloadSchemaConfig payloadSchemaConfig;
 
-    public PostActivity(PayloadSchemaConfig payloadSchemaConfig, ActivityConfigRepository activityConfigRepository) {
+    public PostActivity(PayloadSchemaConfig payloadSchemaConfig, @NonNull ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);
        this.payloadSchemaConfig = payloadSchemaConfig;
     }

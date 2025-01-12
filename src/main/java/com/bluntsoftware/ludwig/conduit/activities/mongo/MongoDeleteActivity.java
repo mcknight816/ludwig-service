@@ -21,8 +21,8 @@ import java.util.Map;
 public class MongoDeleteActivity  extends MongoActivity {
 
     @Autowired
-    public MongoDeleteActivity(MongoConnectionConfig mongoConnectionConfig, ActivityConfigRepository activityConfigRepository) {
-        super(mongoConnectionConfig,activityConfigRepository);
+    public MongoDeleteActivity(ActivityConfigRepository activityConfigRepository) {
+        super(activityConfigRepository);
     }
 
     @Override

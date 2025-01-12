@@ -17,8 +17,8 @@ public class MongoSettings implements EntitySchema {
     String database;
     String collection;
     String userManaged;
-    String allowFriends;
     String connection;
+   // String allowFriends;
 
     public static JsonSchema getSchema() {
         String[] trueFalse = {"true","false"};

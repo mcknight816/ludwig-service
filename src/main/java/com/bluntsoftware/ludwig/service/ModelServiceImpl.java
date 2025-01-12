@@ -2,7 +2,7 @@ package com.bluntsoftware.ludwig.service;
 
 
 import com.bluntsoftware.ludwig.ai.AIService;
-import com.bluntsoftware.ludwig.ai.domain.AICompletion;
+import com.bluntsoftware.ludwig.ai.domain.AICompletionRequest;
 import com.bluntsoftware.ludwig.ai.domain.AICompletionResponse;
 import com.bluntsoftware.ludwig.domain.Entity;
 import com.bluntsoftware.ludwig.domain.Model;
@@ -146,12 +146,12 @@ public class ModelServiceImpl implements ModelService {
 
          ModelJson modelJson = modelJsonRepository.findFirstByModelType(title).block();
         if(modelJson == null){
-            AICompletionResponse completionResponse = AIService.completions(new AICompletion().toBuilder()
-                    .prompt("build a complex json model with double quoted lowercase fields for a " + modelType).build());
+            AICompletionResponse completionResponse = AIService.completions(new AICompletionRequest().toBuilder().build());
+                    //.prompt("build a complex json model with double quoted lowercase fields for a " + modelType).build());
 
             ConcurrentModel json;
             try {
-                json = objectMapper.readValue(completionResponse.getChoices().get(0).getText(), ConcurrentModel.class);
+                json = objectMapper.readValue(completionResponse.getChoices().get(0).getMessage().getContent(), ConcurrentModel.class);
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }

@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
-public class AIImage {
-    String prompt;
-    int n = 1;
-    String size = "1024x1024";
+@Builder
+public class AIMessage {
+    String role;
+    String content;
 }

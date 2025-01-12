@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.tenant;
+package com.bluntsoftware.saasy.domain;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;

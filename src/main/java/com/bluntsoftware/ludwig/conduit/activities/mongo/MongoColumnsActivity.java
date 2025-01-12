@@ -18,8 +18,8 @@ import java.util.Map;
 public class MongoColumnsActivity extends MongoActivity {
 
     @Autowired
-    public MongoColumnsActivity(MongoConnectionConfig mongoConnectionConfig, ActivityConfigRepository activityConfigRepository ) {
-        super(mongoConnectionConfig,activityConfigRepository);
+    public MongoColumnsActivity( ActivityConfigRepository activityConfigRepository ) {
+        super(activityConfigRepository);
     }
 
     @Override

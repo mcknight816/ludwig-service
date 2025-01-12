@@ -55,7 +55,7 @@ public class FlowActivityMapper {
                 .build();
     }
     private static ConnectionPath getConnectionPath(String path){
-            String[] paths = path.substring(2,path.length()-2).split("'\\]\\['");
+            String[] paths = path.substring(2,path.length()-2).split("']\\['");
             List<String> keys = Arrays.stream(paths).collect(Collectors.toList());
             String flowActivityId = keys.remove(0);
             ConnectionPath.FieldType fieldType =  ConnectionPath.FieldType.valueOf(keys.remove(0));

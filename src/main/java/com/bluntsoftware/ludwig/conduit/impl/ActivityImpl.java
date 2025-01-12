@@ -29,6 +29,10 @@ public abstract class ActivityImpl implements Activity {
             activities.put(getClass().getTypeName(),this);
         }
     }
+    protected ActivityConfigRepository getActivityConfigRepository() {
+        return activityConfigRepository;
+    }
+
 
     public <T> Map<String, Object> getExternalConfigByName(Object configName,Class<T> clazz){
         if(configName != null){

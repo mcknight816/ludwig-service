@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.controller;
 
 import com.bluntsoftware.ludwig.domain.Flow;
 import com.bluntsoftware.ludwig.domain.FlowTemplate;
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.bluntsoftware.ludwig.service.FlowTemplateService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;

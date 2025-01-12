@@ -27,8 +27,8 @@ import java.util.Map;
 public class MongoSaveActivity extends MongoActivity {
 
     @Autowired
-    public MongoSaveActivity(MongoConnectionConfig mongoConnectionConfig, ActivityConfigRepository activityConfigRepository) {
-        super(mongoConnectionConfig,activityConfigRepository);
+    public MongoSaveActivity(ActivityConfigRepository activityConfigRepository) {
+        super(activityConfigRepository);
     }
 
     @Override

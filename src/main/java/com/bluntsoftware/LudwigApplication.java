@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig;
+package com.bluntsoftware;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

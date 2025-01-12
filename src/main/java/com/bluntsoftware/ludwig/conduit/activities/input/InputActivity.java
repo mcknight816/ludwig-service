@@ -1,7 +1,5 @@
 package com.bluntsoftware.ludwig.conduit.activities.input;
 
-
-
 import com.bluntsoftware.ludwig.conduit.activities.input.domain.InputSettings;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;

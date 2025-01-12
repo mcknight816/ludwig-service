@@ -9,12 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class AICompletion {
-    String model = "text-davinci-003";
+public class AIImageRequest {
+
     String prompt;
-    int temperature = 0;
-    int max_tokens = 1024;
-    double top_p = 1.0;;
-    double frequency_penalty = 0.0;
-    double presence_penalty = 0.0;
+    int n = 1;
+    String size = "1024x1024";
 }

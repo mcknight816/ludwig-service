@@ -12,6 +12,7 @@ import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 
 import java.util.HashMap;
@@ -21,17 +22,14 @@ import java.util.Map;
  * Created by Alex Mcknight on 2/14/2017.
  *
  */
+@Slf4j
 public abstract class MongoActivity extends ActivityImpl  {
 
-    private final MongoConnectionConfig mongoConnectionConfig;
-
     private final ObjectMapper mapper;
-
     private final Map<Map<String,Object>, MongoRepository> repos = new HashMap<>();
 
-    public MongoActivity(MongoConnectionConfig mongoConnectionConfig , ActivityConfigRepository activityConfigRepository) {
+    public MongoActivity(ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);
-        this.mongoConnectionConfig = mongoConnectionConfig;
         this.mapper = new ObjectMapper();
         this.mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
@@ -45,8 +43,14 @@ public abstract class MongoActivity extends ActivityImpl  {
     }
 
     MongoRepository getRepository(String connectionName){
+        if(this.getActivityConfigRepository() == null){
+            log.error("Activity Config Repository Not Found");
+        }
+
         Map<String, Object>  connection = this.getExternalConfigByName(connectionName,MongoConnectionConfig.class);
+
         if(connection == null){
+            log.error("No connection found for name {}", connectionName);
             throw new AppException("connection " + connectionName + " not found");
         }
       //  Map<String,Object> connection = (Map<String,Object>)config.get("Connection");
