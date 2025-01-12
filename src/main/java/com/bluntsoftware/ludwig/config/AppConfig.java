@@ -12,4 +12,7 @@ public class AppConfig {
 
     @Value("${app.host}")
     private String host;
+
+    @Value("${app.open-ai.api-secret}")
+    private String openAIApiSecret;
 }

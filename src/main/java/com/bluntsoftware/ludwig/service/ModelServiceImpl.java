@@ -41,10 +41,13 @@ public class ModelServiceImpl implements ModelService {
 
     private final ModelJsonRepository modelJsonRepository;
 
-    public ModelServiceImpl(ModelRepository modelDao,   ObjectMapper objectMapper, ModelJsonRepository modelJsonRepository) {
+    private final AIService aiService;
+
+    public ModelServiceImpl(ModelRepository modelDao, ObjectMapper objectMapper, ModelJsonRepository modelJsonRepository, AIService aiService) {
       this.repo = modelDao;
       this.objectMapper = objectMapper;
       this.modelJsonRepository = modelJsonRepository;
+        this.aiService = aiService;
     }
 
     @Override
@@ -146,7 +149,7 @@ public class ModelServiceImpl implements ModelService {
 
          ModelJson modelJson = modelJsonRepository.findFirstByModelType(title).block();
         if(modelJson == null){
-            AICompletionResponse completionResponse = AIService.completions(new AICompletionRequest().toBuilder().build());
+            AICompletionResponse completionResponse = aiService.completions(new AICompletionRequest().toBuilder().build());
                     //.prompt("build a complex json model with double quoted lowercase fields for a " + modelType).build());
 
             ConcurrentModel json;
