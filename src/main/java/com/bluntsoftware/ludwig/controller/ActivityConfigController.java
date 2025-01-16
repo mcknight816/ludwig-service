@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.controller;
 
-import com.bluntsoftware.ludwig.conduit.ActivityConfig;
+import com.bluntsoftware.ludwig.conduit.config.ActivityConfig;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

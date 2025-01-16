@@ -1,5 +1,5 @@
 package com.bluntsoftware.ludwig.service;
-import com.bluntsoftware.ludwig.conduit.Activity;
+import com.bluntsoftware.ludwig.conduit.activities.Activity;
 import com.bluntsoftware.ludwig.conduit.activities.input.*;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonPath;

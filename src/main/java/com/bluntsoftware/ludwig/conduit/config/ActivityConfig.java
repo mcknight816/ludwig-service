@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.conduit;
+package com.bluntsoftware.ludwig.conduit.config;
 
 
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;

@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.impl;
 
 import com.bluntsoftware.ludwig.conduit.AES;
-import com.bluntsoftware.ludwig.conduit.ActivityConfig;
+import com.bluntsoftware.ludwig.conduit.config.ActivityConfig;
 import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonPath;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;

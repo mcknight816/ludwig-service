@@ -43,5 +43,47 @@ public class Mail implements EntitySchema {
         mail.addEnum("auth","auth",truefalse,"true");
         return mail;
     }
+/*
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SMTP Email Configuration",
+  "type": "object",
+  "required": ["host", "port", "username", "password"],
+  "properties": {
+    "host": {
+      "type": "string",
+      "description": "The hostname or IP address of the SMTP server."
+    },
+    "port": {
+      "type": "integer",
+      "description": "The port number used to connect to the SMTP server."
+    },
+    "username": {
+      "type": "string",
+      "description": "The username for authenticating with the SMTP server."
+    },
+    "password": {
+      "type": "string",
+      "description": "The password for authenticating with the SMTP server."
+    },
+    "encryption": {
+      "type": "string",
+      "enum": ["none", "ssl", "tls"],
+      "default": "none",
+      "description": "The encryption method used for the SMTP connection."
+    },
+    "timeout": {
+      "type": "integer",
+      "default": 30,
+      "description": "The timeout duration in seconds for the SMTP connection."
+    },
+    "fromAddress": {
+      "type": "string",
+      "format": "email",
+      "description": "The default email address used as the sender."
+    }
+  }
+}
 
+ */
 }

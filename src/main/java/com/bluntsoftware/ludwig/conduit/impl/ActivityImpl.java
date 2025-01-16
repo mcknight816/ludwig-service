@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.impl;
 
 
-import com.bluntsoftware.ludwig.conduit.Activity;
+import com.bluntsoftware.ludwig.conduit.activities.Activity;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

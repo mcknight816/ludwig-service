@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.service.template;
 
-import com.bluntsoftware.ludwig.conduit.Activity;
+import com.bluntsoftware.ludwig.conduit.activities.Activity;
 import com.bluntsoftware.ludwig.conduit.activities.input.DeleteActivity;
 import com.bluntsoftware.ludwig.conduit.activities.input.GetActivity;
 import com.bluntsoftware.ludwig.conduit.activities.input.GetByIdActivity;

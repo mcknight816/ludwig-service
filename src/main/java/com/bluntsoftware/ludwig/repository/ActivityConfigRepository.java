@@ -1,8 +1,7 @@
 package com.bluntsoftware.ludwig.repository;
 
-import com.bluntsoftware.ludwig.conduit.ActivityConfig;
+import com.bluntsoftware.ludwig.conduit.config.ActivityConfig;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityConfigImpl;
-import com.bluntsoftware.ludwig.domain.Config;
 import com.bluntsoftware.ludwig.domain.FlowConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Repository;

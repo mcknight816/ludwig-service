@@ -1,13 +1,12 @@
 package com.bluntsoftware.ludwig.conduit.schema;
 
 
-import com.bluntsoftware.ludwig.conduit.ActivityConfig;
+import com.bluntsoftware.ludwig.conduit.config.ActivityConfig;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -178,48 +177,4 @@ public class JsonSchema implements Property {
     }
 
 
-    public static void main(String[] args) {
-        List<String> gender = new ArrayList<String>();
-        gender.add("Male");
-        gender.add("Female");
-        JsonSchema form = new JsonSchema("UserDetails");
-        JsonSchema user = new JsonSchema("User");
-        user.addString("first_name","Alex");
-        user.addString("last_name","Mcknight");
-        user.addString("age","51");
-        user.addEnum("gender",gender,"Male");
-        user.addString("color","blue","color");
-        form.addRecord("user",user);
-
-        JsonSchema address = new JsonSchema("Address");
-        address.addString("address1","816 Stonybrook");
-        address.addString("address2","");
-        address.addString("city","W. Norriton");
-        address.addString("state","PA");
-        address.addString("zip","19403");
-
-        form.addRecord("address",address);
-
-
-        Map<String,StringProperty> paths = form.getSecretStringProperties();
-
-        JsonPath path = new JsonPath( form.getValue());
-        for(String prop_path : paths.keySet()){
-            Object val = path.getValue(prop_path);
-            if(val != null){
-              //  System.out.println(val.toString());
-            }
-        }
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-          mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        try {
-            String jsonInString = mapper.writeValueAsString(form);
-          //  System.out.println(jsonInString);
-            System.out.println(mapper.writeValueAsString(form.getValue()));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-    }
 }

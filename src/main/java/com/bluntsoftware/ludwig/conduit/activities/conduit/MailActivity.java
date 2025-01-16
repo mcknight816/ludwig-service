@@ -1,6 +1,5 @@
 package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
-
 import com.bluntsoftware.ludwig.conduit.config.mail.Mail;
 import com.bluntsoftware.ludwig.conduit.config.mail.MailConfig;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
@@ -17,9 +16,6 @@ import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-
-
 /**
  * Created by Alex Mcknight on 2/13/2017.
  *
@@ -48,7 +44,6 @@ public class MailActivity extends ActivityImpl {
     public MailActivity( MailConfig mailConfig , ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);
         this.mailConfig = mailConfig;
-
     }
 
     @Override
@@ -120,9 +115,9 @@ public class MailActivity extends ActivityImpl {
     @Override
     public Map<String, Object> run(Map<String, Object> input) throws Exception {
         Map<String, Object> ret = new HashMap<>();
-        Map<String, Object>  config = this.getExternalConfigByName(input.get(mailConfig.getPropertyName()),MailConfig.class);
+        Map<String, Object>  config = this.getExternalConfigByName(input.get("mail"),MailConfig.class);
         if(config != null){
-            this.javaMailSender = getMailSender(MailConfig.convertToMailConfig((Map)config.get("mail")));
+            this.javaMailSender = getMailSender(MailConfig.convertToMailConfig(config));
         }
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
