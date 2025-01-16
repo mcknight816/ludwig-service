@@ -50,14 +50,14 @@ public class MailActivity extends ActivityImpl {
     public JsonSchema getSchema() {
         JsonSchema schema = JsonSchema.builder().title("Mail").build();
         schema.addConfig(mailConfig);
-        schema.addString(to,"admin@bluntsoftware.com","");
-        schema.addString(cc,"admin@bluntsoftware.com","");
-        schema.addString(bcc,"admin@bluntsoftware.com","");
-        schema.addString(from,"admin@bluntsoftware.com","");
-        schema.addString(subject,"Test Email","");
-        schema.addString(isHtml,"false","");
-        schema.addString(content,"Hello World","");
-        schema.addString(isMultipart,"false","");
+        schema.addString(to,"admin@bluntsoftware.com");
+        schema.addString(cc,"admin@bluntsoftware.com");
+        schema.addString(bcc,"admin@bluntsoftware.com");
+        schema.addString(from,"admin@bluntsoftware.com");
+        schema.addString(subject,"Test Email");
+        schema.addString(isHtml,"false");
+        schema.addString(content,"Hello World");
+        schema.addString(isMultipart,"false");
         return schema;
     }
 

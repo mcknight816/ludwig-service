@@ -4,6 +4,7 @@ package com.bluntsoftware.ludwig.conduit.activities.sql;
 import com.bluntsoftware.ludwig.conduit.config.sql.SQLConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class SQLActivity extends ActivityImpl {
     public JsonSchema getSchema() {
         JsonSchema schema = JsonSchema.builder().title("SQL Properties").build();
         schema.addConfig(sqlConnectionConfig);
-        schema.addString("sql","select * from table","sql");
+        schema.addString("sql","select * from table", PropertyFormat.SQL);
         return schema;
     }
 

@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo.domain;
 
 import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
 import lombok.*;
 import java.util.Map;
@@ -15,7 +16,7 @@ public class MongoSave implements EntitySchema {
     Map<String,Object> payload;
     public static JsonSchema getSchema() {
         JsonSchema ret =  JsonSchema.builder().title("Mongo Save").build();
-        ret.getProperties().put("payload", StringProperty.builder().defaultValue("{}").format("json").build());
+        ret.getProperties().put("payload", StringProperty.builder().defaultValue("{}").format(PropertyFormat.JSON).build());
         ret.getProperties().put("settings", MongoSettings.getSchema());
         return ret;
     }

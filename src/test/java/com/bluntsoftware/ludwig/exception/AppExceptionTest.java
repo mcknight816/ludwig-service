@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
+import java.util.Arrays;
 import java.util.List;
 
 class AppExceptionTest {
@@ -16,7 +17,7 @@ class AppExceptionTest {
                 .code(1021)
                 .status( HttpStatus.BAD_REQUEST)
                 .message( "Test")
-                .errors( List.of("Wow"))
+                .errors(Arrays.asList("WOW","ANOTHER ERROR"))
                 .build());
         Assertions.assertThrows(AppException.class, ()->{throw exception;});
         Assertions.assertNotNull(exception.getAppError());

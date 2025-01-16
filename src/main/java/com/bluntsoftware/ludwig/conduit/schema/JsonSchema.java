@@ -47,7 +47,7 @@ public class JsonSchema implements Property {
         return addString(null, name, defaultValue, null, false);
     }
 
-    public StringProperty addString(String name, String defaultValue, String format) {
+    public StringProperty addString(String name, String defaultValue, PropertyFormat format) {
         return addString(null, name, defaultValue, format, false);
     }
 
@@ -55,17 +55,17 @@ public class JsonSchema implements Property {
         return addString(null, name, defaultValue, null, hidden);
     }
 
-    public StringProperty addString(String title, String name, String defaultValue, String format, boolean hidden) {
+    public StringProperty addString(String title, String name, String defaultValue, PropertyFormat format, boolean hidden) {
         return addString(title, name, defaultValue, format, hidden, null);
     }
 
     public StringProperty addConfig(ActivityConfig config) {
         Map<String, String> meta = new HashMap<>();
         meta.put("configClass", config.getConfigClass());
-        return addString(config.getName(), config.getPropertyName(), config.getName() + " Default", "configChooser", false, meta);
+        return addString(config.getName(), config.getPropertyName(), config.getName() + " Default", PropertyFormat.CONFIG_CHOOSER, false, meta);
     }
 
-    public StringProperty addString(String title, String name, String defaultValue, String format, boolean hidden, Map<String, String> meta) {
+    public StringProperty addString(String title, String name, String defaultValue, PropertyFormat format, boolean hidden, Map<String, String> meta) {
         StringProperty property = new StringProperty();
         property.setDefaultValue(defaultValue);
         property.setTitle(title != null ? title : getTitle(name));
@@ -134,7 +134,7 @@ public class JsonSchema implements Property {
 
     @JsonIgnore
     public Map<String, StringProperty> getSecretStringProperties() {
-        return getStringPropertyPaths(property -> "password".equalsIgnoreCase(property.getFormat()));
+        return getStringPropertyPaths(property -> PropertyFormat.PASSWORD.equals(property.getFormat()));
     }
 
     @JsonIgnore

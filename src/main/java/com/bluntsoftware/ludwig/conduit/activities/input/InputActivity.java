@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 import com.bluntsoftware.ludwig.conduit.activities.input.domain.InputSettings;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +40,7 @@ public class InputActivity extends ActivityImpl {
         roles.add("admin");
         editor.addEnum("authorized_role",roles,"authenticated");*/
 
-        editor.addString("authorized_role","authenticated","roleChooser");
+        editor.addString("authorized_role","authenticated", PropertyFormat.ROLE_CHOOSER);
 
         List<String> requests = new ArrayList<>();
         requests.add("Log and Save");

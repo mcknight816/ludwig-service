@@ -1,9 +1,6 @@
 package com.bluntsoftware.ludwig.conduit.config.nosql.domain;
 
-import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.Property;
-import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
+import com.bluntsoftware.ludwig.conduit.schema.*;
 import lombok.Builder;
 import lombok.Data;
 
@@ -22,7 +19,7 @@ public class CouchbaseConnection implements EntitySchema {
         props.put("server", StringProperty.builder().title("Server Name").build());
         props.put("port", StringProperty.builder().title("Port").build());
         props.put("userName", StringProperty.builder().title("User Name").build());
-        props.put("password", StringProperty.builder().title("Password").format("password").build());
+        props.put("password", StringProperty.builder().title("Password").format(PropertyFormat.PASSWORD).build());
         return  JsonSchema.builder()
                 .title("Connection")
                 .properties(props)

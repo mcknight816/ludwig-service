@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.output;
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
 
@@ -40,8 +41,8 @@ public class HttpResponseActivity extends ActivityImpl {
 
         schema.addEnum("output_method",outMethod ,"stream");
         schema.addEnum("output_type",outType ,"json");
-        schema.addString("file","file-location","imageChooser");
-        schema.addString("payload","{}",schema.getValue().get("output_type").toString());
+        schema.addString("file","file-location", PropertyFormat.IMAGE_CHOOSER);
+        schema.addString("payload","{}",PropertyFormat.valueOf(schema.getValue().get("output_type").toString()));
 
         return schema;
     }

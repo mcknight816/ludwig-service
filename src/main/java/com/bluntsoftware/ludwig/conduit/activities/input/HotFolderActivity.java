@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 
 
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.controller.AssetController;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class HotFolderActivity extends TimerActivity {
 
         JsonSchema schema =  super.getSchema();
         schema.setTitle("Hot Folder Properties");
-        schema.addString("folderLocation","/hot","folderChooser");
+        schema.addString("folderLocation","/hot", PropertyFormat.FOLDER_CHOOSER);
         schema.addString("include","*.*",null);
         return schema;
     }

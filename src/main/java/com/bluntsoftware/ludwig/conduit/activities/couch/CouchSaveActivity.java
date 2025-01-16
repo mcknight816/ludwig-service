@@ -4,6 +4,7 @@ package com.bluntsoftware.ludwig.conduit.activities.couch;
 import com.bluntsoftware.ludwig.conduit.config.nosql.CouchbaseConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.nosql.couch.CouchRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.conduit.utils.SecurityUtils;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,7 +32,7 @@ public class CouchSaveActivity extends CouchActivity {
     @Override
     public JsonSchema getSchema() {
         JsonSchema schema =  super.getSchema();
-        schema.addString("payload","{}","json");
+        schema.addString("payload","{}", PropertyFormat.JSON);
         return schema;
     }
 

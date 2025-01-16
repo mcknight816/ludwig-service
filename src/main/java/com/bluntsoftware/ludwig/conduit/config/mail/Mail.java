@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.config.mail;
 
 import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +33,7 @@ public class Mail implements EntitySchema {
         mail.addString("port","587",null);
         mail.addString("user",null,null);
         mail.addString("from",null,null);
-        mail.addString("password",null,"password");
+        mail.addString("password",null, PropertyFormat.PASSWORD);
         mail.addString("protocol","smtp",null);
         mail.addString("localhost","localhost",null);
         mail.addString("testEmail","someone@somewhere.com",null);

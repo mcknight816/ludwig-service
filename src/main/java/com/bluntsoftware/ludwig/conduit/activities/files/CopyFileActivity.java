@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.bluntsoftware.ludwig.conduit.schema.PropertyFormat.FOLDER_CHOOSER;
+
 /**
  * Created by Alex Mcknight on 1/3/2017.
  *
@@ -31,9 +33,9 @@ public class CopyFileActivity extends ActivityImpl {
     @Override
     public JsonSchema getSchema() {
         JsonSchema schema = JsonSchema.builder().title("Copy File").build();
-        schema.addString("fileInputPath","/working/uploads/somefile.txt","");
-        schema.addString("outputFolder","/","folderChooser");
-        schema.addString("filename","somefile.txt","");
+        schema.addString("fileInputPath","/working/uploads/somefile.txt");
+        schema.addString("outputFolder","/",FOLDER_CHOOSER);
+        schema.addString("filename","somefile.txt");
 
         List<String> method = new ArrayList<>();
         method.add("MoveFile");

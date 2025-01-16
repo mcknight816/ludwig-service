@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.config.sql.domain;
 
 import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +34,7 @@ public class SQLConnection implements EntitySchema {
         connection.addString("server","localhost",null);
         connection.addString("port","5432",null);
         connection.addString("user","",null);
-        connection.addString("password","","password");
+        connection.addString("password","", PropertyFormat.PASSWORD);
         return connection;
     }
 }

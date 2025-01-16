@@ -4,6 +4,7 @@ package com.bluntsoftware.ludwig.conduit.config.queue;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityConfigImpl;
 import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class QConnectionConfig extends ActivityConfigImpl {
         connection.addString("host","localhost",null);
         connection.addString("port","61616",null);
         connection.addString("username","admin",null);
-        connection.addString("password","admin","password");
+        connection.addString("password","admin", PropertyFormat.PASSWORD);
 
         connection.addString("IBMMQ-Manager","q-manager","QM1",null,false);
         connection.addString("IBMMQ-Channel","channel","DEV.APP.SVRCONN",null,false);

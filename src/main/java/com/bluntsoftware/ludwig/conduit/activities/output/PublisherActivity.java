@@ -4,6 +4,7 @@ import com.bluntsoftware.ludwig.conduit.config.ConnectionFactoryChooser;
 import com.bluntsoftware.ludwig.conduit.config.queue.QConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class PublisherActivity extends ActivityImpl {
         editor.addConfig(qConnectionConfig);
         editor.addEnum("type",type,"Queue");
         editor.addString("destination","dev.q.test");
-        editor.addString("payload","{}","json");
+        editor.addString("payload","{}", PropertyFormat.JSON);
         return editor;
     }
 

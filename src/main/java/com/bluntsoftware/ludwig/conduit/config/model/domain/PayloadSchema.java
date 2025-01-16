@@ -1,9 +1,6 @@
 package com.bluntsoftware.ludwig.conduit.config.model.domain;
 
-import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.Property;
-import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
+import com.bluntsoftware.ludwig.conduit.schema.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +18,7 @@ public class PayloadSchema implements EntitySchema {
         Map<String, Property> props = new HashMap<>();
         props.put("schema", StringProperty.builder()
                 .title("Schema")
-                .format("json")
+                .format(PropertyFormat.JSON)
                 .defaultValue("{\n" +
                 "    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n" +
                 "    \"title\": \"Product\",\n" +

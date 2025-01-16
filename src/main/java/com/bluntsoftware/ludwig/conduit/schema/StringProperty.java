@@ -19,8 +19,9 @@ public class StringProperty implements Property {
 
     private String description;
     private int minLength;
+    @Setter
     private String defaultValue;
-    private String format;
+    private PropertyFormat format;
     private String title;
     @Builder.Default
     private String type = "string";
@@ -31,10 +32,6 @@ public class StringProperty implements Property {
     @JsonProperty("default")
     public String getDefaultValue() {
         return defaultValue;
-    }
-
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
     }
 
 

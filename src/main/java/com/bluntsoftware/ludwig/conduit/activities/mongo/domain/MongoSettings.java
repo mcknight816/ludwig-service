@@ -29,7 +29,7 @@ public class MongoSettings implements EntitySchema {
         //props.put("allowFriends",  EnumProperty.builder().enumeration(trueFalse).title("Allow Friends").build());
         props.put("connection",  StringProperty.builder().title("Mongo Connection")
                         .meta("configClass", MongoConnectionConfig.class.getTypeName())
-                        .format("configChooser").build());
+                        .format(PropertyFormat.CONFIG_CHOOSER).build());
 
         return JsonSchema.builder()
                 .title("settings")

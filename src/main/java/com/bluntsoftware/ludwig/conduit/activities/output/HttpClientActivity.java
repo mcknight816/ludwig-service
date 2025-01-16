@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.output;
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.controller.AssetController;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -64,9 +65,9 @@ public class HttpClientActivity extends ActivityImpl {
         schema.addEnum("type",type ,"json");
         schema.addString("url","");
         schema.addString("username","");
-        schema.addString("password","","password");
+        schema.addString("password","", PropertyFormat.PASSWORD);
         schema.addString("payload","{}",true);
-        schema.addString("file","http://someserver/someFile.jpg","imageChooser");
+        schema.addString("file","http://someserver/someFile.jpg",PropertyFormat.IMAGE_CHOOSER);
         schema.addString("content-type","");
         return schema;
     }

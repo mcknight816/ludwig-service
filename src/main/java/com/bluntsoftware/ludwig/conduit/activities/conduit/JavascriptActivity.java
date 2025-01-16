@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class JavascriptActivity extends ActivityImpl {
     public JsonSchema getSchema() {
         JsonSchema schema = JsonSchema.builder().title("Javascript Runner").build();
         schema.addString("","context","",null,true);
-        schema.addString("Javascript","js","var run = function(context){\n \treturn context;\n};","javascript",false);
+        schema.addString("Javascript","js","var run = function(context){\n \treturn context;\n};", PropertyFormat.JAVASCRIPT,false);
         return schema;
     }
 

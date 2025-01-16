@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo.domain;
 
 import com.bluntsoftware.ludwig.conduit.schema.EnumProperty;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,7 @@ public class DBQuery {
     public static JsonSchema getSchema() {
         String[] sortOrder = {"ASC", "DESC"};
         JsonSchema schema = JsonSchema.builder().title("Query").build();
-        schema.getProperties().put("filter", StringProperty.builder().title("Filter").format("json").defaultValue("").build());
+        schema.getProperties().put("filter", StringProperty.builder().title("Filter").format(PropertyFormat.JSON).defaultValue("").build());
         schema.getProperties().put("page", StringProperty.builder().title("Page").defaultValue("1").build());
         schema.getProperties().put("rows", StringProperty.builder().title("Rows").defaultValue("20").build());
         schema.getProperties().put("sord", EnumProperty.builder().title("Sort Order").enumeration(sortOrder).defaultValue("ASC").build());

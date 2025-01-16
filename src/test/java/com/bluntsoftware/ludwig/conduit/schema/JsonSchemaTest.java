@@ -30,7 +30,7 @@ class JsonSchemaTest {
         user.addString("last_name","Mcknight");
         user.addString("age","51");
         user.addEnum("gender",gender,"Male");
-        user.addString("color","blue","color");
+        user.addString("color","blue");
         form.addRecord("user",user);
 
         JsonSchema address = new JsonSchema("Address");

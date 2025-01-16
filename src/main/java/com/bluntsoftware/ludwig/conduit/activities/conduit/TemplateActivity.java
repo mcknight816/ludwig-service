@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
@@ -28,7 +29,7 @@ public class TemplateActivity extends ActivityImpl {
     public JsonSchema getSchema() {
         JsonSchema schema = JsonSchema.builder().title("Template").build();
         schema.addString("","context","",null,true);
-        schema.addString("Template","template","hello {{name}}","html",false);
+        schema.addString("Template","template","hello {{name}}", PropertyFormat.HTML,false);
         return schema;
     }
 

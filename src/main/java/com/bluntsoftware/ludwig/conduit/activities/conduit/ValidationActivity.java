@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.conduit.schema.ValidationUtils;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -51,7 +52,7 @@ public class ValidationActivity extends ActivityImpl {
                 "        }\n" +
                 "    },\n" +
                 "    \"required\": [ \"name\"]\n" +
-                "}","json",false);
+                "}", PropertyFormat.JSON,false);
         return schema;
     }
     @Override
