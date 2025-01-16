@@ -19,7 +19,7 @@ public class MongoCrudSettings implements EntitySchema {
     static JsonSchema getSchema() {
         JsonSchema ret =  JsonSchema.builder().title("MongoCrudFlow").build();
         ret.getProperties().put("settings", MongoSettings.getSchema());
-        ret.getProperties().put("payloadSchema", PostInput.getSchema().properties.get("payloadSchema"));
+        ret.getProperties().put("payloadSchema", PostInput.getSchema().getProperties().get("payloadSchema"));
         return ret;
     }
 }
