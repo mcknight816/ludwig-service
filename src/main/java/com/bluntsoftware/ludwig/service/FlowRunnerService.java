@@ -41,7 +41,7 @@ public class FlowRunnerService {
         payload.put("id",id);
         in.put("headers",headers);
         in.put("payload",payload);
-        log.info("Received Api Get by ID Request");
+        log.info("Received Api Get by ID Request to {} for flow {}", application.getName(), flowName);
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
     }
@@ -55,7 +55,7 @@ public class FlowRunnerService {
         payload.put("id",id);
         in.put("payload",payload);
         in.put("headers",headers);
-        log.info("Received Api Delete by ID Request");
+        log.info("Received Api Delete by ID Request to {} for flow {}", application.getName(), flowName);
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
     }
@@ -66,7 +66,7 @@ public class FlowRunnerService {
         Map<String,Object> in = new HashMap<>();
         in.put("payload",transform(input));
         in.put("headers",headers);
-        log.info("Received Api Get Request");
+        log.info("Received Api Get Request to {} for flow {}", application.getName(), flowName);
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
     }
@@ -78,7 +78,7 @@ public class FlowRunnerService {
         in.put("user", SecurityUtils.getUserInfo());
         in.put("payload",transform(input));
         in.put("headers",headers);
-        log.info("Received Api Post Request");
+        log.info("Received Api Post Request to {} for flow {}", application.getName(), flowName);
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,70,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
     }
@@ -114,7 +114,11 @@ public class FlowRunnerService {
         if(flowName == null || flowName.equalsIgnoreCase("")){
             return null;
         }
-        Flow flow = application.getFlows().stream().filter(f -> f.getName().equalsIgnoreCase(flowName)).findFirst().orElse(null);
+
+        Flow flow = application.getFlows()
+                .stream()
+                .filter(f -> f.getName().equalsIgnoreCase(flowName)).findFirst().orElse(null);
+
         if(flow == null){
             flow = Flow.builder().locked(false).name(flowName)
                     .activities(new ArrayList<>())

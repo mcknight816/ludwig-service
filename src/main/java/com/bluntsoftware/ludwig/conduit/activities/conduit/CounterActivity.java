@@ -17,8 +17,6 @@ public class CounterActivity extends ActivityImpl {
     public CounterActivity(ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);
     }
-    //@Autowired
-    //MongoRepository mongoRepository;
 
     @Override
     public String getIcon() {

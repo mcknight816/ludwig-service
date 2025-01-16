@@ -10,6 +10,7 @@ import java.util.Map;
 @Service
 public class PayloadSchemaConfig extends ActivityConfigImpl<PayloadSchema> {
 
+
     @Override
     public JsonSchema getRecord() {
         return PayloadSchema.getSchema();

@@ -18,10 +18,12 @@ public class ActivityConfigController {
     public ActivityConfigController(ActivityConfigRepository activityRepository) {
         this.activityRepository = activityRepository;
     }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     List<ActivityConfig> findAll(){
         return activityRepository.findAll();
     }
+
     @GetMapping(value = "{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     ActivityConfig findById(@PathVariable("id") String id){
         ActivityConfig config =  activityRepository.getByKlass(id);

@@ -4,6 +4,7 @@ import com.bluntsoftware.ludwig.conduit.activities.files.FileDownloader;
 import com.bluntsoftware.ludwig.conduit.activities.output.HttpResponseActivity;
 import com.bluntsoftware.ludwig.domain.FlowActivity;
 import com.bluntsoftware.ludwig.service.FlowRunnerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Slf4j
 @RestController
 @RequestMapping("/api/{appPath}")
 public class FlowRunnerController {
@@ -82,6 +83,8 @@ public class FlowRunnerController {
     }
 
     public ResponseEntity<Object> response(List<FlowActivity> out ){
+
+        log.info("Flow run complete {} activities processed", out.size());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         if(out != null){
@@ -109,7 +112,9 @@ public class FlowRunnerController {
                             headers.set("Content-Disposition", "attachment; filename=" + "data." + contentType);
                         }
                     }
-                    return ResponseEntity.ok().headers(headers).body(in.get("payload"));
+                    ResponseEntity<Object> ret = ResponseEntity.ok().headers(headers).body(in.get("payload"));
+                    log.info("Response Processed : {}", ret);
+                    return ret;
                 }
             }
         }

@@ -39,7 +39,7 @@ public class JwtFilter extends OncePerRequestFilter {
             String flowName = pathInfo[3];
             Application app = applicationService.findByPath(appPath);
             if (app != null && app.getJwkUri() != null && !app.getJwkUri().isEmpty()) {
-                log.info("checking token for secured api request... ");
+                log.info("Checking token for secured api request... ");
                 Flow flow = app.getFlows().stream().filter(f -> f.getName().equalsIgnoreCase(flowName)).findFirst().orElse(null);
                 if (flow != null && flow.getLocked()) {
                     String jwkUri = app.getJwkUri();
@@ -53,7 +53,7 @@ public class JwtFilter extends OncePerRequestFilter {
                                 JwtAuthentication jwtAuthentication = JwtAuthentication.builder().jwt(jwt).build();
                                 jwtAuthentication.setAuthenticated(true);
                                 securityContext.setAuthentication(jwtAuthentication);
-                                log.info("token is valid for secured api request.");
+                                log.info("Token is valid for secured api request.");
                             }
                         } catch(Exception e){
                             httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid token " + e.getMessage());
@@ -65,7 +65,7 @@ public class JwtFilter extends OncePerRequestFilter {
             } else if(app == null){
                 httpServletResponse.sendError(HttpStatus.NOT_FOUND.value(), "Application with path /api/" + appPath + " not found");
             } else {
-                log.info("api request is un secured");
+                log.info("API endpoint is not secured");
             }
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);

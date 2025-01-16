@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.repository;
 
 import com.bluntsoftware.ludwig.conduit.ActivityConfig;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityConfigImpl;
+import com.bluntsoftware.ludwig.domain.Config;
 import com.bluntsoftware.ludwig.domain.FlowConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Repository;
@@ -45,4 +46,12 @@ public class ActivityConfigRepository {
                 .config(mapper.convertValue(activityConfig, Map.class))
                 .build();
     }
+
+    public <T extends ActivityConfig> T getActivityConfigByNameAs(String name,Class<T> clazz) throws IllegalArgumentException {
+        ActivityConfig activityConfig = getByKlass(clazz.getName());
+        FlowConfig flowConfig = this.findByNameAndConfigClass(name,clazz.getName());
+
+        return (T) activityConfig ;
+    }
+
 }

@@ -21,17 +21,12 @@ import java.util.Map;
 public class PostActivity extends InputActivity {
     PayloadSchemaConfig payloadSchemaConfig;
 
-    public PostActivity(PayloadSchemaConfig payloadSchemaConfig, @NonNull ActivityConfigRepository activityConfigRepository) {
+    public PostActivity( @NonNull ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);
-       this.payloadSchemaConfig = payloadSchemaConfig;
     }
 
     @Override
     public JsonSchema getSchema() {
-       /* JsonSchema schema = super.getSchema();
-        schema.getProperties().put("payload", JsonSchema.builder().title("payload").hidden(true).build());
-        schema.addConfig(payloadSchemaConfig);
-        return schema; */
         return PostInput.getSchema();
     }
 
@@ -40,7 +35,7 @@ public class PostActivity extends InputActivity {
 
         PostInput postInput = convertValue(input,PostInput.class);
 
-        Map<String, Object> config = this.getExternalConfigByName(input.get(payloadSchemaConfig.getPropertyName()),PayloadSchemaConfig.class);
+        Map<String, Object> config = this.getExternalConfigByName(input.get(postInput.getPayloadSchema()),PayloadSchemaConfig.class);
         if(config != null && config.containsKey("PayloadSchema")){
             Map<String,Object> payloadSchema = (Map<String,Object>)config.get("PayloadSchema");
             if(payloadSchema.containsKey("schema")){

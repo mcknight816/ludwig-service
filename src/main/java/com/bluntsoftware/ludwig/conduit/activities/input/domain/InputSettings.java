@@ -14,11 +14,12 @@ import java.util.Map;
 @NoArgsConstructor
 @SuperBuilder
 public class InputSettings implements EntitySchema {
-    String flow;
-    String requested;
+
     String hold;
     String flow_request_log;
 
+    String flow;
+    String requested;
     Map<String,Object> headers;
 
     public static JsonSchema getSchema() {

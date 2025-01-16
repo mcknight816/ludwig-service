@@ -19,8 +19,11 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public abstract class ActivityConfigImpl<T extends EntitySchema> implements ActivityConfig {
+
     private final static Map<String, ActivityConfig> configs = new HashMap<>();
+
     public static Map<String, ActivityConfig> list(){return configs;}
+
     public static ActivityConfig getByClassName(String className){
         ActivityConfig configSchema = configs.get(className);
         try {

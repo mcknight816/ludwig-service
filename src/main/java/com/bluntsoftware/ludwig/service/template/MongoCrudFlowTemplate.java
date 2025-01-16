@@ -5,17 +5,17 @@ import com.bluntsoftware.ludwig.conduit.activities.input.DeleteActivity;
 import com.bluntsoftware.ludwig.conduit.activities.input.GetActivity;
 import com.bluntsoftware.ludwig.conduit.activities.input.GetByIdActivity;
 import com.bluntsoftware.ludwig.conduit.activities.input.PostActivity;
+import com.bluntsoftware.ludwig.conduit.activities.input.domain.InputSettings;
+import com.bluntsoftware.ludwig.conduit.activities.input.domain.PostInput;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.MongoDeleteActivity;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.MongoFindActivity;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.MongoGetActivity;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.MongoSaveActivity;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.*;
 import com.bluntsoftware.ludwig.conduit.activities.output.HttpResponseActivity;
-import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
-import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.domain.*;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.ConcurrentModel;
@@ -25,16 +25,24 @@ import java.util.Map;
 import java.util.UUID;
 @Slf4j
 public class MongoCrudFlowTemplate {
+
     Map<String,Object> toMap(Object obj) {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return mapper.convertValue(obj, ConcurrentModel.class);
     }
 
-    void buildMongoSave(Flow flow, MongoSettings mongoSettings, Integer x,ActivityConfigRepository activityConfigRepository) {
+    void buildMongoSave(Flow flow, MongoCrudSettings mongoSettings, Integer x,ActivityConfigRepository activityConfigRepository) {
 
-        MongoSave mongoSave = MongoSave.builder().settings(mongoSettings).payload(new HashMap<>()).build();
+        MongoSave mongoSave = MongoSave.builder().settings(mongoSettings.getSettings()).payload(new HashMap<>()).build();
+        PostInput postInput = PostInput.builder()
+                .settings(InputSettings.builder()
+                        .hold("false")
+                        .flow_request_log("None")
+                        .build())
+                .payloadSchema(mongoSettings.getPayloadSchema()).build();
 
-        FlowActivity postActivity = flowActivity(x,20,new PostActivity(new PayloadSchemaConfig(),activityConfigRepository));
+        FlowActivity postActivity = flowActivity(x,20,new PostActivity( activityConfigRepository),toMap(postInput));
         FlowActivity mongoSaveActivity = flowActivity(x,120,new MongoSaveActivity(activityConfigRepository),toMap(mongoSave));
         FlowActivity httpResponseActivity = flowActivity(x,220,new HttpResponseActivity(activityConfigRepository));
 
@@ -56,9 +64,9 @@ public class MongoCrudFlowTemplate {
         flow.getActivities().add(mongoSaveActivity);
         flow.getActivities().add(httpResponseActivity);
     }
-    private void buildMongoFind(Flow flow,MongoSettings mongoSettings,Integer x,ActivityConfigRepository activityConfigRepository) {
+    private void buildMongoFind(Flow flow,MongoCrudSettings mongoSettings,Integer x,ActivityConfigRepository activityConfigRepository) {
 
-        MongoFind mongoFind = MongoFind.builder().query(DBQuery.builder().build()).settings(mongoSettings).build();
+        MongoFind mongoFind = MongoFind.builder().query(DBQuery.builder().build()).settings(mongoSettings.getSettings()).build();
 
         FlowActivity getActivity = flowActivity(x,20,new GetActivity(activityConfigRepository));
         FlowActivity findActivity = flowActivity(x,120,new MongoFindActivity(activityConfigRepository),toMap(mongoFind));
@@ -80,9 +88,9 @@ public class MongoCrudFlowTemplate {
         flow.getActivities().add(httpResponseActivity);
     }
 
-    private void buildMongoGetById(Flow flow,MongoSettings mongoSettings,Integer x, ActivityConfigRepository activityConfigRepository){
+    private void buildMongoGetById(Flow flow,MongoCrudSettings mongoSettings,Integer x, ActivityConfigRepository activityConfigRepository){
 
-        MongoById byId = MongoById.builder().settings(mongoSettings).build();
+        MongoById byId = MongoById.builder().settings(mongoSettings.getSettings()).build();
         FlowActivity getByIdActivity = flowActivity(x,20,new GetByIdActivity(activityConfigRepository));
         FlowActivity mongoGetActivity = flowActivity(x,120,new MongoGetActivity(activityConfigRepository),toMap(byId));
         FlowActivity httpResponseActivity = flowActivity(x,220,new HttpResponseActivity(activityConfigRepository));
@@ -103,9 +111,9 @@ public class MongoCrudFlowTemplate {
         flow.getActivities().add(mongoGetActivity);
         flow.getActivities().add(httpResponseActivity);
     }
-    private void buildMongoDeleteById(Flow flow,MongoSettings mongoSettings,Integer x, ActivityConfigRepository activityConfigRepository){
+    private void buildMongoDeleteById(Flow flow,MongoCrudSettings mongoSettings,Integer x, ActivityConfigRepository activityConfigRepository){
 
-        MongoById byId = MongoById.builder().settings(mongoSettings).build();
+        MongoById byId = MongoById.builder().settings(mongoSettings.getSettings()).build();
         FlowActivity deleteByIdActivity = flowActivity(x,20,new DeleteActivity(activityConfigRepository));
         FlowActivity mongoDeleteActivity = flowActivity(x,120,new MongoDeleteActivity(activityConfigRepository),toMap(byId));
         FlowActivity httpResponseActivity = flowActivity(x,220,new HttpResponseActivity(activityConfigRepository));
@@ -125,7 +133,25 @@ public class MongoCrudFlowTemplate {
         flow.getActivities().add(httpResponseActivity);
     }
 
-    public Flow createMongoCrudFlow(String name, MongoSettings mongoSettings,ActivityConfigRepository activityConfigRepository) {
+    public static String getType(){
+        return "Mongo Crud Flow";
+    }
+
+    public static FlowTemplate getFlowTemplate(){
+
+        return FlowTemplate.builder()
+                .name(getType())
+                .type(getType())
+                .schema(MongoCrudSettings.getSchema())
+                .build();
+    }
+
+    public static Flow createFlow(String name, FlowTemplate template, ActivityConfigRepository activityConfigRepository) {
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        MongoCrudSettings mongoCrudSettings = mapper.convertValue(template.getContext(),MongoCrudSettings.class );
+
 
         Flow flow = Flow.builder()
                 .name(name)
@@ -134,10 +160,12 @@ public class MongoCrudFlowTemplate {
                 .activities( new ArrayList<>())
                 .build();
 
-        buildMongoSave(flow,mongoSettings,30,activityConfigRepository);
-        buildMongoFind(flow,mongoSettings,130,activityConfigRepository);
-        buildMongoGetById(flow,mongoSettings,230,activityConfigRepository);
-        buildMongoDeleteById(flow,mongoSettings,330,activityConfigRepository);
+        MongoCrudFlowTemplate mongoCrudFlowTemplate = new MongoCrudFlowTemplate();
+
+        mongoCrudFlowTemplate.buildMongoSave(flow,mongoCrudSettings,30,activityConfigRepository);
+        mongoCrudFlowTemplate.buildMongoFind(flow,mongoCrudSettings,130,activityConfigRepository);
+        mongoCrudFlowTemplate.buildMongoGetById(flow,mongoCrudSettings,230,activityConfigRepository);
+        mongoCrudFlowTemplate.buildMongoDeleteById(flow,mongoCrudSettings,330,activityConfigRepository);
 
         return flow;
     }

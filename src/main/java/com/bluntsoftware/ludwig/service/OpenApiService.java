@@ -155,7 +155,7 @@ public class OpenApiService {
                 ret.put("parameters", params);
                 break;
             case "Post":
-                if(input.containsKey("payload")){
+                if(input.containsKey("payloadSchema")){
                     Object schemaName = input.get("payloadSchema");
                     ret.put("requestBody" ,getJsonPostRequestBody(input.get("payload"),  getPayloadSchema(schemaName)));
 

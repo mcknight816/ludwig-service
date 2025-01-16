@@ -8,10 +8,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
-@RequestMapping("/meta/template")
+@RequestMapping("/core/template")
 @CrossOrigin
 @AllArgsConstructor
 public class FlowTemplateController {
@@ -19,7 +20,7 @@ public class FlowTemplateController {
     private final FlowTemplateService flowTemplateService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<FlowTemplate> findAll(){
+    public Collection<FlowTemplate> findAll(){
         return this.flowTemplateService.findAll();
     }
 
