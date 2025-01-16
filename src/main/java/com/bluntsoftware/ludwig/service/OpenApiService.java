@@ -206,9 +206,9 @@ public class OpenApiService {
     Map<String,Object> output( FlowActivity flowActivity){
         Map<String,Object> ret = new HashMap<>();
         Map<String,Object> output = flowActivity.getInput();
-        if(output.containsKey("payload")){
+      //  if(output.containsKey("payload")){
             ret.put("responses",get200Response(null));
-        }
+     //   }
         return ret;
     }
 
