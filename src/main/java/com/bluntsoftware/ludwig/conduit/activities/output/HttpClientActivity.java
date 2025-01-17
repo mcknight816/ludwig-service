@@ -4,6 +4,8 @@ package com.bluntsoftware.ludwig.conduit.activities.output;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
+import com.bluntsoftware.ludwig.conduit.schema.PropertyType;
+import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
 import com.bluntsoftware.ludwig.controller.AssetController;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -63,17 +65,14 @@ public class HttpClientActivity extends ActivityImpl {
         type.add("upload");
 
         schema.addEnum("type",type ,"json");
-        schema.addString("url","");
-        schema.addString("username","");
-        schema.addString("password","", PropertyFormat.PASSWORD);
-        schema.addString("payload","{}",true);
-        schema.addString("file","http://someserver/someFile.jpg",PropertyFormat.IMAGE_CHOOSER);
-        schema.addString("content-type","");
+        schema.addString("url");
+        schema.addString("username");
+        schema.addString("password",StringProperty.builder().defaultValue("").format(PropertyFormat.PASSWORD).build());
+        schema.addString("payload",StringProperty.builder().defaultValue("{}").type(PropertyType.HIDDEN.getValue()).build());
+        schema.addString("file",StringProperty.builder().defaultValue("http://someserver/someFile.jpg").format(PropertyFormat.IMAGE_CHOOSER).build());
+        schema.addString("content-type");
         return schema;
     }
-
-
-
 
     @Override
     public Map<String, Object> run(Map<String, Object> input)   {

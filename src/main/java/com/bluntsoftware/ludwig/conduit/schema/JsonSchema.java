@@ -1,6 +1,5 @@
 package com.bluntsoftware.ludwig.conduit.schema;
 
-
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfig;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -9,10 +8,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
 import java.util.*;
-import java.util.stream.Collectors;
-
 /**
  * Created by Alex Mcknight on 1/25/2017.
  *
@@ -35,30 +31,71 @@ public class JsonSchema implements Property {
         this.title = title;
         properties = new LinkedHashMap<>();
     }
+
     public JsonSchema(String title, boolean hidden) {
         this.title = title;
         this.hidden = hidden;
         properties = new LinkedHashMap<>();
     }
-    public StringProperty addString(String name, String defaultValue ){
-            return addString(name,defaultValue,null);
+
+    public StringProperty addString(String name){
+        return addString(name,StringProperty.builder().defaultValue("").build());
     }
 
-    public StringProperty addString(String name, String defaultValue,PropertyFormat format){
-        return addString(null,name,defaultValue,format,false);
+    public StringProperty addString(String name, String defaultValue ){
+        return addString(name,StringProperty.builder().defaultValue(defaultValue).build());
     }
-    public StringProperty addString(String name, String defaultValue,boolean hidden ){
-        return addString(null,name,defaultValue,null,hidden);
+
+    public StringProperty addString(String name, String defaultValue, PropertyFormat format) {
+        return addString(name,StringProperty.builder()
+                .defaultValue(defaultValue)
+                .type(PropertyType.STRING.getValue())
+                .format(format)
+                .build());
     }
+
+    public StringProperty addString(String name, String defaultValue, boolean hidden ) {
+        return addString(name,StringProperty.builder()
+                .defaultValue(defaultValue)
+                .type(hidden ? PropertyType.HIDDEN.getValue() : PropertyType.STRING.getValue())
+                .build());
+    }
+
     public StringProperty addString(String title,String name, String defaultValue,PropertyFormat format,boolean hidden) {
-        return addString(title,name,defaultValue,format,hidden,null);
+        return addString(name,StringProperty.builder()
+                .title(title)
+                .defaultValue(defaultValue)
+                .type(hidden ? PropertyType.HIDDEN.getValue() : PropertyType.STRING.getValue())
+                .format(format)
+                .build());
+    }
+
+    public StringProperty addString(String name, StringProperty property) {
+
+        if(property.getTitle() == null){
+            property.setTitle(getTitle(name));
+        }
+
+        if(property.getType() == null){
+            property.setType(PropertyType.STRING.getValue());
+        }
+
+        properties.put(name,property);
+        return property;
     }
 
     public StringProperty addConfig(ActivityConfig config){
         Map<String,String> meta = new HashMap<>();
         meta.put("configClass",config.getConfigClass());
-        return addString(config.getName(),config.getPropertyName(),config.getName() + " Default",PropertyFormat.CONFIG_CHOOSER,false,meta);
+        return addString(config.getName(),StringProperty.builder()
+                .title(config.getPropertyName())
+                .defaultValue(config.getName() + " Default")
+                .format(PropertyFormat.CONFIG_CHOOSER)
+                .type(PropertyType.STRING.getValue())
+                .meta(meta)
+                .build());
     }
+
     @JsonIgnore
     public String getJson(){
         ObjectMapper mapper = new ObjectMapper();
@@ -71,26 +108,6 @@ public class JsonSchema implements Property {
         }
         return "{}";
     }
-    public StringProperty addString(String title,String name, String defaultValue,PropertyFormat format,boolean hidden,Map<String,String> meta){
-        StringProperty property = new StringProperty();
-        property.setDefaultValue(defaultValue);
-        if(title == null){
-            property.setTitle(getTitle(name));
-        }else{
-            property.setTitle(title);
-        }
-         if(hidden){
-             property.setType("hidden");
-         }
-        if(format != null){
-            property.setFormat(format);
-        }
-        if(meta != null){
-            property.setMeta(meta);
-        }
-        properties.put(name,property);
-        return property;
-    }
 
     public String getTitle(String name) {
         String[] sections = name.split("_");
@@ -100,6 +117,7 @@ public class JsonSchema implements Property {
         }
         return title;
     }
+
     public EnumProperty addEnum(String title,String name, List<String> enumeration, String defaultValue){
         EnumProperty property = new EnumProperty();
         property.setDefaultValue(defaultValue);
@@ -112,9 +130,11 @@ public class JsonSchema implements Property {
         properties.put(name,property);
         return property;
     }
+
     public EnumProperty addEnum(String name, List<String> enumeration, String defaultValue){
          return addEnum(null,name,enumeration,defaultValue);
     }
+
     public JsonSchema addRecord(String name, JsonSchema recordProperty){
         properties.put(name,recordProperty);
         return recordProperty;

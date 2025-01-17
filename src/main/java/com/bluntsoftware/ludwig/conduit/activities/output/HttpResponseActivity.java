@@ -4,11 +4,11 @@ package com.bluntsoftware.ludwig.conduit.activities.output;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
+import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,20 +30,19 @@ public class HttpResponseActivity extends ActivityImpl {
     public JsonSchema getSchema() {
         JsonSchema schema = JsonSchema.builder().title(this.getName()).build();
 
-        List<String> outType = new ArrayList<String>();
+        List<String> outType = new ArrayList<>();
         outType.add("json");
         outType.add("html");
         outType.add("xml");
         outType.add("file");
 
-        List<String> outMethod = new ArrayList<String>();
+        List<String> outMethod = new ArrayList<>();
         outMethod.add("stream");
         outMethod.add("download");
 
         schema.addEnum("output_method",outMethod ,"stream");
         schema.addEnum("output_type",outType ,"json");
-        schema.addString("file","file-location", PropertyFormat.IMAGE_CHOOSER);
-
+        schema.addString("file", StringProperty.builder().defaultValue("file-location").format(PropertyFormat.IMAGE_CHOOSER).build());
         PropertyFormat payloadFormat = PropertyFormat.JSON;
         Map<String,Object> schemaMap = schema.getValue();
         if(schemaMap != null && schemaMap.containsKey("output_type") && schemaMap.get("output_type") != null) {
@@ -52,9 +51,7 @@ public class HttpResponseActivity extends ActivityImpl {
                 payloadFormat = PropertyFormat.fromValue(outputType.toString());
             }
         }
-
-        schema.addString("payload","{}",payloadFormat);
-
+        schema.addString("payload",StringProperty.builder().defaultValue("{}").format(payloadFormat).build());
         return schema;
     }
 }
