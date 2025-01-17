@@ -1,9 +1,12 @@
 package com.bluntsoftware.ludwig.conduit.config.mail;
 
 
+import com.bluntsoftware.ludwig.conduit.config.ActivityConfig;
 import com.bluntsoftware.ludwig.conduit.impl.ActivityConfigImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 @Service
 public class MailConfig extends ActivityConfigImpl<Mail> {
@@ -38,6 +41,11 @@ public class MailConfig extends ActivityConfigImpl<Mail> {
         mail.setTls(getPropString(config,"tls"));
         mail.setAuth(getPropString(config,"auth"));
         return mail;
+    }
+
+    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        ActivityConfig configSchema =  (ActivityConfig)MailConfig.class.getDeclaredConstructor().newInstance();
+        System.out.println(configSchema.getSchema().getProperties());
     }
 
 }

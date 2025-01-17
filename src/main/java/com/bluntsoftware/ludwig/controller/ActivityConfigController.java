@@ -24,9 +24,9 @@ public class ActivityConfigController {
         return activityRepository.findAll();
     }
 
-    @GetMapping(value = "{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    ActivityConfig findById(@PathVariable("id") String id){
-        ActivityConfig config =  activityRepository.getByKlass(id);
+    @GetMapping(value = "{class}",produces = MediaType.APPLICATION_JSON_VALUE)
+    ActivityConfig findById(@PathVariable("class") String cls){
+        ActivityConfig config =  activityRepository.getByKlass(cls);
         return config;
     }
 

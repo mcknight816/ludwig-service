@@ -21,6 +21,7 @@ public class JsonSchema implements Property {
 
     @Builder.Default
     private String type = "object";
+    @Builder.Default
     private String title = "untitled";
     @Builder.Default
     private Boolean hidden = false;
@@ -39,7 +40,7 @@ public class JsonSchema implements Property {
     }
 
     public StringProperty addString(String name){
-        return addString(name,StringProperty.builder().defaultValue("").build());
+        return addString(name,StringProperty.builder().defaultValue(null).build());
     }
 
     public StringProperty addString(String name, String defaultValue ){
@@ -75,7 +76,11 @@ public class JsonSchema implements Property {
         if(property.getTitle() == null){
             property.setTitle(getTitle(name));
         }
-
+/*
+        if(property.getDefaultValue() == null){
+            property.setDefaultValue("");
+        }
+*/
         if(property.getType() == null){
             property.setType(PropertyType.STRING.getValue());
         }
@@ -197,6 +202,5 @@ public class JsonSchema implements Property {
         }
         return ret;
     }
-
 
 }

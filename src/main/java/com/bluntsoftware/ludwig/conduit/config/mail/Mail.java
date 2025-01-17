@@ -3,6 +3,7 @@ package com.bluntsoftware.ludwig.conduit.config.mail;
 import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
+import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,27 +17,33 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Mail implements EntitySchema {
+    @Builder.Default
     private String host = "smtp.gmail.com";
+    @Builder.Default
     private String port = "587";
     private String user;
     private String from;
     private String password;
+    @Builder.Default
     private String protocol = "smtp";
+    @Builder.Default
     private String tls = "false";
+    @Builder.Default
     private String auth = "true";
+    @Builder.Default
     private String localhost= "localhost";
     private String testEmail;
 
     static JsonSchema getSchema() {
         JsonSchema mail = JsonSchema.builder().title("mail").build();
-        mail.addString("host","smtp.gmail.com",null);
-        mail.addString("port","587",null);
-        mail.addString("user",null,null);
-        mail.addString("from",null,null);
-        mail.addString("password",null, PropertyFormat.PASSWORD);
-        mail.addString("protocol","smtp",null);
-        mail.addString("localhost","localhost",null);
-        mail.addString("testEmail","someone@somewhere.com",null);
+        mail.addString("host","smtp.gmail.com");
+        mail.addString("port","587");
+        mail.addString("user");
+        mail.addString("from");
+        mail.addString("password", StringProperty.builder().format(PropertyFormat.PASSWORD).build());
+        mail.addString("protocol","smtp");
+        mail.addString("localhost","localhost");
+        mail.addString("testEmail","someone@somewhere.com");
         List<String> truefalse = new ArrayList<String>();
         truefalse.add("true");
         truefalse.add("false");
