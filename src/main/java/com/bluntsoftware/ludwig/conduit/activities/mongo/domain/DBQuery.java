@@ -14,10 +14,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DBQuery {
+    @Builder.Default
     String filter = "";
+    @Builder.Default
     String page = "1";
+    @Builder.Default
     String rows = "20";
+    @Builder.Default
     String sord = "ASC";
+    @Builder.Default
     String sidx = "_id";
     public static JsonSchema getSchema() {
         String[] sortOrder = {"ASC", "DESC"};

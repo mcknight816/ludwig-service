@@ -64,9 +64,13 @@ public class MongoCrudFlowTemplate {
         flow.getActivities().add(mongoSaveActivity);
         flow.getActivities().add(httpResponseActivity);
     }
+
     private void buildMongoFind(Flow flow,MongoCrudSettings mongoSettings,Integer x,ActivityConfigRepository activityConfigRepository) {
 
-        MongoFind mongoFind = MongoFind.builder().query(DBQuery.builder().build()).settings(mongoSettings.getSettings()).build();
+        MongoFind mongoFind = MongoFind.builder()
+                .settings(mongoSettings.getSettings())
+                .query(DBQuery.builder().build())
+                .build();
 
         FlowActivity getActivity = flowActivity(x,20,new GetActivity(activityConfigRepository));
         FlowActivity findActivity = flowActivity(x,120,new MongoFindActivity(activityConfigRepository),toMap(mongoFind));
