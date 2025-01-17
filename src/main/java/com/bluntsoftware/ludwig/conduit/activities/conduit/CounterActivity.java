@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
 
-import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
+import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;

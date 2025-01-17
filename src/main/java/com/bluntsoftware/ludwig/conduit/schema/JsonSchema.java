@@ -11,7 +11,6 @@ import lombok.experimental.SuperBuilder;
 import java.util.*;
 /**
  * Created by Alex Mcknight on 1/25/2017.
- *
  */
 @Data
 @SuperBuilder
@@ -76,11 +75,7 @@ public class JsonSchema implements Property {
         if(property.getTitle() == null){
             property.setTitle(getTitle(name));
         }
-/*
-        if(property.getDefaultValue() == null){
-            property.setDefaultValue("");
-        }
-*/
+
         if(property.getType() == null){
             property.setType(PropertyType.STRING.getValue());
         }

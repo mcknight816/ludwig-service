@@ -1,7 +1,6 @@
-package com.bluntsoftware.ludwig.conduit.impl;
+package com.bluntsoftware.ludwig.conduit.config;
 
 import com.bluntsoftware.ludwig.conduit.AES;
-import com.bluntsoftware.ludwig.conduit.config.ActivityConfig;
 import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonPath;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
@@ -46,6 +45,14 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
         schema.addRecord(recordProperty.getTitle(),recordProperty);*/
         return getRecord();
     }
+    /*
+    public <T> T convertValue(Class<T> toValueType) throws IllegalArgumentException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return mapper.convertValue(getConfigSchema(),toValueType);
+    }
+
+     */
 
     @Override
     public String getPropertyName() {

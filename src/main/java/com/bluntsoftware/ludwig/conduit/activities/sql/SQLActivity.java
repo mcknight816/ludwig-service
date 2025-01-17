@@ -2,7 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.sql;
 
 
 import com.bluntsoftware.ludwig.conduit.config.sql.SQLConnectionConfig;
-import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
+import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;

@@ -3,7 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
-import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
+import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoConnection;
 import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;

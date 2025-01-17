@@ -1,5 +1,4 @@
 package com.bluntsoftware.ludwig.conduit.activities;
-import com.bluntsoftware.ludwig.conduit.impl.ActivityProperties;
 
 import java.util.Map;
 public interface Activity {

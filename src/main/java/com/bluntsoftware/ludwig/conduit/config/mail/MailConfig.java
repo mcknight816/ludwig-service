@@ -2,7 +2,7 @@ package com.bluntsoftware.ludwig.conduit.config.mail;
 
 
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfig;
-import com.bluntsoftware.ludwig.conduit.impl.ActivityConfigImpl;
+import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import org.springframework.stereotype.Service;
 

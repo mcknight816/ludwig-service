@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.config.nosql;
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.domain.MongoConnection;
-import com.bluntsoftware.ludwig.conduit.impl.ActivityConfigImpl;
+import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import org.springframework.stereotype.Service;
 import java.util.Map;

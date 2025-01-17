@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.activities.files;
 
 
-import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
+import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.controller.AssetController;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;

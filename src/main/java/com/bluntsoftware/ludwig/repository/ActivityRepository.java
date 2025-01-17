@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.repository;
 
 import com.bluntsoftware.ludwig.conduit.activities.Activity;
-import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
+import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;

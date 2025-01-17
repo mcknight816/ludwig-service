@@ -3,7 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.couch;
 
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.CouchbaseConnectionConfig;
-import com.bluntsoftware.ludwig.conduit.impl.ActivityImpl;
+import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.nosql.couch.CouchConnection;
 import com.bluntsoftware.ludwig.conduit.nosql.couch.CouchRepository;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;

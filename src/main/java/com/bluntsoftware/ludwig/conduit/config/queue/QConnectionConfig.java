@@ -1,8 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.config.queue;
 
 
-import com.bluntsoftware.ludwig.conduit.impl.ActivityConfigImpl;
-import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
+import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import org.springframework.stereotype.Service;
