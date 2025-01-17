@@ -31,6 +31,7 @@ class JsonSchemaTest {
         user.addString("age","51");
         user.addEnum("gender",gender,"Male");
         user.addString("color","blue");
+        user.addString("json","{}",PropertyFormat.JSON);
         form.addRecord("user",user);
 
         JsonSchema address = new JsonSchema("Address");
@@ -43,7 +44,7 @@ class JsonSchemaTest {
         form.addRecord("address",address);
 
         System.out.println(form.getJson());
-        System.out.println(form.getValue());
+     //   System.out.println(form.getValue());
 
         Map<String,StringProperty> paths = form.getSecretStringProperties();
 
@@ -61,7 +62,7 @@ class JsonSchemaTest {
         try {
             String jsonInString = mapper.writeValueAsString(form);
             //  System.out.println(jsonInString);
-            System.out.println(mapper.writeValueAsString(form.getValue()));
+        //    System.out.println(mapper.writeValueAsString(form.getValue()));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

@@ -8,6 +8,7 @@ import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +43,17 @@ public class HttpResponseActivity extends ActivityImpl {
         schema.addEnum("output_method",outMethod ,"stream");
         schema.addEnum("output_type",outType ,"json");
         schema.addString("file","file-location", PropertyFormat.IMAGE_CHOOSER);
-        schema.addString("payload","{}",PropertyFormat.valueOf(schema.getValue().get("output_type").toString()));
+
+        PropertyFormat payloadFormat = PropertyFormat.JSON;
+        Map<String,Object> schemaMap = schema.getValue();
+        if(schemaMap != null && schemaMap.containsKey("output_type") && schemaMap.get("output_type") != null) {
+            Object outputType = schemaMap.get("output_type");
+            if(outputType instanceof String) {
+                payloadFormat = PropertyFormat.fromValue(outputType.toString());
+            }
+        }
+
+        schema.addString("payload","{}",payloadFormat);
 
         return schema;
     }

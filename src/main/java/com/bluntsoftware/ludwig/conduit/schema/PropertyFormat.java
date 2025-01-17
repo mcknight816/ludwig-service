@@ -1,5 +1,8 @@
 package com.bluntsoftware.ludwig.conduit.schema;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum PropertyFormat {
 
     FOLDER_CHOOSER("folderChooser"),
@@ -22,6 +25,7 @@ public enum PropertyFormat {
     }
 
     // Getter for the property
+    @JsonValue
     public String getValue() {
         return value;
     }
@@ -31,5 +35,13 @@ public enum PropertyFormat {
         return value;
     }
 
-
+    @JsonCreator
+    public static PropertyFormat fromValue(String value) {
+        for (PropertyFormat format : PropertyFormat.values()) {
+            if (format.value.equals(value)) {
+                return format;
+            }
+        }
+        throw new IllegalArgumentException("Unknown value: " + value);
+    }
 }
