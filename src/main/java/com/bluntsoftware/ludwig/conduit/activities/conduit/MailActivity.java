@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
-import com.bluntsoftware.ludwig.conduit.config.mail.Mail;
+import com.bluntsoftware.ludwig.conduit.config.mail.domain.Mail;
 import com.bluntsoftware.ludwig.conduit.config.mail.MailConfig;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
@@ -117,7 +117,7 @@ public class MailActivity extends ActivityImpl {
         Map<String, Object> ret = new HashMap<>();
         Map<String, Object>  config = this.getExternalConfigByName(input.get("mail"),MailConfig.class);
         if(config != null){
-            this.javaMailSender = getMailSender(MailConfig.convertToMailConfig(config));
+            this.javaMailSender = getMailSender(MailConfig.getStaticConfig(config));
         }
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();

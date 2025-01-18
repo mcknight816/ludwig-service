@@ -53,30 +53,28 @@ public abstract class MongoActivity extends ActivityImpl  {
             log.error("No connection found for name {}", connectionName);
             throw new AppException("connection " + connectionName + " not found");
         }
-      //  Map<String,Object> connection = (Map<String,Object>)config.get("Connection");
-        if(connection != null){
-            MongoRepository repo = this.repos.get(connection);
-            if(repo != null){
-                return repo;
-            }
 
-            if(connection.containsKey("uri")){
-                repo = new MongoRepository(new MongoConnection(connection.get("uri").toString()));
-            }else{
-                String strPort = connection.get("port").toString();
-                String server = connection.get("server").toString();
-                if(strPort != null && !strPort.equalsIgnoreCase("")) {
-                    Integer port = Integer.parseInt(strPort);
-                    repo =  new MongoRepository(new MongoConnection(server,port));
-                }else{
-                    repo = new MongoRepository(new MongoConnection(server,null));
-                }
-            }
-            this.repos.put(connection,repo);
+        MongoRepository repo = this.repos.get(connection);
+        if(repo != null){
             return repo;
         }
-        return null;
+
+        if(connection.containsKey("uri")){
+            repo = new MongoRepository(new MongoConnection(connection.get("uri").toString()));
+        }else{
+            String strPort = connection.get("port").toString();
+            String server = connection.get("server").toString();
+            if(strPort != null && !strPort.equalsIgnoreCase("")) {
+                Integer port = Integer.parseInt(strPort);
+                repo =  new MongoRepository(new MongoConnection(server,port));
+            }else{
+                repo = new MongoRepository(new MongoConnection(server,null));
+            }
+        }
+        this.repos.put(connection,repo);
+        return repo;
     }
+
     public static void main(String[] args) {
 
     }

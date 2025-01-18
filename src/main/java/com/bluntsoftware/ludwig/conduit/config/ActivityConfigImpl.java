@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.conduit.config;
 
-import com.bluntsoftware.ludwig.conduit.AES;
+import com.bluntsoftware.ludwig.conduit.utils.AES;
 import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonPath;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
@@ -9,16 +9,19 @@ import com.bluntsoftware.ludwig.domain.Config;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-public abstract class ActivityConfigImpl<T extends EntitySchema> implements ActivityConfig {
-
+public abstract class ActivityConfigImpl<T extends EntitySchema> implements ActivityConfig<T> {
+    private final Class<T> type;
     private final static Map<String, ActivityConfig> configs = new HashMap<>();
 
     public static Map<String, ActivityConfig> list(){return configs;}
@@ -45,14 +48,6 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
         schema.addRecord(recordProperty.getTitle(),recordProperty);*/
         return getRecord();
     }
-    /*
-    public <T> T convertValue(Class<T> toValueType) throws IllegalArgumentException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return mapper.convertValue(getConfigSchema(),toValueType);
-    }
-
-     */
 
     @Override
     public String getPropertyName() {
@@ -62,8 +57,14 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
     @JsonIgnore
     public abstract JsonSchema getRecord();
 
-    public abstract Map test();
+
+
+    @SuppressWarnings("unchecked")
     public ActivityConfigImpl() {
+        this.type = (Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass())
+                .getActualTypeArguments()[0];
+
         if(getClass().isAnnotationPresent(Service.class)){
             configs.put(getClass().getTypeName(),this);
         }
@@ -89,12 +90,7 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
         return name;
     }
 
-    public Config getDefaults(){
-        Config default_config =  new Config();
-        default_config.setConfigClass(getConfigClass());
-        default_config.putAll(getSchema().getValue());
-        return default_config;
-    }
+
 
     public static String encrypt(String value){
         return  AES.encrypt(value,System.getProperty("ludwig.encrypt.key","ludwig"));
@@ -135,5 +131,21 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
         }
         return config;
     }
+
+    protected Map<String,Object> getDefaults(){
+        return getSchema().getValue();
+    }
+
+    public T getDefaultConfig() {
+       return this.getConfig(this.getDefaults());
+    }
+
+    public T getConfig(Map<String,Object> config) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return mapper.convertValue(config,type);
+    }
+
+
 
 }

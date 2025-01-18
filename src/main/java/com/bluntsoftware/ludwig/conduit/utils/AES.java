@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.conduit;
+package com.bluntsoftware.ludwig.conduit.utils;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import javax.crypto.Cipher;

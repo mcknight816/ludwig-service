@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.conduit.config.mail;
+package com.bluntsoftware.ludwig.conduit.config.mail.domain;
 
 import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
@@ -17,24 +17,19 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Mail implements EntitySchema {
-    @Builder.Default
-    private String host = "smtp.gmail.com";
-    @Builder.Default
-    private String port = "587";
+    @Builder.Default private String host      = "smtp.gmail.com";
+    @Builder.Default private String port      = "587";
+    @Builder.Default private String protocol  = "smtp";
+    @Builder.Default private String tls       = "false";
+    @Builder.Default private String auth      = "true";
+    @Builder.Default private String localhost = "localhost";
+
     private String user;
     private String from;
     private String password;
-    @Builder.Default
-    private String protocol = "smtp";
-    @Builder.Default
-    private String tls = "false";
-    @Builder.Default
-    private String auth = "true";
-    @Builder.Default
-    private String localhost= "localhost";
     private String testEmail;
 
-    static JsonSchema getSchema() {
+    public static JsonSchema getSchema() {
         JsonSchema mail = JsonSchema.builder().title("mail").build();
         mail.addString("host","smtp.gmail.com");
         mail.addString("port","587");

@@ -2,6 +2,8 @@ package com.bluntsoftware.ludwig.conduit.config.queue;
 
 
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
+import com.bluntsoftware.ludwig.conduit.config.ConfigTestResult;
+import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
 import org.springframework.stereotype.Service;
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class QConnectionConfig extends ActivityConfigImpl {
+public class QConnectionConfig extends ActivityConfigImpl<EntitySchema> {
 
 
     @Override
@@ -33,10 +35,11 @@ public class QConnectionConfig extends ActivityConfigImpl {
         return connection;
     }
 
-
-
     @Override
-    public Map test() {
+    public ConfigTestResult test(Map<String, Object> config) {
         return null;
     }
+
+
+
 }

@@ -1,5 +1,6 @@
 package com.bluntsoftware.ludwig.service;
 
+import com.bluntsoftware.ludwig.conduit.config.ConfigTestResult;
 import com.bluntsoftware.ludwig.domain.FlowConfig;
 import com.bluntsoftware.ludwig.repository.FlowConfigRepository;
 import org.springframework.stereotype.Service;
@@ -9,9 +10,11 @@ import reactor.core.publisher.Mono;
 @Service
 public class FlowConfigService {
     private final FlowConfigRepository configRepository;
+
     public FlowConfigService(FlowConfigRepository configRepository) {
         this.configRepository = configRepository;
     }
+
     public Flux<FlowConfig> findAll() {
         return configRepository.findAll();
     }
@@ -30,4 +33,9 @@ public class FlowConfigService {
         return  Mono.just(flowConfig);
     }
 
+    public ConfigTestResult test(FlowConfig flowConfig) {
+
+
+        return null;
+    }
 }
