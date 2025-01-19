@@ -3,8 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSave;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
-import com.bluntsoftware.ludwig.conduit.config.nosql.domain.MongoConnection;
-import com.bluntsoftware.ludwig.domain.Config;
+import com.bluntsoftware.ludwig.conduit.config.nosql.domain.MongoConnect;
 import com.bluntsoftware.ludwig.domain.FlowConfig;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,7 +57,7 @@ class MongoSaveActivityTest {
          MongoSave mongoSave = MongoSave.builder().payload(this.payload)
                 .settings(MongoSettings.builder().connection("Test").collection("unit-test").database("test").build()).build();
 
-         MongoConnection mongoConnection = MongoConnection.builder()
+         MongoConnect mongoConnection = MongoConnect.builder()
                 .server("localhost")
                 .port("27017")
                 .build();

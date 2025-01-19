@@ -4,9 +4,15 @@ package com.bluntsoftware.ludwig.conduit.nosql.mongo;
 import com.bluntsoftware.ludwig.conduit.nosql.NoSqlConnection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MongoConnection implements NoSqlConnection<MongoClient> {
     private MongoClient client;
     private String mongoDbName;

@@ -14,7 +14,7 @@ import java.util.Map;
 @Slf4j
 @AllArgsConstructor
 @NoArgsConstructor
-public class MongoConnection  implements EntitySchema {
+public class MongoConnect implements EntitySchema {
     String server = "localhost";
     String port = "27017";
     String userName;
