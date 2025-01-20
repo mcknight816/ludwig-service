@@ -1,7 +1,9 @@
-package com.bluntsoftware.ludwig.ai;
+package com.bluntsoftware.ludwig.conduit.service.ai;
 
-
-import com.bluntsoftware.ludwig.ai.domain.*;
+import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionRequest;
+import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionResponse;
+import com.bluntsoftware.ludwig.conduit.service.ai.domain.AIImageRequest;
+import com.bluntsoftware.ludwig.conduit.service.ai.domain.AIImageResponse;
 import com.bluntsoftware.ludwig.config.AppConfig;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,14 +14,22 @@ import org.springframework.web.client.RestTemplate;
 public class AIService {
 
     private final AppConfig appConfig;
-
-
-   private static final String API_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions";
+    private static final String API_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions";
     private static final String API_IMAGES_URL = "https://api.openai.com/v1/images/generations";
 
     public AIService(AppConfig appConfig) {
         this.appConfig = appConfig;
     }
+
+    public AIService(String openAIApiSecret) {
+        this.appConfig = new AppConfig();
+        appConfig.setOpenAIApiSecret(openAIApiSecret);
+    }
+
+    public AIService() {
+        this.appConfig = new AppConfig();
+    }
+
 
     public AICompletionResponse completions(AICompletionRequest completion) {
         RestTemplate restTemplate = new RestTemplate();
@@ -38,27 +48,4 @@ public class AIService {
         ResponseEntity<AIImageResponse> response = restTemplate.postForEntity(API_IMAGES_URL, request, AIImageResponse.class);
         return response.getBody();
     }
-
-    public static void main(String[] args) {
-      /*AICompletionResponse completionResponse = completions( AICompletionRequest.builder()
-                .message(AIMessage.builder()
-                        .role("SYSTEM").content("you always respond in a valid json string for all of the content")
-                        .role("user").content("build a complex json model with lowercase fields for a Business Plan")
-                        .build())
-                .model(OpenAiModel.GPT_4_MINI.toString())
-                .max_tokens(2048)
-               // .prompt("build a complex json model with lowercase fields for a Business Plan")
-                .build());
-        System.out.println(completionResponse.getChoices().get(0).getMessage().getContent());
-
-
-        AIImageResponse imageResponse = images(AIImageRequest.builder()
-                .n(1)
-                .prompt("A t-shirt printing company")
-                .size("256x256")
-                .build());
-        System.out.println(imageResponse); */
-
-    }
-
 }

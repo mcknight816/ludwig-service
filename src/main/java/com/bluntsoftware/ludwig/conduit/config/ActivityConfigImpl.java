@@ -24,7 +24,9 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
     private final Class<T> type;
     private final static Map<String, ActivityConfig> configs = new HashMap<>();
 
-    public static Map<String, ActivityConfig> list(){return configs;}
+    public static Map<String, ActivityConfig> list(){
+        return configs;
+    }
 
     public static ActivityConfig getByClassName(String className){
         ActivityConfig configSchema = configs.get(className);

@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PropertyType {
     HIDDEN("hidden"),
-    STRING("string");
+    STRING("string"),
+    NUMBER("number"),
+    BOOLEAN("boolean");
 
     private final String value;
 

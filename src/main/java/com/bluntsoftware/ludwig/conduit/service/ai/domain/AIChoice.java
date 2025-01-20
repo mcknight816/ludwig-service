@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.ai.domain;
+package com.bluntsoftware.ludwig.conduit.service.ai.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AIUsage {
-
-	private Integer prompt_tokens;
-	private Integer completion_tokens;
-	private Integer total_tokens;
+public class AIChoice {
+	private AIMessage message;
+	private Integer index;
+	private String finish_reason;
 }

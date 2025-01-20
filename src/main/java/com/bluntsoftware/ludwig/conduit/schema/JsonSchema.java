@@ -8,10 +8,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.*;
 /**
  * Created by Alex Mcknight on 1/25/2017.
  */
+@Slf4j
 @Data
 @SuperBuilder
 @NoArgsConstructor
@@ -84,6 +87,43 @@ public class JsonSchema implements Property {
         return property;
     }
 
+    public BooleanProperty addBoolean(String name, Boolean defaultValue) {
+        return addBoolean(name,BooleanProperty.builder()
+                .defaultValue(defaultValue)
+                .build());
+    }
+
+    public BooleanProperty addBoolean(String name, BooleanProperty property) {
+        if(property.getTitle() == null){
+            property.setTitle(getTitle(name));
+        }
+
+        if(property.getType() == null){
+            property.setType(PropertyType.BOOLEAN.getValue());
+        }
+
+        properties.put(name,property);
+        return property;
+    }
+
+    public NumberProperty addNumber(String name, double defaultValue) {
+        return addNumber(name,NumberProperty.builder()
+                .defaultValue(defaultValue)
+                .build());
+    }
+    public NumberProperty addNumber(String name, NumberProperty property) {
+        if(property.getTitle() == null){
+            property.setTitle(getTitle(name));
+        }
+
+        if(property.getType() == null){
+            property.setType(PropertyType.NUMBER.getValue());
+        }
+
+        properties.put(name,property);
+        return property;
+    }
+
     public StringProperty addConfig(ActivityConfig config){
         Map<String,String> meta = new HashMap<>();
         meta.put("configClass",config.getConfigClass());
@@ -104,7 +144,7 @@ public class JsonSchema implements Property {
         try {
             return mapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return "{}";
     }
@@ -154,6 +194,9 @@ public class JsonSchema implements Property {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return mapper.convertValue(getValue(),toValueType);
     }
+
+
+
 
     public interface StringPropertyFilter {
         Boolean hasProperty(StringProperty property);

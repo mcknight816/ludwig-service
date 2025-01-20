@@ -1,4 +1,7 @@
-package com.bluntsoftware.ludwig.ai.domain;
+package com.bluntsoftware.ludwig.conduit.service.ai.domain;
+
+
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum OpenAiModel {
     // GPT-4 Aliases
@@ -47,5 +50,10 @@ public enum OpenAiModel {
             }
         }
         throw new IllegalArgumentException("Unknown OpenAI alias model: " + aliasName);
+    }
+
+    @JsonValue
+    public String getValue() {
+        return aliasName;
     }
 }

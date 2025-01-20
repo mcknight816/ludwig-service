@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.ai.domain;
+package com.bluntsoftware.ludwig.conduit.service.ai.domain;
 
 import lombok.*;
 

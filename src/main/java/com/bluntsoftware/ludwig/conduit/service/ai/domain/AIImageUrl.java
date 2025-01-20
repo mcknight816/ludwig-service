@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.ai.domain;
+package com.bluntsoftware.ludwig.conduit.service.ai.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class AIMessage {
-    String role;
-    String content;
+@Builder(toBuilder = true)
+public class AIImageUrl {
+    String url;
 }

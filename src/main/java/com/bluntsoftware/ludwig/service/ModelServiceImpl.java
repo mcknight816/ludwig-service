@@ -1,9 +1,9 @@
 package com.bluntsoftware.ludwig.service;
 
 
-import com.bluntsoftware.ludwig.ai.AIService;
-import com.bluntsoftware.ludwig.ai.domain.AICompletionRequest;
-import com.bluntsoftware.ludwig.ai.domain.AICompletionResponse;
+import com.bluntsoftware.ludwig.conduit.service.ai.AIService;
+import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionRequest;
+import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionResponse;
 import com.bluntsoftware.ludwig.domain.Entity;
 import com.bluntsoftware.ludwig.domain.Model;
 import com.bluntsoftware.ludwig.domain.ModelJson;

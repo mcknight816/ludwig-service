@@ -1,6 +1,7 @@
 package com.bluntsoftware.ludwig.controller;
 
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfig;
+import com.bluntsoftware.ludwig.conduit.config.ConfigTemplateDto;
 import com.bluntsoftware.ludwig.conduit.config.ConfigTestResult;
 import com.bluntsoftware.ludwig.dto.FlowConfigDto;
 import com.bluntsoftware.ludwig.mapping.FlowConfigMapper;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+
 
 @RestController
 @RequestMapping("/meta/config")
@@ -23,8 +27,15 @@ public class ActivityConfigController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    List<ActivityConfig> findAll(){
-        return activityRepository.findAll();
+    List<ConfigTemplateDto> findAll(){
+         return activityRepository.findAll().stream().map(a -> ConfigTemplateDto.builder()
+                 .configClass(a.getConfigClass())
+                 .name(a.getName())
+                 .category(a.getCategory())
+                 .schema(a.getSchema())
+                 .build()
+         ).collect(Collectors.toList());
+
     }
 
     @GetMapping(value = "{class}",produces = MediaType.APPLICATION_JSON_VALUE)
