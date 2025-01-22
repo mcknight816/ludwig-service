@@ -1,7 +1,5 @@
 package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
-
-
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.domain.FlowActivity;
@@ -13,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 @Service
 public class ConduitActivity extends ActivityImpl {
 
@@ -36,12 +35,14 @@ public class ConduitActivity extends ActivityImpl {
         schema.addString("For Each Item in Payload","foreach",null,null,true);
         return schema;
     }
+
     @Override
     public Map<String, Object> getOutput() {
         Map<String, Object> ret = new HashMap<>();
         ret.put("payload", new ArrayList());
         return ret;
     }
+
     @Override
     public Map<String, Object> run(Map<String, Object> input) throws Exception {
         Object flow = input.get("flow");
@@ -97,6 +98,7 @@ public class ConduitActivity extends ActivityImpl {
         return ret;
 
     }
+
     Map<String,Object> response(List<FlowActivity> activities){
         Map<String,Object> result = new HashMap<>();
         List<Map<String,Object>> mapList = new ArrayList<>();
