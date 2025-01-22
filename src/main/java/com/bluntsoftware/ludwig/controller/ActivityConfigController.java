@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.controller;
 
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfig;
-import com.bluntsoftware.ludwig.conduit.config.ConfigTemplateDto;
+import com.bluntsoftware.ludwig.conduit.config.ConfigProperties;
 import com.bluntsoftware.ludwig.conduit.config.ConfigTestResult;
 import com.bluntsoftware.ludwig.dto.FlowConfigDto;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
@@ -23,7 +23,7 @@ public class ActivityConfigController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    List<ConfigTemplateDto> findAll(){
+    List<ConfigProperties> findAll(){
          return activityConfigRepository.findAll();
     }
 

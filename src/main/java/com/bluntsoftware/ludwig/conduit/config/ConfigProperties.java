@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConfigTemplateDto {
+public class ConfigProperties {
     String name;
     String configClass;
     String category;

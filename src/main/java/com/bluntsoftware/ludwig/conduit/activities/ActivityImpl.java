@@ -22,16 +22,17 @@ public abstract class ActivityImpl implements Activity {
     private final static Map<String,Activity> activities = new HashMap<>();
 
     private final ActivityConfigRepository activityConfigRepository;
+
     public ActivityImpl(ActivityConfigRepository activityConfigRepository) {
         this.activityConfigRepository = activityConfigRepository;
         if(getClass().isAnnotationPresent(Service.class)){
             activities.put(getClass().getTypeName(),this);
         }
     }
+
     protected ActivityConfigRepository getActivityConfigRepository() {
         return activityConfigRepository;
     }
-
 
     public <T> Map<String, Object> getExternalConfigByName(Object configName,Class<T> clazz){
         if(configName != null){
@@ -45,22 +46,33 @@ public abstract class ActivityImpl implements Activity {
     public enum Category{
         Conduit,Input,FileAndFolders
     }
+
     @Override
     public ActivityProperties getActivityProperties(){
+        return this.getActivityProperties(this);
+    }
+
+    public ActivityProperties getActivityProperties(Activity activity){
         return ActivityProperties.builder()
-                .name(getName())
-                .activityClass(getActivityClass())
-                .output(getOutput())
-                .icon(getIcon())
-                .category(getCategory())
-                .fireAndForget(fireAndForget())
-                .input(getInput())
-                .schema(getSchema())
+                .name(activity.getName())
+                .activityClass(activity.getActivityClass())
+                .output(activity.getOutput())
+                .icon(activity.getIcon())
+                .category(activity.getCategory())
+                .fireAndForget(activity.fireAndForget())
+                .input(activity.getInput())
+                .schema(activity.getSchema())
                 .build();
     }
+
     public abstract Map<String,Object> run(Map<String,Object> input) throws Exception;
+
     public abstract JsonSchema getSchema();
-    public static Map<String,Activity> list(){return activities;}
+
+    public static Map<String,Activity> list(){
+        return activities;
+    }
+
     public static Activity getByClassName(String className){
         Activity activity = activities.get(className);
         try {
