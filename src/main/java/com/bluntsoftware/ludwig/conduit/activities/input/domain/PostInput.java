@@ -1,10 +1,10 @@
 package com.bluntsoftware.ludwig.conduit.activities.input.domain;
 
 import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
-import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
-import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
+import com.bluntsoftware.ludwig.conduit.utils.schema.EntitySchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
+import com.bluntsoftware.ludwig.conduit.utils.schema.StringProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

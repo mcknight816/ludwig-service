@@ -2,7 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.files;
 
 
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.controller.AssetController;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.apache.commons.io.FileUtils;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.bluntsoftware.ludwig.conduit.schema.PropertyFormat.FOLDER_CHOOSER;
+import static com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat.FOLDER_CHOOSER;
 
 /**
  * Created by Alex Mcknight on 1/3/2017.

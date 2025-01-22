@@ -1,10 +1,10 @@
 package com.bluntsoftware.ludwig.conduit.config;
 
 import com.bluntsoftware.ludwig.conduit.utils.AES;
-import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
-import com.bluntsoftware.ludwig.conduit.schema.JsonPath;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
+import com.bluntsoftware.ludwig.conduit.utils.schema.EntitySchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonPath;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.StringProperty;
 import com.bluntsoftware.ludwig.domain.Config;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
@@ -24,15 +26,37 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
     private final Class<T> type;
     private final static Map<String, ActivityConfig> configs = new HashMap<>();
 
-    public static Map<String, ActivityConfig> list(){
-        return configs;
+    public static List<ConfigTemplateDto> list(){
+        return configs.values().stream().map(a -> ConfigTemplateDto.builder()
+                .configClass(a.getConfigClass())
+                .name(a.getName())
+                .category(a.getCategory())
+                .schema(a.getSchema())
+                .build()
+        ).collect(Collectors.toList());
     }
 
-    public static ActivityConfig getByClassName(String className){
-        ActivityConfig configSchema = configs.get(className);
+    public static ActivityConfig getByConfigClass(String configClass){
+        return configs.get(configClass);
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public ActivityConfigImpl() {
+        this.type = (Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass())
+                .getActualTypeArguments()[0];
+
+        if(getClass().isAnnotationPresent(Service.class)){
+            configs.put(getClass().getTypeName(),this);
+        }
+    }
+
+    public static ActivityConfig<?> getByClassName(String className){
+        ActivityConfig<?> configSchema = configs.get(className);
         try {
             if(configSchema == null){
-                configSchema =  (ActivityConfig)Class.forName(className).getDeclaredConstructor().newInstance();
+                configSchema =  (ActivityConfig<?>)Class.forName(className).getDeclaredConstructor().newInstance();
                 configs.put(className, configSchema);
             }
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
@@ -44,6 +68,7 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
         }
         return configSchema;
     }
+
     public JsonSchema getSchema(){
        /* JsonSchema schema = new JsonSchema(getName());
         JsonSchema recordProperty = getRecord();
@@ -60,17 +85,6 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
     public abstract JsonSchema getRecord();
 
 
-
-    @SuppressWarnings("unchecked")
-    public ActivityConfigImpl() {
-        this.type = (Class<T>) ((ParameterizedType) getClass()
-                .getGenericSuperclass())
-                .getActualTypeArguments()[0];
-
-        if(getClass().isAnnotationPresent(Service.class)){
-            configs.put(getClass().getTypeName(),this);
-        }
-    }
     @Override
     public String getConfigClass() {
         return getClass().getTypeName();
@@ -91,7 +105,6 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
         }
         return name;
     }
-
 
 
     public static String encrypt(String value){
@@ -147,7 +160,4 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return mapper.convertValue(config,type);
     }
-
-
-
 }

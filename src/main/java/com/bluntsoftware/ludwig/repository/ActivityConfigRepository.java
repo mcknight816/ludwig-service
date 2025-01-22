@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.repository;
 
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfig;
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
+import com.bluntsoftware.ludwig.conduit.config.ConfigTemplateDto;
 import com.bluntsoftware.ludwig.domain.FlowConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Repository;
@@ -21,12 +22,12 @@ public class ActivityConfigRepository {
         this.flowConfigRepository = flowConfigRepository;
     }
 
-    public List<ActivityConfig> findAll(){
-        return new ArrayList<>(ActivityConfigImpl.list().values());
+    public List<ConfigTemplateDto> findAll(){
+        return  ActivityConfigImpl.list();
     }
 
     public ActivityConfig getByKlass(String klass){
-        return ActivityConfigImpl.list().get(klass);
+        return ActivityConfigImpl.getByConfigClass(klass);
     }
 
     public FlowConfig findByNameAndConfigClass(String name, String configCLass) {

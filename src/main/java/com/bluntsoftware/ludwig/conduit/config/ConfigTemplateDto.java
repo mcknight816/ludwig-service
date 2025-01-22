@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.conduit.config;
 
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,12 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConfigTemplateDto {
-
     String name;
     String configClass;
     String category;
     JsonSchema schema;
-
-
-
 }

@@ -9,6 +9,5 @@ public interface Activity {
     String getCategory();
     String getIcon();
     Boolean fireAndForget();
-
     ActivityProperties getActivityProperties();
 }

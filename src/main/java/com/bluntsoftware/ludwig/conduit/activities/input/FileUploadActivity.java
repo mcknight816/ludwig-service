@@ -2,8 +2,8 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 
 
 import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.ValidationUtils;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.ValidationUtils;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

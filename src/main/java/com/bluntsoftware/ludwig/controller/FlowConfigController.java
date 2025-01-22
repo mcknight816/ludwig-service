@@ -41,7 +41,4 @@ public class FlowConfigController {
     public Mono<FlowConfigDto> deleteById(@PathVariable("id") String id ){
         return this.configService.deleteById(String.valueOf(id)).map(FlowConfigMapper.MAPPER::flowConfigToFlowConfigDto);
     }
-
-
-
 }

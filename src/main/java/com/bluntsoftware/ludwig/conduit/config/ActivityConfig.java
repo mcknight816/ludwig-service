@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.config;
 
 
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 
 import java.util.Map;
 

@@ -4,10 +4,8 @@ package com.bluntsoftware.ludwig.conduit.config.model;
 import com.bluntsoftware.ludwig.conduit.config.ConfigTestResult;
 import com.bluntsoftware.ludwig.conduit.config.model.domain.PayloadSchema;
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.ValidationUtils;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 

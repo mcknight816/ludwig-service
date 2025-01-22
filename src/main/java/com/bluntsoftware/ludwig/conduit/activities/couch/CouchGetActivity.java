@@ -2,8 +2,8 @@ package com.bluntsoftware.ludwig.conduit.activities.couch;
 
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.CouchbaseConnectionConfig;
-import com.bluntsoftware.ludwig.conduit.nosql.couch.CouchRepository;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.service.nosql.couch.CouchRepository;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

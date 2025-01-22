@@ -1,5 +1,9 @@
 package com.bluntsoftware.ludwig.conduit.schema;
 
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonPath;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
+import com.bluntsoftware.ludwig.conduit.utils.schema.StringProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class JsonSchemaTest {
 
@@ -31,7 +33,7 @@ class JsonSchemaTest {
         user.addString("age","51");
         user.addEnum("gender",gender,"Male");
         user.addString("color","blue");
-        user.addString("json","{}",PropertyFormat.JSON);
+        user.addString("json","{}", PropertyFormat.JSON);
         form.addRecord("user",user);
 
         JsonSchema address = new JsonSchema("Address");
@@ -46,7 +48,7 @@ class JsonSchemaTest {
         System.out.println(form.getJson());
      //   System.out.println(form.getValue());
 
-        Map<String,StringProperty> paths = form.getSecretStringProperties();
+        Map<String, StringProperty> paths = form.getSecretStringProperties();
 
         JsonPath path = new JsonPath( form.getValue());
         for(String prop_path : paths.keySet()){

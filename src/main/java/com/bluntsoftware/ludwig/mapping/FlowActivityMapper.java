@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.mapping;
 
-import com.bluntsoftware.ludwig.conduit.schema.JsonPath;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonPath;
 import com.bluntsoftware.ludwig.domain.ConnectionMap;
 import com.bluntsoftware.ludwig.domain.ConnectionPath;
 import com.bluntsoftware.ludwig.domain.FlowActivity;

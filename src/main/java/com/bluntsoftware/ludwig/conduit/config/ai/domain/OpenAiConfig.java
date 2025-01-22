@@ -1,9 +1,9 @@
 package com.bluntsoftware.ludwig.conduit.config.ai.domain;
 
-import com.bluntsoftware.ludwig.conduit.schema.EntitySchema;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
-import com.bluntsoftware.ludwig.conduit.schema.StringProperty;
+import com.bluntsoftware.ludwig.conduit.utils.schema.EntitySchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
+import com.bluntsoftware.ludwig.conduit.utils.schema.StringProperty;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.OpenAiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

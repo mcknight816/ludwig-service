@@ -3,7 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.conduit;
 import com.bluntsoftware.ludwig.conduit.config.mail.domain.Mail;
 import com.bluntsoftware.ludwig.conduit.config.mail.MailConfig;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.apache.commons.lang3.CharEncoding;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.domain;
 
 
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

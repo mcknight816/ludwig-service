@@ -4,7 +4,7 @@ package com.bluntsoftware.ludwig.conduit.config.sql;
 import com.bluntsoftware.ludwig.conduit.config.ConfigTestResult;
 import com.bluntsoftware.ludwig.conduit.config.sql.domain.SQLConnection;
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

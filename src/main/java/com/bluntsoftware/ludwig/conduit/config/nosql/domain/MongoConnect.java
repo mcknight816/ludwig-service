@@ -1,6 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.config.nosql.domain;
 
-import com.bluntsoftware.ludwig.conduit.schema.*;
+
+import com.bluntsoftware.ludwig.conduit.utils.schema.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

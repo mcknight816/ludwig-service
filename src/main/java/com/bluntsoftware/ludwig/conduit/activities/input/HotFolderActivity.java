@@ -1,8 +1,8 @@
 package com.bluntsoftware.ludwig.conduit.activities.input;
 
 
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.controller.AssetController;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;

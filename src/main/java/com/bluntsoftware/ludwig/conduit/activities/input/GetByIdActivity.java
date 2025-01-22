@@ -1,7 +1,6 @@
 package com.bluntsoftware.ludwig.conduit.activities.input;
 
-import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoById;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
 

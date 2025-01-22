@@ -3,7 +3,7 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 
 import com.bluntsoftware.ludwig.conduit.config.queue.QConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

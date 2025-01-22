@@ -4,9 +4,9 @@ package com.bluntsoftware.ludwig.conduit.activities.couch;
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.CouchbaseConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
-import com.bluntsoftware.ludwig.conduit.nosql.couch.CouchConnection;
-import com.bluntsoftware.ludwig.conduit.nosql.couch.CouchRepository;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.service.nosql.couch.CouchConnection;
+import com.bluntsoftware.ludwig.conduit.service.nosql.couch.CouchRepository;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.couchbase.client.java.Collection;
 

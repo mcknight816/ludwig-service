@@ -3,7 +3,7 @@ package com.bluntsoftware.ludwig.conduit.config.mail;
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
 import com.bluntsoftware.ludwig.conduit.config.ConfigTestResult;
 import com.bluntsoftware.ludwig.conduit.config.mail.domain.Mail;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;

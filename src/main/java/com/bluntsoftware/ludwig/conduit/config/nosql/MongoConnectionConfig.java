@@ -3,9 +3,9 @@ package com.bluntsoftware.ludwig.conduit.config.nosql;
 import com.bluntsoftware.ludwig.conduit.config.ConfigTestResult;
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
 import com.bluntsoftware.ludwig.conduit.config.nosql.domain.MongoConnect;
-import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoConnection;
-import com.bluntsoftware.ludwig.conduit.nosql.mongo.MongoRepository;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.service.nosql.mongo.MongoConnection;
+import com.bluntsoftware.ludwig.conduit.service.nosql.mongo.MongoRepository;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

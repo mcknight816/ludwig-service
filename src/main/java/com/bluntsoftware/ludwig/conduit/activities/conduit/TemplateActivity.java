@@ -2,8 +2,8 @@ package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
 
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
-import com.bluntsoftware.ludwig.conduit.schema.PropertyFormat;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;

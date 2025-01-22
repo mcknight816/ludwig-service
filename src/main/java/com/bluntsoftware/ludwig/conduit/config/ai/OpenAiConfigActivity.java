@@ -3,7 +3,7 @@ package com.bluntsoftware.ludwig.conduit.config.ai;
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
 import com.bluntsoftware.ludwig.conduit.config.ConfigTestResult;
 import com.bluntsoftware.ludwig.conduit.config.ai.domain.OpenAiConfig;
-import com.bluntsoftware.ludwig.conduit.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.service.ai.AIService;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionRequest;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionResponse;

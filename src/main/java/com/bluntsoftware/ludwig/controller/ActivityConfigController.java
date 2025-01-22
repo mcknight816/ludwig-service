@@ -4,7 +4,6 @@ import com.bluntsoftware.ludwig.conduit.config.ActivityConfig;
 import com.bluntsoftware.ludwig.conduit.config.ConfigTemplateDto;
 import com.bluntsoftware.ludwig.conduit.config.ConfigTestResult;
 import com.bluntsoftware.ludwig.dto.FlowConfigDto;
-import com.bluntsoftware.ludwig.mapping.FlowConfigMapper;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
@@ -12,42 +11,32 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
-
 
 @RestController
 @RequestMapping("/meta/config")
 public class ActivityConfigController {
 
-    private final ActivityConfigRepository activityRepository;
+    private final ActivityConfigRepository activityConfigRepository;
 
-    public ActivityConfigController(ActivityConfigRepository activityRepository) {
-        this.activityRepository = activityRepository;
+    public ActivityConfigController(ActivityConfigRepository activityConfigRepository) {
+        this.activityConfigRepository = activityConfigRepository;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     List<ConfigTemplateDto> findAll(){
-         return activityRepository.findAll().stream().map(a -> ConfigTemplateDto.builder()
-                 .configClass(a.getConfigClass())
-                 .name(a.getName())
-                 .category(a.getCategory())
-                 .schema(a.getSchema())
-                 .build()
-         ).collect(Collectors.toList());
-
+         return activityConfigRepository.findAll();
     }
 
     @GetMapping(value = "{class}",produces = MediaType.APPLICATION_JSON_VALUE)
     ActivityConfig findById(@PathVariable("class") String cls){
-        return activityRepository.getByKlass(cls);
+        return activityConfigRepository.getByKlass(cls);
     }
 
     @PostMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
     public ConfigTestResult test(@RequestBody Map<String,Object> dto){
         ObjectMapper mapper = new ObjectMapper();
         FlowConfigDto flowConfigDto = mapper.convertValue(dto,FlowConfigDto.class);
-        ActivityConfig<?> configActivity = activityRepository.getByKlass(flowConfigDto.getConfigClass());
+        ActivityConfig<?> configActivity = activityConfigRepository.getByKlass(flowConfigDto.getConfigClass());
         return configActivity.test(flowConfigDto.getConfig());
     }
 }
