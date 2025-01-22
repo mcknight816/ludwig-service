@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 import javax.validation.constraints.NotNull;
 @Slf4j
 @Configuration
-public class ReactiveMongoConfig {
+public class MultiTenantMongoConfig {
 
     @Value("${spring.data.mongodb.uri}")
     private String uri;
@@ -25,32 +25,21 @@ public class ReactiveMongoConfig {
     @Bean
     SimpleReactiveMongoDatabaseFactory mongoDbFactory(MongoClient client){
         return new SimpleReactiveMongoDatabaseFactory(client,dbName){
+            @org.jetbrains.annotations.NotNull
             @NotNull
             @Override
             public Mono<MongoDatabase> getMongoDatabase() throws DataAccessException {
                 String tenant = TenantResolver.resolve() != null && !TenantResolver.resolve().equalsIgnoreCase("") ?  "_" + TenantResolver.resolve() :"";
                 String tenantDb = dbName + tenant;
-
                 return super.getMongoDatabase(tenantDb);
             }
         };
     }
 
-    /* @Bean
-    public MongoClient mongo(ObjectProvider<MongoClientSettingsBuilderCustomizer> builderCustomizers,
-                             MongoClientSettings settings) {
-        return new ReactiveMongoClientFactory(builderCustomizers.orderedStream().collect(Collectors.toList()))
-                .createMongoClient(settings);
-    }*/
     @Bean
     public MongoClient mongoClient() {
         return MongoClients.create(uri);
     }
-    /*@Bean
-    MongoClientSettings mongoClientSettings() {
 
-
-        return MongoClientSettings.builder().build();
-    }*/
 }
 
