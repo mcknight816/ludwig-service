@@ -218,7 +218,7 @@ public class FlowRunnerService {
         return ret;
     }
 
-    private List<FlowActivity> runFlowWithActivityInputAndContext(Flow flow, Activity activity, Map<String, Object> input, String context){
+    public List<FlowActivity> runFlowWithActivityInputAndContext(Flow flow, Activity activity, Map<String, Object> input, String context){
         if(flow != null){
             FlowActivity flowActivity = context != null ?
                 getContextByClassName(flow,activity.getActivityClass(),context) :

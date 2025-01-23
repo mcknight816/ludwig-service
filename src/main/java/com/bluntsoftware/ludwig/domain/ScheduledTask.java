@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ScheduledTask {
     String name;
+    String appId;
     String tenantId;
+    String activityClassId;
     String flowId;
     String flowActivityId;
     String cronExpression;

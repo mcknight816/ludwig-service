@@ -40,10 +40,14 @@ public class FlowActivityMapper {
     }
 
     private static List<ConnectionMap> getActivityConnectionMaps(List<ConnectionMap> connectionMapList,FlowActivity flowActivity){
-        return  connectionMapList.stream()
+        List<ConnectionMap> maps =  connectionMapList.stream()
                 .map(FlowActivityMapper::addConnectionPaths)
-                .filter(c->c.getTargetPath().getFlowActivityId().equalsIgnoreCase(flowActivity.getId()))
+                .filter(c-> {
+                    return c.getTargetPath().getFlowActivityId().equalsIgnoreCase(flowActivity.getId());
+                })
                 .collect(Collectors.toList());
+
+        return maps;
     }
 
     private static ConnectionMap addConnectionPaths(ConnectionMap connectionMap){

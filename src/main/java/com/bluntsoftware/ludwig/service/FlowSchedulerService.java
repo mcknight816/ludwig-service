@@ -1,6 +1,11 @@
 package com.bluntsoftware.ludwig.service;
 
+
+import com.bluntsoftware.ludwig.conduit.activities.input.InputActivity;
+import com.bluntsoftware.ludwig.domain.Application;
+import com.bluntsoftware.ludwig.domain.Flow;
 import com.bluntsoftware.ludwig.domain.ScheduledTask;
+import com.bluntsoftware.ludwig.repository.ActivityRepository;
 import com.bluntsoftware.ludwig.tenant.TenantResolver;
 import com.bluntsoftware.saasy.repository.TenantRepo;
 import lombok.extern.slf4j.Slf4j;
@@ -16,15 +21,21 @@ import java.util.Objects;
 
 @Slf4j
 @Service
-public class DynamicSchedulerService {
+public class FlowSchedulerService {
+    //Should we rely on tenant repo ?
     private final TenantRepo tenantRepository;
     private final ApplicationService applicationService;
+    private final FlowRunnerService flowRunnerService;
+    private final ActivityRepository activityRepository;
+
     private final TaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
     private final Map<String, Runnable> scheduledTasks = new HashMap<>();
 
-    public DynamicSchedulerService(TenantRepo tenantRepository, ApplicationService applicationService) {
+    public FlowSchedulerService(TenantRepo tenantRepository, ApplicationService applicationService, FlowRunnerService flowRunnerService, ActivityRepository activityRepository ) {
         this.tenantRepository = tenantRepository;
         this.applicationService = applicationService;
+        this.flowRunnerService = flowRunnerService;
+        this.activityRepository = activityRepository;
     }
 
     public void refreshSchedulers(){
@@ -33,6 +44,7 @@ public class DynamicSchedulerService {
         Objects.requireNonNull(this.tenantRepository.findAll().collectList().block()).forEach(t->{
             TenantResolver.setCurrentTenant(t.getId());
             List<ScheduledTask> tasks = applicationService.findAllScheduledTasks().block();
+            assert tasks != null;
             for (ScheduledTask task : tasks) {
                 task.setTenantId(t.getId());
                 scheduleTask(task);
@@ -75,10 +87,18 @@ public class DynamicSchedulerService {
 
     private Runnable createTask(ScheduledTask task) {
         return () -> {
-            //System.out.println("Executing task: " + task.getTenantId() + " at " + System.currentTimeMillis());
-            log.info("Task: {}",task);
+            Application application = this.applicationService.findById(task.getAppId()).block();
+            InputActivity activity = (InputActivity)activityRepository.getByKlass(task.getActivityClassId());
+            Map<String,Object> in = new HashMap<>();
+            assert application != null;
+            Flow flow  = application.getFlows()
+                    .stream()
+                    .filter(f-> f.getId().equals(task.getFlowId()))
+                    .findFirst()
+                            .orElse(null);
+            assert flow != null;
+            log.info("Executing scheduled Request to {} for flow {}", application.getName(), flow.getName());
+            flowRunnerService.runFlowWithActivityInputAndContext(flow,activity,in,null);
         };
     }
-
-
 }

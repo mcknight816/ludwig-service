@@ -49,6 +49,8 @@ public class ApplicationService {
                     .map(fa ->  ScheduledTask.builder()
                             .flowActivityId(fa.getId())
                             .flowId(flow.getId())
+                            .appId(app.getId())
+                            .activityClassId(TimerActivity.class.getName())
                             .tenantId(TenantResolver.resolve())
                             .name(fa.getName())
                             .active(true)
