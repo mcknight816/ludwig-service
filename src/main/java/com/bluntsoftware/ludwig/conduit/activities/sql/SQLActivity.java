@@ -1,6 +1,5 @@
 package com.bluntsoftware.ludwig.conduit.activities.sql;
 
-
 import com.bluntsoftware.ludwig.conduit.config.sql.SQLConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;

@@ -1,11 +1,15 @@
 package com.bluntsoftware.ludwig.service;
 
+import com.bluntsoftware.ludwig.conduit.activities.input.TimerActivity;
+import com.bluntsoftware.ludwig.conduit.activities.input.domain.TimerInput;
 import com.bluntsoftware.ludwig.domain.Application;
+import com.bluntsoftware.ludwig.domain.ScheduledTask;
 import com.bluntsoftware.ludwig.repository.ApplicationRepository;
+import com.bluntsoftware.ludwig.tenant.TenantResolver;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
+import java.util.List;
 
 @Service()
 public class ApplicationService {
@@ -36,4 +40,25 @@ public class ApplicationService {
     public Application findByPath(String appPath) {
         return applicationRepository.findByPath(appPath).block();
     }
+
+    public Mono<List<ScheduledTask>> findAllScheduledTasks() {
+        return applicationRepository.findAll()
+            .flatMap(app -> Flux.fromIterable(app.getFlows())
+                .flatMap(flow -> Flux.fromIterable(flow.getActivities())
+                    .filter(fa -> fa.getActivityClass().equalsIgnoreCase(TimerActivity.class.getName()))
+                    .map(fa ->  ScheduledTask.builder()
+                            .flowActivityId(fa.getId())
+                            .flowId(flow.getId())
+                            .tenantId(TenantResolver.resolve())
+                            .name(fa.getName())
+                            .active(true)
+                            .cronExpression(TimerInput.getCronExpression(fa.getInput()))
+                            .build())
+                )
+            )
+            .collectList();
+    }
+
+
+
 }
