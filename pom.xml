@@ -17,7 +17,7 @@
   <properties>
     <spring-cloud.version>2020.0.3</spring-cloud.version>
     <org.projectlombok.version>1.18.20</org.projectlombok.version>
-    <java.version>1.8</java.version>
+    <java.version>11</java.version>
     <spring-boot-admin.version>2.3.1</spring-boot-admin.version>
     <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
     <sonar.host.url></sonar.host.url>
@@ -276,6 +276,14 @@
               <version>${lombok-mapstruct-binding.version}</version>
             </path>
           </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>10</source>
+          <target>10</target>
         </configuration>
       </plugin>
     </plugins>

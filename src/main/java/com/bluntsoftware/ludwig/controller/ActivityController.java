@@ -15,14 +15,20 @@ import java.util.stream.Collectors;
 @RequestMapping("/meta/activity")
 public class ActivityController {
     private final ActivityRepository activityRepository;
+
     public ActivityController(ActivityRepository activityRepository) {
         this.activityRepository = activityRepository;
     }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     List<ActivityProperties> findAll(){
-        List<ActivityProperties> activities =  activityRepository.findAll().stream().map(Activity::getActivityProperties).collect(Collectors.toList());
-        return activities;
+        return activityRepository.findAll()
+                .stream()
+                .map(Activity::getActivityProperties)
+                .collect(Collectors.toList());
+
     }
+
     @GetMapping(value = "{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     ActivityProperties findById(@PathVariable("id") String id){
         return activityRepository.getByKlass(id).getActivityProperties();
