@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SQLConnection implements EntitySchema {
+public class SQLConnectionConfig implements EntitySchema {
 
     String databaseType = "Postgres";
     String server = "localhost";

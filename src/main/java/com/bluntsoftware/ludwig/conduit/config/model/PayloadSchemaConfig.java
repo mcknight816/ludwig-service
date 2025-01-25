@@ -20,9 +20,9 @@ public class PayloadSchemaConfig extends ActivityConfigImpl<PayloadSchema> {
                 .error(true)
                 .message("JSON Schema is NOT valid !")
                 .build();
-        Map<String,Object> payloadSchema = config.getJsonSchema().getValue();
-        if(payloadSchema != null){
-            String schema = payloadSchema.get("schema").toString();
+
+        if(config != null && config.getSchema() != null){
+            String schema = config.getSchema();
             ObjectMapper mapper = new ObjectMapper();
             ConcurrentHashMap<String,Object> jsonSchema = null;
             try {

@@ -58,21 +58,22 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
         }
     }
 
-    public static ActivityConfig<?> getByClassName(String className){
-        ActivityConfig<?> configSchema = configs.get(className);
-        try {
-            if(configSchema == null){
-                configSchema =  (ActivityConfig<?>)Class.forName(className).getDeclaredConstructor().newInstance();
-                configs.put(className, configSchema);
-            }
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
+    public static ActivityConfig<?> getByClassName(String className) {
+        ActivityConfig<?> activityConfig = configs.get(className);
+        if (activityConfig == null) {
+            activityConfig = createNewInstance(className);
+            configs.put(className, activityConfig);
         }
-        return configSchema;
+        return activityConfig;
+    }
+
+    private static ActivityConfig<?> createNewInstance(String className) {
+        try {
+            return (ActivityConfig<?>) Class.forName(className).getDeclaredConstructor().newInstance();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
+                 InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException("Failed to instantiate ActivityConfig for class: " + className, e);
+        }
     }
 
     public JsonSchema getJsonSchema(){

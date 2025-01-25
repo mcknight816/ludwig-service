@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.activities.input;
 
 
-import com.bluntsoftware.ludwig.conduit.config.queue.QConnectionConfig;
+import com.bluntsoftware.ludwig.conduit.config.queue.ActiveMQConfigActivity;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
@@ -17,7 +17,7 @@ import java.util.Map;
 public class ListenerActivity extends ActivityImpl {
 
     @Autowired
-    QConnectionConfig qConnectionConfig;
+    ActiveMQConfigActivity qConnectionConfig;
 
     public ListenerActivity(ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);

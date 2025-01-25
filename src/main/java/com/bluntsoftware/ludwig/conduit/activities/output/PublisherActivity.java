@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.activities.output;
 
 import com.bluntsoftware.ludwig.conduit.config.ConnectionFactoryChooser;
-import com.bluntsoftware.ludwig.conduit.config.queue.QConnectionConfig;
+import com.bluntsoftware.ludwig.conduit.config.queue.ActiveMQConfigActivity;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class PublisherActivity extends ActivityImpl {
 
     @Autowired
-    QConnectionConfig qConnectionConfig;
+    ActiveMQConfigActivity qConnectionConfig;
     @Autowired
     ConnectionFactoryChooser connectionFactoryChooser;
 
@@ -44,7 +44,7 @@ public class PublisherActivity extends ActivityImpl {
 
     @Override
     public Map<String, Object> run(Map<String, Object> input) throws Exception {
-        Map<String, Object>  config = this.getExternalConfigByName(input.get(qConnectionConfig.getPropertyName()),QConnectionConfig.class);
+        Map<String, Object>  config = this.getExternalConfigByName(input.get(qConnectionConfig.getPropertyName()), ActiveMQConfigActivity.class);
         JmsMessagingTemplate template = new JmsMessagingTemplate();
         template.setConnectionFactory(connectionFactoryChooser.connectionFactory(config));
         Map<String,Object> msg = new HashMap<>();

@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.conduit.activities.sql;
 
-import com.bluntsoftware.ludwig.conduit.config.sql.SQLConnectionConfig;
+import com.bluntsoftware.ludwig.conduit.config.sql.SQLConfigActivity;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
@@ -12,9 +12,9 @@ import java.util.Map;
  */
 @Service
 public class SQLActivity extends ActivityImpl {
-    private final SQLConnectionConfig sqlConnectionConfig;
+    private final SQLConfigActivity sqlConnectionConfig;
 
-    public SQLActivity(SQLConnectionConfig sqlConnectionConfig, ActivityConfigRepository activityConfigRepository) {
+    public SQLActivity(SQLConfigActivity sqlConnectionConfig, ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);
         this.sqlConnectionConfig = sqlConnectionConfig;
     }
@@ -36,7 +36,7 @@ public class SQLActivity extends ActivityImpl {
     }
 
     public static void main(String[] args) {
-        SQLActivity activity = new SQLActivity(new SQLConnectionConfig( ),null);
+        SQLActivity activity = new SQLActivity(new SQLConfigActivity( ),null);
         System.out.println(activity.getInput());
         System.out.println(activity.getJsonSchema().getJson());
     }

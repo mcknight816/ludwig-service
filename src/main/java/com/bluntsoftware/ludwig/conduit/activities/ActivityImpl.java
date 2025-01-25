@@ -184,7 +184,7 @@ public abstract class  ActivityImpl implements Activity {
         } catch (Exception e) {
             logger.error("Error running activity: {}", getName(), e);
             Map<String,Object> output = new ConcurrentHashMap<>();
-             output.put("error", e.getMessage());
+             output.put("error", e.getMessage() != null ? e.getMessage() : e.toString());
              return output;
         }
     }
