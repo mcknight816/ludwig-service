@@ -27,7 +27,7 @@ public class HttpResponseActivity extends ActivityImpl {
     }
 
     @Override
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         JsonSchema schema = JsonSchema.builder().title(this.getName()).build();
 
         List<String> outType = new ArrayList<>();

@@ -20,7 +20,7 @@ public class ConduitActivity extends ActivityImpl {
     }
 
     @Override
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         JsonSchema schema = JsonSchema.builder().title("ForEach").build();
         schema.addString("Flow Name","flow","",null,false);
         schema.addString("Context Name","context",null,null,false);

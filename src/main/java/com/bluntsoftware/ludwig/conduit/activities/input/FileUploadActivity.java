@@ -25,8 +25,8 @@ public class FileUploadActivity extends InputActivity {
     }
 
     @Override
-    public JsonSchema getSchema() {
-        JsonSchema schema = super.getSchema();
+    public JsonSchema getJsonSchema() {
+        JsonSchema schema = super.getJsonSchema();
         schema.addConfig(payloadSchemaConfig);
         return schema;
     }

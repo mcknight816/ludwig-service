@@ -32,9 +32,9 @@ public class HotFolderActivity extends TimerActivity {
     }
 
     @Override
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
 
-        JsonSchema schema =  super.getSchema();
+        JsonSchema schema =  super.getJsonSchema();
         schema.setTitle("Hot Folder Properties");
         schema.addString("folderLocation","/hot", PropertyFormat.FOLDER_CHOOSER);
         schema.addString("include","*.*",null);

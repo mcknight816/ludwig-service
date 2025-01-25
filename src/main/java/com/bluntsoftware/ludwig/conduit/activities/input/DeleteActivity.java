@@ -13,8 +13,8 @@ public class DeleteActivity extends InputActivity {
         super(activityConfigRepository);
     }
     @Override
-    public JsonSchema getSchema() {
-        JsonSchema schema = super.getSchema();
+    public JsonSchema getJsonSchema() {
+        JsonSchema schema = super.getJsonSchema();
         schema.addString("id","");
         return schema;
     }

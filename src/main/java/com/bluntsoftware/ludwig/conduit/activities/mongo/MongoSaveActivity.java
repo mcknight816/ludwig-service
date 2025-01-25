@@ -29,7 +29,7 @@ public class MongoSaveActivity extends MongoActivity {
     }
 
     @Override
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         return MongoSave.builder().build().getJsonSchema();
     }
 

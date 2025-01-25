@@ -38,7 +38,7 @@ public abstract class MongoActivity extends ActivityImpl  {
         return mapper.convertValue(fromValue,toValueType);
     }
     @Override
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
          return MongoSettings.builder().build().getJsonSchema();
     }
 

@@ -33,7 +33,7 @@ public class MongoDeleteActivity  extends MongoActivity {
         return mongoRepository.remove( settings.getDatabase(),settings.getCollection(),byId.getId());
     }
     @Override
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         return MongoById.builder().build().getJsonSchema();
     }
 }

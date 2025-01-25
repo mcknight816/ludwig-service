@@ -87,7 +87,7 @@ public class MongoFindActivity extends MongoActivity {
     }
 
     @Override
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         return MongoFind.builder().build().getJsonSchema();
     }
 

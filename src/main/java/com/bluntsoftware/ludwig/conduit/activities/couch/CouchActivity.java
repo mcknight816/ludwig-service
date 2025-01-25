@@ -33,7 +33,7 @@ public abstract class CouchActivity extends ActivityImpl {
     }
 
     @Override
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         JsonSchema schema = JsonSchema.builder().title("Couch Properties").build();
         schema.addString("database","test",null);
         schema.addString("collection","",null);

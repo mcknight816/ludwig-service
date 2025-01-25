@@ -20,7 +20,7 @@ public class SQLActivity extends ActivityImpl {
     }
 
     @Override
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         JsonSchema schema = JsonSchema.builder().title("SQL Properties").build();
         schema.addConfig(sqlConnectionConfig);
         schema.addString("sql","select * from table", PropertyFormat.SQL);
@@ -38,7 +38,7 @@ public class SQLActivity extends ActivityImpl {
     public static void main(String[] args) {
         SQLActivity activity = new SQLActivity(new SQLConnectionConfig( ),null);
         System.out.println(activity.getInput());
-        System.out.println(activity.getSchema().getJson());
+        System.out.println(activity.getJsonSchema().getJson());
     }
 
     @Override

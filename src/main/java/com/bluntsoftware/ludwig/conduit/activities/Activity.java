@@ -12,5 +12,5 @@ public interface Activity {
     String getIcon();
     Boolean fireAndForget();
     ActivityProperties getActivityProperties();
-    JsonSchema getSchema();
+    JsonSchema getJsonSchema();
 }

@@ -30,15 +30,15 @@ public class CouchSaveActivity extends CouchActivity {
     }
 
     @Override
-    public JsonSchema getSchema() {
-        JsonSchema schema =  super.getSchema();
+    public JsonSchema getJsonSchema() {
+        JsonSchema schema =  super.getJsonSchema();
         schema.addString("payload","{}", PropertyFormat.JSON);
         return schema;
     }
 
     @Override
     public Map<String, Object> getInput() {
-        return getSchema().getValue();
+        return this.getJsonSchema().getValue();
     }
 
     @Override

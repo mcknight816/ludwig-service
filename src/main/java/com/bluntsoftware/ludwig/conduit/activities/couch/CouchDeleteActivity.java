@@ -32,8 +32,8 @@ public class CouchDeleteActivity extends CouchActivity {
         return mongoRepository.remove( databaseName,collectionName,id);
     }
     @Override
-    public JsonSchema getSchema() {
-        JsonSchema schema =  super.getSchema();
+    public JsonSchema getJsonSchema() {
+        JsonSchema schema =  super.getJsonSchema();
         schema.addString("id","",null);
         return schema;
     }

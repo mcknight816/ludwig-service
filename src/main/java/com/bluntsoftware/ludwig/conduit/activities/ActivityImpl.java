@@ -119,7 +119,7 @@ public abstract class  ActivityImpl implements Activity {
                 .category(activity.getCategory())
                 .fireAndForget(activity.fireAndForget())
                 .input(activity.getInput())
-                .schema(activity.getSchema())
+                .schema(activity.getJsonSchema())
                 .build();
     }
 
@@ -164,7 +164,7 @@ public abstract class  ActivityImpl implements Activity {
 
     @Override
     public Map<String, Object> getInput() {
-        JsonSchema schema = getSchema();
+        JsonSchema schema = getJsonSchema();
         if (schema == null) {
             logger.warn("getSchema() returned null; returning empty input map");
             return Map.of();
@@ -196,5 +196,5 @@ public abstract class  ActivityImpl implements Activity {
 
     // Abstract methods to be implemented by subclasses
     public abstract Map<String, Object> run(Map<String, Object> input) throws Exception;
-    public abstract JsonSchema getSchema();
+    public abstract JsonSchema getJsonSchema();
 }

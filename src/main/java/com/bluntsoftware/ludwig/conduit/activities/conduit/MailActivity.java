@@ -47,7 +47,7 @@ public class MailActivity extends ActivityImpl {
     }
 
     @Override
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         JsonSchema schema = JsonSchema.builder().title("Mail").build();
         schema.addConfig(mailConfig);
         schema.addString(to,"admin@bluntsoftware.com");

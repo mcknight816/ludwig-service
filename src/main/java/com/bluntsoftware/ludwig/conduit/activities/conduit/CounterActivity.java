@@ -44,7 +44,7 @@ public class CounterActivity extends ActivityImpl {
     }
 
     @Override
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         JsonSchema schema = JsonSchema.builder().title("Counter").build();
         schema.addString("name","counter");
         schema.addString("increment","1");

@@ -103,8 +103,8 @@ public class CouchFindActivity extends CouchActivity {
     }
 
     @Override
-    public JsonSchema getSchema() {
-        JsonSchema schema =  super.getSchema();
+    public JsonSchema getJsonSchema() {
+        JsonSchema schema =  super.getJsonSchema();
         List<String> sord = new ArrayList<>();
         sord.add("ASC");
         sord.add("DESC");
