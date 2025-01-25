@@ -1,12 +1,13 @@
 package com.bluntsoftware.ludwig.conduit.config;
 
-import com.ibm.mq.jms.MQQueueConnectionFactory;
-import com.ibm.msg.client.wmq.WMQConstants;
+/*import com.ibm.mq.jms.MQQueueConnectionFactory;
+import com.ibm.msg.client.wmq.WMQConstants;*/
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.stereotype.Service;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -18,7 +19,7 @@ public class ConnectionFactoryChooser {
             case "Active MQ":
                 return activeMqConnectionFactory(config);
             case "IBM MQ":
-                return ibmMqConnectionFactory(config);
+                return null;//ibmMqConnectionFactory(config);
         }
         return null;
     }
@@ -36,7 +37,7 @@ public class ConnectionFactoryChooser {
         connectionFactory.setPassword(password);
         return connectionFactory;
     }
-
+/*
     public MQQueueConnectionFactory ibmMqConnectionFactory(Map<String, Object> config) throws JMSException {
         MQQueueConnectionFactory connectionFactory = new MQQueueConnectionFactory();
         Map<String,String> connection = (Map<String,String>)config.get("connection");
@@ -59,4 +60,6 @@ public class ConnectionFactoryChooser {
         connectionFactory.setStringProperty(WMQConstants.PASSWORD, password);//passw0rd
         return connectionFactory;
     }
+
+ */
 }

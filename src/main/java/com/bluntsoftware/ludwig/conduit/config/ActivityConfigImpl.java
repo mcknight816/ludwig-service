@@ -34,7 +34,7 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
                 .configClass(a.getConfigClass())
                 .name(a.getName())
                 .category(a.getCategory())
-                .schema(a.getSchema())
+                .schema(a.getJsonSchema())
                 .build()
         ).collect(Collectors.toList());
     }
@@ -75,13 +75,13 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
         return configSchema;
     }
 
-    public JsonSchema getSchema(){
+    public JsonSchema getJsonSchema(){
         return getRecord();
     }
 
     public JsonSchema getRecord() {
         try {
-            return (JsonSchema) type.getMethod("getEntitySchema").invoke(null);
+            return (JsonSchema) type.getMethod("getJsonSchema").invoke(null);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
@@ -125,7 +125,7 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
     static JsonSchema getConfigSchema(Config config){
         String configClass = config.getConfigClass();
         ActivityConfig schema = ActivityConfigImpl.getByClassName(configClass);
-        return schema.getSchema();
+        return schema.getJsonSchema();
     }
 
     public static Config encrypt(Config config){
@@ -155,7 +155,7 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
     }
 
     protected Map<String,Object> getDefaults(){
-        return getSchema().getValue();
+        return getJsonSchema().getValue();
     }
 
     public T getDefaultConfig() {
