@@ -14,16 +14,16 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public abstract class ActivityConfigImpl<T extends EntitySchema> implements ActivityConfig<T> {
     private final Class<T> type;
-    private final static Map<String, ActivityConfig> configs = new HashMap<>();
+    private final static Map<String, ActivityConfig> configs = new ConcurrentHashMap<>();
 
     public abstract ConfigTestResult testConfig(T config);
 
