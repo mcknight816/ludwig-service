@@ -21,7 +21,7 @@ public class MongoSettings implements EntitySchema {
     String connection;
    // String allowFriends;
 
-    public static JsonSchema getSchema() {
+    public  JsonSchema getSchema() {
         String[] trueFalse = {"true","false"};
         Map<String, Property> props = new HashMap<>();
         props.put("database", StringProperty.builder().title("Database Name").build());

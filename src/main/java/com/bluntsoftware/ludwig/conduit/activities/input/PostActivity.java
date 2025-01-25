@@ -26,7 +26,7 @@ public class PostActivity extends InputActivity {
 
     @Override
     public JsonSchema getSchema() {
-        return PostInput.getSchema();
+        return PostInput.builder().build().getSchema();
     }
 
     @Override

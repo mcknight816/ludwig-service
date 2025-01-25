@@ -39,7 +39,7 @@ public abstract class MongoActivity extends ActivityImpl  {
     }
     @Override
     public JsonSchema getSchema() {
-         return MongoSettings.getSchema();
+         return MongoSettings.builder().build().getSchema();
     }
 
     MongoRepository getRepository(String connectionName){

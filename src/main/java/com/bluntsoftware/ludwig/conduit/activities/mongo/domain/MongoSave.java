@@ -14,10 +14,10 @@ import java.util.Map;
 public class MongoSave implements EntitySchema {
     MongoSettings settings;
     Map<String,Object> payload;
-    public static JsonSchema getSchema() {
+    public  JsonSchema getSchema() {
         JsonSchema ret =  JsonSchema.builder().title("Mongo Save").build();
         ret.getProperties().put("payload", StringProperty.builder().defaultValue("{}").format(PropertyFormat.JSON).build());
-        ret.getProperties().put("settings", MongoSettings.getSchema());
+        ret.getProperties().put("settings", MongoSettings.builder().build().getSchema());
         return ret;
     }
 }

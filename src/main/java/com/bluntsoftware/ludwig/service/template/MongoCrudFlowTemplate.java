@@ -146,7 +146,7 @@ public class MongoCrudFlowTemplate {
         return FlowTemplate.builder()
                 .name(getType())
                 .type(getType())
-                .schema(MongoCrudSettings.getSchema())
+                .schema(MongoCrudSettings.builder().build().getSchema())
                 .build();
     }
 

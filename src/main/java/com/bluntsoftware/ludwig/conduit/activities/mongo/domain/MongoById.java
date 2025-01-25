@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 public class MongoById implements EntitySchema {
     String id;
     MongoSettings settings;
-    public static JsonSchema getSchema() {
+    public  JsonSchema getSchema() {
         JsonSchema ret =  JsonSchema.builder().title("Mongo Get By Id").build();
         ret.getProperties().put("id", StringProperty.builder().title("Id").defaultValue("").build());
-        ret.getProperties().put("settings", MongoSettings.getSchema());
+        ret.getProperties().put("settings", MongoSettings.builder().build().getSchema());
         return ret;
     }
 }

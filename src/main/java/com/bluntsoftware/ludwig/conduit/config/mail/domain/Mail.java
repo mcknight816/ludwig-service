@@ -29,7 +29,7 @@ public class Mail implements EntitySchema {
     private String password;
     private String testEmail;
 
-    public static JsonSchema getSchema() {
+    public JsonSchema getSchema() {
         JsonSchema mail = JsonSchema.builder().title("mail").build();
         mail.addString("host","smtp.gmail.com");
         mail.addString("port","587");

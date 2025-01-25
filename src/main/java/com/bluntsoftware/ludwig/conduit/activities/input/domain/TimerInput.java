@@ -24,10 +24,10 @@ public class TimerInput  implements EntitySchema {
     String month;
     String weekday;
 
-   public static JsonSchema getSchema() {
+   public  JsonSchema getSchema() {
         JsonSchema schema = JsonSchema.builder().title("Scheduler Properties").build();
         //every 1 seconds
-        schema.getProperties().put("settings", InputSettings.getSchema());
+        schema.getProperties().put("settings", InputSettings.builder().build().getSchema());
 
         List<String> second = new ArrayList<>();
         second.add("Every Second");
@@ -92,7 +92,7 @@ public class TimerInput  implements EntitySchema {
     }
 
     public static String getCronExpression(Map<String, Object> input) {
-        Map<String, Object> defaults = TimerInput.getSchema().getValue();
+        Map<String, Object> defaults = TimerInput.builder().build().getSchema().getValue();
         defaults.putAll(input);
         String second = defaults.get("second").toString();
         String minute = defaults.get("minute").toString();

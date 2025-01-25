@@ -14,10 +14,10 @@ public class MongoFind implements EntitySchema {
 
     DBQuery query;
     MongoSettings settings;
-    public static JsonSchema getSchema() {
+    public  JsonSchema getSchema() {
         JsonSchema schema =  JsonSchema.builder().title("Mongo Find").build();
         schema.getProperties().put("query", DBQuery.getSchema() );
-        schema.getProperties().put("settings", MongoSettings.getSchema());
+        schema.getProperties().put("settings", MongoSettings.builder().build().getSchema());
         return schema;
     }
 }

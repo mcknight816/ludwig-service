@@ -19,7 +19,7 @@ public class TimerActivity extends InputActivity {
 
     @Override
     public JsonSchema getSchema() {
-        return TimerInput.getSchema();
+        return TimerInput.builder().build().getSchema();
     }
 
     @Override

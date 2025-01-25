@@ -30,7 +30,7 @@ public class MongoSaveActivity extends MongoActivity {
 
     @Override
     public JsonSchema getSchema() {
-        return MongoSave.getSchema();
+        return MongoSave.builder().build().getSchema();
     }
 
     public static Activity get(){

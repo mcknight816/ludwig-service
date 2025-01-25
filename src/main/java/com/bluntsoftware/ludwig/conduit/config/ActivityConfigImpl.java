@@ -1,13 +1,11 @@
 package com.bluntsoftware.ludwig.conduit.config;
 
-import com.bluntsoftware.ludwig.conduit.config.telegram.domain.TelegramConfig;
 import com.bluntsoftware.ludwig.conduit.utils.AES;
 import com.bluntsoftware.ludwig.conduit.utils.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonPath;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.StringProperty;
 import com.bluntsoftware.ludwig.domain.Config;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -31,7 +29,7 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
 
     public JsonSchema getRecord() {
         try {
-            return (JsonSchema) type.getMethod("getSchema").invoke(null);
+            return (JsonSchema) type.getMethod("getEntitySchema").invoke(null);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }

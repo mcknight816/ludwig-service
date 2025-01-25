@@ -28,7 +28,7 @@ public class OpenAiConfig implements EntitySchema {
     @Builder.Default
     int max_tokens = 1024;
 
-    public static JsonSchema getSchema() {
+    public JsonSchema getSchema() {
         JsonSchema openApiSchema = JsonSchema.builder().title("open-ai").build();
         openApiSchema.addEnum("model","model", Arrays.stream(OpenAiModel.values()).map(OpenAiModel::toString).collect(Collectors.toList()), OpenAiModel.GPT_4.toString() );
         openApiSchema.addString("secret", StringProperty.builder().format(PropertyFormat.PASSWORD).build());

@@ -20,10 +20,10 @@ public class PostInput implements EntitySchema {
     Map<String,Object> payload;
     InputSettings settings;
     String payloadSchema;
-    public static JsonSchema getSchema() {
+    public JsonSchema getSchema() {
         JsonSchema ret =  JsonSchema.builder().title("Post").build();
         ret.getProperties().put("payload", JsonSchema.builder().hidden(true).build());
-        ret.getProperties().put("settings", InputSettings.getSchema());
+        ret.getProperties().put("settings", InputSettings.builder().build().getSchema());
         ret.getProperties().put("payloadSchema",  StringProperty.builder().title("Payload Schema")
                 .meta("configClass", PayloadSchemaConfig.class.getTypeName())
                 .format(PropertyFormat.CONFIG_CHOOSER).build());
