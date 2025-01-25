@@ -27,13 +27,7 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
 
     public abstract ConfigTestResult testConfig(T config);
 
-    public JsonSchema getRecord() {
-        try {
-            return (JsonSchema) type.getMethod("getEntitySchema").invoke(null);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
     public static List<ConfigProperties> list(){
         return configs.values().stream().map(a -> ConfigProperties.builder()
@@ -82,19 +76,21 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
     }
 
     public JsonSchema getSchema(){
-       /* JsonSchema schema = new JsonSchema(getName());
-        JsonSchema recordProperty = getRecord();
-        schema.addRecord(recordProperty.getTitle(),recordProperty);*/
         return getRecord();
+    }
+
+    public JsonSchema getRecord() {
+        try {
+            return (JsonSchema) type.getMethod("getEntitySchema").invoke(null);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public String getPropertyName() {
         return getName().toLowerCase().replace(" ","");
     }
-
-
-
 
     @Override
     public String getConfigClass() {
