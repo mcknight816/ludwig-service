@@ -17,6 +17,11 @@ public class QConnectionConfig extends ActivityConfigImpl<EntitySchema> {
 
 
     @Override
+    public ConfigTestResult testConfig(EntitySchema config) {
+        return null;
+    }
+
+    @Override
     public JsonSchema getRecord() {
         JsonSchema connection = new JsonSchema("connection");
 
@@ -34,12 +39,4 @@ public class QConnectionConfig extends ActivityConfigImpl<EntitySchema> {
         connection.addString("IBMMQ-Channel","channel","DEV.APP.SVRCONN",null,false);
         return connection;
     }
-
-    @Override
-    public ConfigTestResult test(Map<String, Object> config) {
-        return null;
-    }
-
-
-
 }

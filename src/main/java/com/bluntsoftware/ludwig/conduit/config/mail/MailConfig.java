@@ -21,12 +21,6 @@ public class MailConfig extends ActivityConfigImpl<Mail> {
     private static final String PROP_STARTTLS = "mail.smtp.starttls.enable";
     private static final String PROP_TRANSPORT_PROTO = "mail.transport.protocol";
 
-
-    @Override
-    public JsonSchema getRecord() {
-        return Mail.getSchema();
-    }
-
     public static JavaMailSenderImpl getMailSender(Mail props){
         String host = props.getHost();
         String port = props.getPort();
@@ -71,25 +65,25 @@ public class MailConfig extends ActivityConfigImpl<Mail> {
         return sender;
     }
 
-    public ConfigTestResult test(Map<String, Object> mailMap) {
-        Mail mail = getStaticConfig(mailMap);
-        JavaMailSenderImpl mailSender = getMailSender(mail);
+    @Override
+    public ConfigTestResult testConfig(Mail config) {
+        JavaMailSenderImpl mailSender = getMailSender(config);
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-            helper.setTo(mail.getTestEmail());
-            helper.setFrom(mail.getFrom());
-            helper.setSubject("Test mail from  " + mail.getFrom());
+            helper.setTo(config.getTestEmail());
+            helper.setFrom(config.getFrom());
+            helper.setSubject("Test mail from  " + config.getFrom());
             helper.setText("This is a test email sent from the ludwig system.");
             mailSender.send(mimeMessage);
             return ConfigTestResult.builder()
                     .success(true)
-                    .message(String.format("Test mail sent from %s successfully.", mail.getFrom()))
+                    .message(String.format("Test mail sent from %s successfully.", config.getFrom()))
                     .build();
         } catch (Exception e) {
             return ConfigTestResult.builder()
                     .error(true)
-                    .message(String.format("Test mail sent from %s failed.", mail.getFrom()))
+                    .message(String.format("Test mail sent from %s failed.", config.getFrom()))
                     .hint(String.format(" Error is : %s", e.getMessage()))
                     .build();
         }

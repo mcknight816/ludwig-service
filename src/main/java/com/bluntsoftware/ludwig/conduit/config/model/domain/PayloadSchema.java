@@ -14,12 +14,12 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PayloadSchema implements EntitySchema {
-    Map<String,Object> schema;
+    Map<String,Object> payloadSchema;
 
     public static JsonSchema getSchema() {
         Map<String, Property> props = new HashMap<>();
-        props.put("schema", StringProperty.builder()
-                .title("Schema")
+        props.put("payloadSchema", StringProperty.builder()
+                .title("Payload Schema")
                 .format(PropertyFormat.JSON)
                 .defaultValue("{\n" +
                 "    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n" +

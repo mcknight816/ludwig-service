@@ -1,5 +1,6 @@
 package com.bluntsoftware.ludwig.conduit.config;
 
+import com.bluntsoftware.ludwig.conduit.config.telegram.domain.TelegramConfig;
 import com.bluntsoftware.ludwig.conduit.utils.AES;
 import com.bluntsoftware.ludwig.conduit.utils.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonPath;
@@ -26,6 +27,16 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
     private final Class<T> type;
     private final static Map<String, ActivityConfig> configs = new HashMap<>();
 
+    public abstract ConfigTestResult testConfig(T config);
+
+    public JsonSchema getRecord() {
+        try {
+            return (JsonSchema) type.getMethod("getSchema").invoke(null);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static List<ConfigProperties> list(){
         return configs.values().stream().map(a -> ConfigProperties.builder()
                 .configClass(a.getConfigClass())
@@ -40,6 +51,9 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
         return configs.get(configClass);
     }
 
+    public ConfigTestResult test(Map<String, Object> config) {
+        return testConfig(getConfig(config));
+    }
 
     @SuppressWarnings("unchecked")
     public ActivityConfigImpl() {
@@ -81,8 +95,7 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
         return getName().toLowerCase().replace(" ","");
     }
 
-    @JsonIgnore
-    public abstract JsonSchema getRecord();
+
 
 
     @Override

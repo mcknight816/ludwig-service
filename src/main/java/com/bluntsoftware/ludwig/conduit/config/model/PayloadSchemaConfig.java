@@ -16,18 +16,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PayloadSchemaConfig extends ActivityConfigImpl<PayloadSchema> {
 
     @Override
-    public JsonSchema getRecord() {
-        return PayloadSchema.getSchema();
-    }
-
-    @Override
-    public ConfigTestResult test(Map<String, Object> payloadSchema) {
+    public ConfigTestResult testConfig(PayloadSchema config) {
         ConfigTestResult result = ConfigTestResult.builder()
                 .error(true)
                 .message("JSON Schema is NOT valid !")
                 .build();
-
-        if(payloadSchema.containsKey("schema")){
+        Map<String,Object> payloadSchema = config.getPayloadSchema();
+        if(payloadSchema != null){
             String schema = payloadSchema.get("schema").toString();
             ObjectMapper mapper = new ObjectMapper();
             ConcurrentHashMap<String,Object> jsonSchema = null;
@@ -48,4 +43,6 @@ public class PayloadSchemaConfig extends ActivityConfigImpl<PayloadSchema> {
                 .message("JSON Schema is NOT valid !")
                 .build();
     }
+
+
 }

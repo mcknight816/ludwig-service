@@ -5,7 +5,6 @@ import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
 import com.bluntsoftware.ludwig.conduit.config.nosql.domain.MongoConnect;
 import com.bluntsoftware.ludwig.conduit.service.nosql.mongo.MongoConnection;
 import com.bluntsoftware.ludwig.conduit.service.nosql.mongo.MongoRepository;
-import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,18 +14,13 @@ import org.bson.Document;
 public class MongoConnectionConfig extends ActivityConfigImpl<MongoConnect> {
 
     @Override
-    public JsonSchema getRecord() {
-        return MongoConnect.getSchema();
-    }
-    @Override
-    public ConfigTestResult test(Map<String, Object> connection) {
-        MongoConnect mongoConnection = this.getConfig(connection);
+    public ConfigTestResult testConfig(MongoConnect config) {
         ConfigTestResult error = ConfigTestResult.builder()
                 .error(true)
-                .message(String.format("failed Test for Params %s", connection))
+                .message(String.format("failed Test for Params %s", config))
                 .build();
 
-        MongoRepository repo = new MongoRepository(new MongoConnection(mongoConnection.getUri()));
+        MongoRepository repo = new MongoRepository(new MongoConnection(config.getUri()));
         Map<String,Object> data = new HashMap<>();
         data.put("name","test");
         data.put("description","test for mongo connection config");
@@ -44,4 +38,5 @@ public class MongoConnectionConfig extends ActivityConfigImpl<MongoConnect> {
 
         return error;
     }
+
 }

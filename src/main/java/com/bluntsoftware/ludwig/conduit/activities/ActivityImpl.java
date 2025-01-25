@@ -46,7 +46,7 @@ public abstract class  ActivityImpl implements Activity {
     public enum Category{
         Conduit,Input,FileAndFolders
     }
-    // Getter for activity repository, ensuring it's available
+    // Getter for activity repository, ensuring it is available
     protected ActivityConfigRepository getActivityConfigRepository() {
         return activityConfigRepository;
     }
