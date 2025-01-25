@@ -16,10 +16,10 @@ import lombok.experimental.SuperBuilder;
 public class MongoCrudSettings implements EntitySchema {
     MongoSettings settings;
     String payloadSchema;
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         JsonSchema ret =  JsonSchema.builder().title("MongoCrudFlow").build();
-        ret.getProperties().put("settings", MongoSettings.builder().build().getSchema());
-        ret.getProperties().put("payloadSchema", PostInput.builder().build().getSchema().getProperties().get("payloadSchema"));
+        ret.getProperties().put("settings", MongoSettings.builder().build().getJsonSchema());
+        ret.getProperties().put("payloadSchema", PostInput.builder().build().getJsonSchema().getProperties().get("payloadSchema"));
         return ret;
     }
 }

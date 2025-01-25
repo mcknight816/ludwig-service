@@ -16,7 +16,7 @@ import java.util.Map;
 public class PayloadSchema implements EntitySchema {
     Map<String,Object> schema;
 
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         Map<String, Property> props = new HashMap<>();
         props.put("schema", StringProperty.builder()
                 .title("Payload Schema")

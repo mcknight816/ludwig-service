@@ -23,7 +23,7 @@ public class InputSettings implements EntitySchema {
     String requested;
     Map<String,Object> headers;
 
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         Map<String, Property> props = new HashMap<>();
         String[] requestLog = {"Log and Save","None"};
         String[] trueFalse = {"true","false"};

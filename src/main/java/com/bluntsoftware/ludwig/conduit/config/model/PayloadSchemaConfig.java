@@ -4,7 +4,6 @@ package com.bluntsoftware.ludwig.conduit.config.model;
 import com.bluntsoftware.ludwig.conduit.config.ConfigTestResult;
 import com.bluntsoftware.ludwig.conduit.config.model.domain.PayloadSchema;
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
-import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ public class PayloadSchemaConfig extends ActivityConfigImpl<PayloadSchema> {
                 .error(true)
                 .message("JSON Schema is NOT valid !")
                 .build();
-        Map<String,Object> payloadSchema = config.getSchema().getValue();
+        Map<String,Object> payloadSchema = config.getJsonSchema().getValue();
         if(payloadSchema != null){
             String schema = payloadSchema.get("schema").toString();
             ObjectMapper mapper = new ObjectMapper();

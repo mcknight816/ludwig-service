@@ -21,7 +21,7 @@ public class MongoConnect implements EntitySchema {
     String userName;
     String password;
     String uri = "mongodb://localhost:27017";
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         Map<String, Property> props = new HashMap<>();
         props.put("server", StringProperty.builder().title("Server Name").defaultValue("localhost").build());
         props.put("port", StringProperty.builder().title("Port").build());

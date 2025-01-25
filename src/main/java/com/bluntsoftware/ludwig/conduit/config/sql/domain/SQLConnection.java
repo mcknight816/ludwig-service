@@ -22,7 +22,7 @@ public class SQLConnection implements EntitySchema {
     String port = "5432";
     String userName;
     String password;
-    public JsonSchema getSchema(){
+    public JsonSchema getJsonSchema(){
         JsonSchema connection = new JsonSchema("connection");
         List<String> db = new ArrayList<String>();
         db.add("Postgres");

@@ -15,7 +15,7 @@ public class CouchbaseConnection implements EntitySchema {
     String userName;
     String password;
 
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         Map<String, Property> props = new HashMap<>();
         props.put("server", StringProperty.builder().title("Server Name").build());
         props.put("port", StringProperty.builder().title("Port").build());

@@ -25,7 +25,7 @@ public class InputActivity extends ActivityImpl {
 
 @Override
     public JsonSchema getSchema() {
-        return InputSettings.builder().build().getSchema();
+        return InputSettings.builder().build().getJsonSchema();
     }
     public <T> T convertValue(Map<String,Object> fromValue, Class<T> toValueType) throws IllegalArgumentException {
         return mapper.convertValue(fromValue,toValueType);

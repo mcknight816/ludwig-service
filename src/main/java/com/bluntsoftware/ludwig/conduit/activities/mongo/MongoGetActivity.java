@@ -31,7 +31,7 @@ public class MongoGetActivity extends MongoActivity {
 
     @Override
     public JsonSchema getSchema() {
-        return MongoById.builder().build().getSchema();
+        return MongoById.builder().build().getJsonSchema();
     }
 
     @Override

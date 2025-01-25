@@ -19,7 +19,7 @@ public class TelegramConfig implements EntitySchema {
     String token;
     String username;
 
-    public JsonSchema getSchema() {
+    public JsonSchema getJsonSchema() {
         JsonSchema telegramSchema = JsonSchema.builder().title("telegram").build();
 
         telegramSchema.addString("testMessage","Hello , is there anyone out there ?");

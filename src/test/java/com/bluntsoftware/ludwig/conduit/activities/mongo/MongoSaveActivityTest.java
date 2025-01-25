@@ -43,7 +43,7 @@ class MongoSaveActivityTest {
     }
 
     @Test
-    void getSchema() {
+    void getJsonSchema() {
     }
 
     @Test
