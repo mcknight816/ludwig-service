@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public abstract class ActivityConfigImpl<T extends EntitySchema> implements ActivityConfig<T> {
     private final Class<T> type;
-    private final static Map<String, ActivityConfig> configs = new ConcurrentHashMap<>();
+    private final static Map<String, ActivityConfig<?>> configs = new ConcurrentHashMap<>();
 
     public abstract ConfigTestResult testConfig(T config);
 
@@ -39,7 +39,7 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
         ).collect(Collectors.toList());
     }
 
-    public static ActivityConfig getByConfigClass(String configClass){
+    public static ActivityConfig<?> getByConfigClass(String configClass){
         return configs.get(configClass);
     }
 
@@ -82,8 +82,8 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
 
     public JsonSchema getRecord() {
         try {
-            return (JsonSchema) type.getMethod("getJsonSchema").invoke(null);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            return type.getDeclaredConstructor().newInstance().getJsonSchema();
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {
             throw new RuntimeException(e);
         }
     }
@@ -102,7 +102,7 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
     public String getCategory(){
         String className = getConfigClass();
         String module = className.substring(0,className.lastIndexOf('.'));
-        return module.substring(module.lastIndexOf('.')+1,module.length());
+        return module.substring(module.lastIndexOf('.')+1);
     }
 
     @Override
@@ -125,7 +125,7 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
 
     static JsonSchema getConfigSchema(Config config){
         String configClass = config.getConfigClass();
-        ActivityConfig schema = ActivityConfigImpl.getByClassName(configClass);
+        ActivityConfig<?> schema = ActivityConfigImpl.getByClassName(configClass);
         return schema.getJsonSchema();
     }
 
