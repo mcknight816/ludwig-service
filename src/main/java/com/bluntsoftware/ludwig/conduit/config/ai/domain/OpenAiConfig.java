@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class OpenAiConfig implements EntitySchema {
 
-    private final static String DEFAULT_QUESTION = "Who was the president of the United States in May of 1845 ?";
+    private final static String DEFAULT_QUESTION = "What is a good blood pressure range for a healthy human ?";
 
     String secret;
     @Builder.Default
