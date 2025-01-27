@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
+@Slf4j
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public abstract class ActivityConfigImpl<T extends EntitySchema> implements ActivityConfig<T> {
@@ -26,8 +28,6 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
     private final static Map<String, ActivityConfig<?>> configs = new ConcurrentHashMap<>();
 
     public abstract ConfigTestResult testConfig(T config);
-
-
 
     public static List<ConfigProperties> list(){
         return configs.values().stream().map(a -> ConfigProperties.builder()
@@ -41,6 +41,16 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
 
     public static ActivityConfig<?> getByConfigClass(String configClass){
         return configs.get(configClass);
+    }
+
+    public static ConfigProperties getPropsByConfigClass(String configClass){
+        ActivityConfig<?> configActivity = configs.get(configClass);
+        return ConfigProperties.builder()
+                .configClass(configActivity.getConfigClass())
+                .name(configActivity.getName())
+                .category(configActivity.getCategory())
+                .schema(configActivity.getJsonSchema())
+                .build();
     }
 
     public ConfigTestResult test(Map<String, Object> config) {
@@ -83,9 +93,11 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
     public JsonSchema getRecord() {
         try {
             return type.getDeclaredConstructor().newInstance().getJsonSchema();
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {
-            throw new RuntimeException(e);
+        } catch (NullPointerException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {
+           // throw new RuntimeException(e);
+            log.error("Unable to get json schema for {} : {}",this.getClass().getTypeName(),e.getMessage());
         }
+        return null;
     }
 
     @Override

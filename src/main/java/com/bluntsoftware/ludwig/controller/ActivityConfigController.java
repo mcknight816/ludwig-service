@@ -28,8 +28,8 @@ public class ActivityConfigController {
     }
 
     @GetMapping(value = "{class}",produces = MediaType.APPLICATION_JSON_VALUE)
-    ActivityConfig findById(@PathVariable("class") String cls){
-        return activityConfigRepository.getByKlass(cls);
+    ConfigProperties findById(@PathVariable("class") String cls) {
+        return activityConfigRepository.getPropsByKlass(cls);
     }
 
     @PostMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)

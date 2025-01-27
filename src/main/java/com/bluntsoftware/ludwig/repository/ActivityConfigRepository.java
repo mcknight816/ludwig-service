@@ -25,9 +25,14 @@ public class ActivityConfigRepository {
         return  ActivityConfigImpl.list();
     }
 
-    public ActivityConfig getByKlass(String klass){
+    public ActivityConfig<?> getByKlass(String klass){
         return ActivityConfigImpl.getByConfigClass(klass);
     }
+
+    public ConfigProperties getPropsByKlass(String klass){
+        return ActivityConfigImpl.getPropsByConfigClass(klass);
+    }
+
 
     public FlowConfig findByNameAndConfigClass(String name, String configCLass) {
         if(flowConfigRepository != null){
@@ -45,12 +50,12 @@ public class ActivityConfigRepository {
                 .config(mapper.convertValue(activityConfig, Map.class))
                 .build();
     }
-
+/*
     public <T extends ActivityConfig> T getActivityConfigByNameAs(String name,Class<T> clazz) throws IllegalArgumentException {
         ActivityConfig activityConfig = getByKlass(clazz.getName());
         FlowConfig flowConfig = this.findByNameAndConfigClass(name,clazz.getName());
 
         return (T) activityConfig ;
     }
-
+*/
 }
