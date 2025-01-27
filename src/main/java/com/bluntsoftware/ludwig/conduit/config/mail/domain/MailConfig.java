@@ -27,7 +27,7 @@ public class MailConfig implements EntitySchema {
     private String user;
     private String from;
     private String password;
-    @Builder.Default private String testEmail;
+    private String testEmail;
 
     public JsonSchema getJsonSchema() {
         JsonSchema mail = JsonSchema.builder().title("mail").build();
