@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Mail implements EntitySchema {
+public class MailConfig implements EntitySchema {
     @Builder.Default private String host      = "smtp.gmail.com";
     @Builder.Default private String port      = "587";
     @Builder.Default private String protocol  = "smtp";
@@ -27,7 +27,7 @@ public class Mail implements EntitySchema {
     private String user;
     private String from;
     private String password;
-    private String testEmail;
+    @Builder.Default private String testEmail;
 
     public JsonSchema getJsonSchema() {
         JsonSchema mail = JsonSchema.builder().title("mail").build();

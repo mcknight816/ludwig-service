@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.activities.conduit;
 
-import com.bluntsoftware.ludwig.conduit.config.mail.domain.Mail;
-import com.bluntsoftware.ludwig.conduit.config.mail.MailConfig;
+import com.bluntsoftware.ludwig.conduit.config.mail.domain.MailConfig;
+import com.bluntsoftware.ludwig.conduit.config.mail.MailConfigActivity;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
@@ -27,7 +27,7 @@ public class MailActivity extends ActivityImpl {
     private static final String PROP_SMTP_TRUST =  "mail.smtp.ssl.trust";
     private static final String PROP_STARTTLS = "mail.smtp.starttls.enable";
     private static final String PROP_TRANSPORT_PROTO = "mail.transport.protocol";
-    private MailConfig mailConfig;
+    private MailConfigActivity mailConfig;
     private JavaMailSenderImpl javaMailSender;
 
     private final static String to = "to";
@@ -41,7 +41,7 @@ public class MailActivity extends ActivityImpl {
 
 
     @Autowired
-    public MailActivity( MailConfig mailConfig , ActivityConfigRepository activityConfigRepository) {
+    public MailActivity(MailConfigActivity mailConfig , ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);
         this.mailConfig = mailConfig;
     }
@@ -69,7 +69,7 @@ public class MailActivity extends ActivityImpl {
     }
 
 
-    public static JavaMailSenderImpl getMailSender(Mail props){
+    public static JavaMailSenderImpl getMailSender(MailConfig props){
         String host = props.getHost();
         String port = props.getPort();
         String user = props.getUser();
@@ -115,9 +115,9 @@ public class MailActivity extends ActivityImpl {
     @Override
     public Map<String, Object> run(Map<String, Object> input) throws Exception {
         Map<String, Object> ret = new HashMap<>();
-        Map<String, Object>  config = this.getExternalConfigByName(input.get("mail"),MailConfig.class);
+        Map<String, Object>  config = this.getExternalConfigByName(input.get("mail"), MailConfigActivity.class);
         if(config != null){
-            this.javaMailSender = getMailSender(MailConfig.getStaticConfig(config));
+            this.javaMailSender = getMailSender(MailConfigActivity.getStaticConfig(config));
         }
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();

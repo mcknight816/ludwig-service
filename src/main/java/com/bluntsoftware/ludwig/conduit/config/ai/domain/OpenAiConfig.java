@@ -19,10 +19,15 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class OpenAiConfig implements EntitySchema {
 
+    private final static String DEFAULT_QUESTION = "Who was the president of the United States in May of 1845 ?";
+
     String secret;
-    String testQuestion;
-    String model;
-    boolean store;
+    @Builder.Default
+    String testQuestion = DEFAULT_QUESTION;
+    @Builder.Default
+    String model =  OpenAiModel.GPT_4_MINI.toString();
+    @Builder.Default
+    boolean store = true;
     @Builder.Default
     int temperature = 0;
     @Builder.Default
@@ -30,9 +35,9 @@ public class OpenAiConfig implements EntitySchema {
 
     public JsonSchema getJsonSchema() {
         JsonSchema openApiSchema = JsonSchema.builder().title("open-ai").build();
-        openApiSchema.addEnum("model","model", Arrays.stream(OpenAiModel.values()).map(OpenAiModel::toString).collect(Collectors.toList()), OpenAiModel.GPT_4.toString() );
+        openApiSchema.addEnum("model","model", Arrays.stream(OpenAiModel.values()).map(OpenAiModel::toString).collect(Collectors.toList()), OpenAiModel.GPT_4_MINI.toString() );
         openApiSchema.addString("secret", StringProperty.builder().format(PropertyFormat.PASSWORD).build());
-        openApiSchema.addString("testQuestion","Who was the president of the United States in May of 1845 ?");
+        openApiSchema.addString("testQuestion",DEFAULT_QUESTION);
         openApiSchema.addNumber("max_tokens",1024);
         openApiSchema.addNumber("temperature",0);
         openApiSchema.addBoolean("store",true);

@@ -28,6 +28,9 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
     private final static Map<String, ActivityConfig<?>> configs = new ConcurrentHashMap<>();
 
     public abstract ConfigTestResult testConfig(T config);
+    public ConfigTestResult test(Map<String, Object> config) {
+        return testConfig(getConfig(config));
+    }
 
     public static List<ConfigProperties> list(){
         return configs.values().stream().map(a -> ConfigProperties.builder()
@@ -51,10 +54,6 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
                 .category(configActivity.getCategory())
                 .schema(configActivity.getJsonSchema())
                 .build();
-    }
-
-    public ConfigTestResult test(Map<String, Object> config) {
-        return testConfig(getConfig(config));
     }
 
     @SuppressWarnings("unchecked")

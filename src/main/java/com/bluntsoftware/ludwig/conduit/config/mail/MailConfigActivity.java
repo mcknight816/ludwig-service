@@ -2,8 +2,7 @@ package com.bluntsoftware.ludwig.conduit.config.mail;
 
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
 import com.bluntsoftware.ludwig.conduit.config.ConfigTestResult;
-import com.bluntsoftware.ludwig.conduit.config.mail.domain.Mail;
-import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
+import com.bluntsoftware.ludwig.conduit.config.mail.domain.MailConfig;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -13,7 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 
 @Service
-public class MailConfig extends ActivityConfigImpl<Mail> {
+public class MailConfigActivity extends ActivityConfigImpl<MailConfig> {
 
     private static final String DEFAULT_HOST = "127.0.0.1";
     private static final String PROP_SMTP_AUTH = "mail.smtp.auth";
@@ -21,7 +20,7 @@ public class MailConfig extends ActivityConfigImpl<Mail> {
     private static final String PROP_STARTTLS = "mail.smtp.starttls.enable";
     private static final String PROP_TRANSPORT_PROTO = "mail.transport.protocol";
 
-    public static JavaMailSenderImpl getMailSender(Mail props){
+    public static JavaMailSenderImpl getMailSender(MailConfig props){
         String host = props.getHost();
         String port = props.getPort();
         String user = props.getUser();
@@ -66,7 +65,7 @@ public class MailConfig extends ActivityConfigImpl<Mail> {
     }
 
     @Override
-    public ConfigTestResult testConfig(Mail config) {
+    public ConfigTestResult testConfig(MailConfig config) {
         JavaMailSenderImpl mailSender = getMailSender(config);
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         try {
@@ -90,8 +89,8 @@ public class MailConfig extends ActivityConfigImpl<Mail> {
     }
 
     @NotNull
-    public static Mail getStaticConfig(Map<String,Object> config){
-        MailConfig mailConfig = new MailConfig();
+    public static MailConfig getStaticConfig(Map<String,Object> config){
+        MailConfigActivity mailConfig = new MailConfigActivity();
         return mailConfig.getConfig(config);
     }
 }
