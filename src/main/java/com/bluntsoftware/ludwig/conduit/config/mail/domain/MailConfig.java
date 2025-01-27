@@ -39,7 +39,7 @@ public class MailConfig implements EntitySchema {
         mail.addString("protocol","smtp");
         mail.addString("localhost","localhost");
         mail.addString("testEmail","someone@somewhere.com");
-        List<String> truefalse = new ArrayList<String>();
+        List<String> truefalse = new ArrayList<>();
         truefalse.add("true");
         truefalse.add("false");
         mail.addEnum("tls","tls",truefalse,"false");
