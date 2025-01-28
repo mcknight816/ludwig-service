@@ -4,6 +4,7 @@ package com.bluntsoftware.ludwig.conduit.activities.couch;
 
 import com.bluntsoftware.ludwig.conduit.config.nosql.CouchbaseConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
+import com.bluntsoftware.ludwig.conduit.config.nosql.domain.CouchbaseConnection;
 import com.bluntsoftware.ludwig.conduit.service.nosql.couch.CouchConnection;
 import com.bluntsoftware.ludwig.conduit.service.nosql.couch.CouchRepository;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
@@ -24,7 +25,7 @@ public abstract class CouchActivity extends ActivityImpl {
 
     private final CouchbaseConnectionConfig couchConnectionConfig;
 
-    private final Map<Map<String,Object>, CouchRepository> repos = new HashMap<>();
+    private final Map<CouchbaseConnection, CouchRepository> repos = new HashMap<>();
 
 
     public CouchActivity(CouchbaseConnectionConfig couchConnectionConfig, ActivityConfigRepository activityConfigRepository ) {
@@ -47,17 +48,17 @@ public abstract class CouchActivity extends ActivityImpl {
     }
 
     CouchRepository getRepository(Map<String, Object> input){
-        Map<String, Object>  config = this.getExternalConfigByName(input.get(couchConnectionConfig.getPropertyName()),CouchbaseConnectionConfig.class);
-        Map<String,Object> connection = (Map<String,Object>)config.get("connection");
+        CouchbaseConnection  connection = this.getExternalConfigByName(input.get(couchConnectionConfig.getPropertyName()), CouchbaseConnection.class);
+
         CouchRepository repo = this.repos.get(connection);
         if(repo != null){
             return repo;
         }
 
-        String strPort = connection.get("port").toString();
-        String server = connection.get("server").toString();
-        String userName = connection.get("user").toString();
-        String password = connection.get("password").toString();
+        String strPort = connection.getPort();
+        String server = connection.getServer();
+        String userName = connection.getUserName();
+        String password = connection.getPassword();
         if(strPort != null && !strPort.equalsIgnoreCase("")) {
             int port = Integer.parseInt(strPort);
             repo = new CouchRepository(new CouchConnection(server,port,userName,password));

@@ -63,7 +63,7 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
                 .getActualTypeArguments()[0];
 
         if(getClass().isAnnotationPresent(Service.class)){
-            configs.put(getClass().getTypeName(),this);
+            configs.put(this.type.getName(),this);
         }
     }
 
@@ -106,7 +106,7 @@ public abstract class ActivityConfigImpl<T extends EntitySchema> implements Acti
 
     @Override
     public String getConfigClass() {
-        return getClass().getTypeName();
+        return type.getName();
     }
 
     @Override

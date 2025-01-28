@@ -1,6 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.utils.schema;
 
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfig;
+import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -124,7 +125,26 @@ public class JsonSchema implements Property {
         return property;
     }
 
-    public StringProperty addConfig(ActivityConfig config){
+    public StringProperty addConfigDomain(String name,Class<? extends EntitySchema> config){
+        Map<String,String> meta = new HashMap<>();
+        meta.put("configClass",config.getName());
+        StringProperty stringProperty =  StringProperty.builder()
+                .title(config.getName())
+                .defaultValue(config.getName() + " Default")
+                .format(PropertyFormat.CONFIG_CHOOSER)
+                .type(PropertyType.STRING.getValue())
+                .meta(meta)
+                .build();
+        properties.put(name,stringProperty);
+        return stringProperty;
+    }
+
+    public StringProperty addConfig(String activityConfigClassName){
+        ActivityConfig<?> config = ActivityConfigImpl.getByConfigClass(activityConfigClassName);
+        return addConfig(config);
+    }
+
+    public StringProperty addConfig(ActivityConfig<?> config){
         Map<String,String> meta = new HashMap<>();
         meta.put("configClass",config.getConfigClass());
         return addString(config.getName(),StringProperty.builder()

@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 
 
 import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
+import com.bluntsoftware.ludwig.conduit.config.model.domain.PayloadSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.ValidationUtils;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
@@ -48,17 +49,14 @@ public class FileUploadActivity extends InputActivity {
 
     @Override
     public Map<String, Object> run(Map<String, Object> input) throws Exception {
-        Map<String, Object> config = this.getExternalConfigByName(input.get(payloadSchemaConfig.getPropertyName()),PayloadSchemaConfig.class);
-        if(config != null && config.containsKey("PayloadSchema")){
-            Map<String,Object> payloadSchema = (Map<String,Object>)config.get("PayloadSchema");
-            if(payloadSchema.containsKey("schema")){
-                String schema = payloadSchema.get("schema").toString();
+        PayloadSchema config = this.getExternalConfigByName(input.get(payloadSchemaConfig.getPropertyName()), PayloadSchema.class);
+        if(config != null && config.getSchema() != null){
+                String schema = config.getSchema();
                 ObjectMapper mapper = new ObjectMapper();
                 String json = mapper.writeValueAsString(input.get("payload"));
                 final com.github.fge.jsonschema.main.JsonSchema schemaNode = ValidationUtils.getSchemaNode(schema);
                 final JsonNode jsonNode = ValidationUtils.getJsonNode(json);
                 ValidationUtils.validateJson(schemaNode,jsonNode);
-            }
         }
         return super.run(input);
     }

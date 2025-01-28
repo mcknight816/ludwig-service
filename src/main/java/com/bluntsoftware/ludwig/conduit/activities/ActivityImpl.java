@@ -1,10 +1,14 @@
 package com.bluntsoftware.ludwig.conduit.activities;
 
+import com.bluntsoftware.ludwig.conduit.utils.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
+import com.bluntsoftware.ludwig.domain.FlowConfig;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
 public abstract class  ActivityImpl implements Activity {
-
+    private final ObjectMapper mapper;
     private static final Logger logger = LoggerFactory.getLogger(ActivityImpl.class);
 
     // Thread-safe map for storing activities
@@ -30,8 +34,16 @@ public abstract class  ActivityImpl implements Activity {
     // Repository dependency, must be injected
     private final ActivityConfigRepository activityConfigRepository;
 
+    public <T> T convertValue(Map<String,Object> fromValue, Class<T> toValueType) throws IllegalArgumentException {
+        return mapper.convertValue(fromValue,toValueType);
+    }
+
+
     // Constructor with null validation for dependency
     public ActivityImpl(ActivityConfigRepository activityConfigRepository) {
+        this.mapper = new ObjectMapper();
+        this.mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         if (activityConfigRepository == null) {
             throw new IllegalArgumentException("ActivityConfigRepository must not be null");
         }
@@ -59,11 +71,11 @@ public abstract class  ActivityImpl implements Activity {
      * @param <T>        The type parameter for the configuration.
      * @return A map of configuration values, or null if not found.
      */
-    public <T> Map<String, Object> getExternalConfigByName(Object configName, Class<T> clazz) {
+    public <T> T getExternalConfigByName(Object configName, Class<T> clazz) {
         if (configName != null && activityConfigRepository != null) {
-            var config = activityConfigRepository.findByNameAndConfigClass(configName.toString(), clazz.getName());
+            FlowConfig config = activityConfigRepository.findByNameAndConfigClass(configName.toString(), clazz.getName());
             if (config != null) {
-                return config.getConfig();
+                return convertValue(config.getConfig(),clazz);
             }
         }
         logger.warn("Configuration not found for name: {} and class: {}", configName, clazz.getName());

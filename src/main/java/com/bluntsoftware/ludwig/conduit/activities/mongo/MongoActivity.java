@@ -4,6 +4,7 @@ package com.bluntsoftware.ludwig.conduit.activities.mongo;
 import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
+import com.bluntsoftware.ludwig.conduit.config.nosql.domain.MongoConnect;
 import com.bluntsoftware.ludwig.conduit.service.nosql.mongo.MongoConnection;
 import com.bluntsoftware.ludwig.conduit.service.nosql.mongo.MongoRepository;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
@@ -26,17 +27,17 @@ import java.util.Map;
 public abstract class MongoActivity extends ActivityImpl  {
 
     private final ObjectMapper mapper;
-    private final Map<Map<String,Object>, MongoRepository> repos = new HashMap<>();
+    private final Map<MongoConnect, MongoRepository> repos = new HashMap<>();
 
     public MongoActivity(ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);
         this.mapper = new ObjectMapper();
         this.mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
-
+/*
     public <T> T convertValue(Map<String,Object> fromValue, Class<T> toValueType) throws IllegalArgumentException {
         return mapper.convertValue(fromValue,toValueType);
-    }
+    } */
     @Override
     public JsonSchema getJsonSchema() {
          return MongoSettings.builder().build().getJsonSchema();
@@ -47,7 +48,7 @@ public abstract class MongoActivity extends ActivityImpl  {
             log.error("Activity Config Repository Not Found");
         }
 
-        Map<String, Object>  connection = this.getExternalConfigByName(connectionName,MongoConnectionConfig.class);
+        MongoConnect  connection = this.getExternalConfigByName(connectionName, MongoConnect.class);
 
         if(connection == null){
             log.error("No connection found for name {}", connectionName);
@@ -59,11 +60,11 @@ public abstract class MongoActivity extends ActivityImpl  {
             return repo;
         }
 
-        if(connection.containsKey("uri")){
-            repo = new MongoRepository(new MongoConnection(connection.get("uri").toString()));
+        if(connection.getUri() != null){
+            repo = new MongoRepository(new MongoConnection(connection.getUri()));
         }else{
-            String strPort = connection.get("port").toString();
-            String server = connection.get("server").toString();
+            String strPort = connection.getPort();
+            String server = connection.getServer();
             if(strPort != null && !strPort.equalsIgnoreCase("")) {
                 Integer port = Integer.parseInt(strPort);
                 repo =  new MongoRepository(new MongoConnection(server,port));

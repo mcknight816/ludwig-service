@@ -1,6 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.activities.input.domain;
 
 import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
+import com.bluntsoftware.ludwig.conduit.config.model.domain.PayloadSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
@@ -25,7 +26,7 @@ public class PostInput implements EntitySchema {
         ret.getProperties().put("payload", JsonSchema.builder().hidden(true).build());
         ret.getProperties().put("settings", InputSettings.builder().build().getJsonSchema());
         ret.getProperties().put("payloadSchema",  StringProperty.builder().title("Payload Schema")
-                .meta("configClass", PayloadSchemaConfig.class.getTypeName())
+                .meta("configClass", PayloadSchema.class.getTypeName())
                 .format(PropertyFormat.CONFIG_CHOOSER).build());
         return ret;
     }

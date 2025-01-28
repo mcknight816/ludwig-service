@@ -115,9 +115,9 @@ public class MailActivity extends ActivityImpl {
     @Override
     public Map<String, Object> run(Map<String, Object> input) throws Exception {
         Map<String, Object> ret = new HashMap<>();
-        Map<String, Object>  config = this.getExternalConfigByName(input.get("mail"), MailConfigActivity.class);
+        MailConfig  config = this.getExternalConfigByName(input.get("mail"), MailConfig.class);
         if(config != null){
-            this.javaMailSender = getMailSender(MailConfigActivity.getStaticConfig(config));
+            this.javaMailSender = getMailSender( config);
         }
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();

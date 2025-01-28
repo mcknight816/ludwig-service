@@ -5,6 +5,12 @@ import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
 
 public class ActiveMQConfig implements EntitySchema {
+    String host;
+    String port;
+    String username;
+    String password;
+
+
     @Override
     public JsonSchema getJsonSchema() {
         JsonSchema connection = new JsonSchema("Active MQ Connection");

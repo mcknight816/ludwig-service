@@ -1,8 +1,9 @@
 package com.bluntsoftware.ludwig.conduit.activities.output;
 
-import com.bluntsoftware.ludwig.conduit.config.ConnectionFactoryChooser;
+import com.bluntsoftware.ludwig.conduit.config.queue.ConnectionFactoryChooser;
 import com.bluntsoftware.ludwig.conduit.config.queue.ActiveMQConfigActivity;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
+import com.bluntsoftware.ludwig.conduit.config.queue.domain.ActiveMQConfig;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
@@ -35,7 +36,7 @@ public class PublisherActivity extends ActivityImpl {
         List<String> type = new ArrayList<String>();
         type.add("Queue");
         type.add("Topic");
-        editor.addConfig(qConnectionConfig);
+        editor.addConfig( qConnectionConfig);
         editor.addEnum("type",type,"Queue");
         editor.addString("destination","dev.q.test");
         editor.addString("payload","{}", PropertyFormat.JSON);
@@ -44,7 +45,7 @@ public class PublisherActivity extends ActivityImpl {
 
     @Override
     public Map<String, Object> run(Map<String, Object> input) throws Exception {
-        Map<String, Object>  config = this.getExternalConfigByName(input.get(qConnectionConfig.getPropertyName()), ActiveMQConfigActivity.class);
+        ActiveMQConfig  config = this.getExternalConfigByName(input.get(qConnectionConfig.getPropertyName()), ActiveMQConfig.class);
         JmsMessagingTemplate template = new JmsMessagingTemplate();
         template.setConnectionFactory(connectionFactoryChooser.connectionFactory(config));
         Map<String,Object> msg = new HashMap<>();

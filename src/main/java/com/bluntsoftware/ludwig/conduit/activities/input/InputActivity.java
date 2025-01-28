@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.conduit.activities.input;
 
 import com.bluntsoftware.ludwig.conduit.activities.input.domain.InputSettings;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
+import com.bluntsoftware.ludwig.conduit.utils.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
@@ -27,9 +28,11 @@ public class InputActivity extends ActivityImpl {
     public JsonSchema getJsonSchema() {
         return InputSettings.builder().build().getJsonSchema();
     }
+
     public <T> T convertValue(Map<String,Object> fromValue, Class<T> toValueType) throws IllegalArgumentException {
         return mapper.convertValue(fromValue,toValueType);
     }
+
     public JsonSchema getSchemaOld() {
         //Config Parameters
         JsonSchema editor = JsonSchema.builder().title(this.getName()).build();

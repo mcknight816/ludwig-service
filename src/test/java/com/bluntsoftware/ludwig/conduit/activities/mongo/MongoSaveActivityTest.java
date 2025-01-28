@@ -54,13 +54,18 @@ class MongoSaveActivityTest {
 
     @Test
     void run() throws Exception {
-         MongoSave mongoSave = MongoSave.builder().payload(this.payload)
-                .settings(MongoSettings.builder().connection("Test").collection("unit-test").database("test").build()).build();
+         MongoSave mongoSave = MongoSave.builder()
+            .payload(this.payload)
+            .settings(MongoSettings.builder()
+                    .connection("Test")
+                    .collection("unit-test")
+                    .database("test").build())
+             .build();
 
          MongoConnect mongoConnection = MongoConnect.builder()
-                .server("localhost")
-                .port("27017")
-                .build();
+            .server("localhost")
+            .port("27017")
+            .build();
 
          ObjectMapper mapper = new ObjectMapper();
 

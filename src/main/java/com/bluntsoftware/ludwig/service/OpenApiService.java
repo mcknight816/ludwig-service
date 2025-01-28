@@ -1,6 +1,7 @@
 package com.bluntsoftware.ludwig.service;
 
 import com.bluntsoftware.ludwig.conduit.config.model.PayloadSchemaConfig;
+import com.bluntsoftware.ludwig.conduit.config.model.domain.PayloadSchema;
 import com.bluntsoftware.ludwig.config.AppConfig;
 import com.bluntsoftware.ludwig.domain.*;
 import com.bluntsoftware.ludwig.repository.ApplicationRepository;
@@ -223,7 +224,7 @@ public class OpenApiService {
     Map<String,Object> getPayloadSchema(Object name){
         Map<String,Object> schema = null;
         if(name != null && !name.toString().equalsIgnoreCase("")) {
-            Mono<FlowConfig> flowConfigMono = configRepository.findByNameAndConfigClass(name.toString(), PayloadSchemaConfig.class.getName());
+            Mono<FlowConfig> flowConfigMono = configRepository.findByNameAndConfigClass(name.toString(), PayloadSchema.class.getName());
             FlowConfig flowConfig = flowConfigMono.block();
             if (flowConfig != null) {
                 Map<String, Object> config = Optional.of(flowConfig.getConfig()).orElse(null);
