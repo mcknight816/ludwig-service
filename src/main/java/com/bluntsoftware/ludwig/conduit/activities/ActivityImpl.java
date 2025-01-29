@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.conduit.activities;
 
-import com.bluntsoftware.ludwig.conduit.utils.schema.EntitySchema;
+
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.domain.FlowConfig;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;

@@ -7,8 +7,6 @@ import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
