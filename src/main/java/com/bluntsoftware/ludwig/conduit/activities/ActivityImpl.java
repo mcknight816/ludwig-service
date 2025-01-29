@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -22,11 +22,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Alex Mcknight on 1/4/2017 and refactored for best practices.
  *
  */
+@Slf4j
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
 public abstract class  ActivityImpl implements Activity {
     private final ObjectMapper mapper;
-    private static final Logger logger = LoggerFactory.getLogger(ActivityImpl.class);
+
 
     // Thread-safe map for storing activities
     private static final Map<String, Activity> activities = new ConcurrentHashMap<>();
@@ -78,7 +79,7 @@ public abstract class  ActivityImpl implements Activity {
                 return convertValue(config.getConfig(),clazz);
             }
         }
-        logger.warn("Configuration not found for name: {} and class: {}", configName, clazz.getName());
+        log.warn("Configuration not found for name: {} and class: {}", configName, clazz.getName());
         return null;
     }
 
@@ -95,7 +96,7 @@ public abstract class  ActivityImpl implements Activity {
                 activity = (Activity) Class.forName(className).getDeclaredConstructor().newInstance();
                 activities.put(className, activity);
             } catch (Exception e) {
-                logger.error("Error instantiating class: {}", className, e);
+                log.error("Error instantiating class: {}", className, e);
                 return null;
             }
         }
@@ -178,7 +179,7 @@ public abstract class  ActivityImpl implements Activity {
     public Map<String, Object> getInput() {
         JsonSchema schema = getJsonSchema();
         if (schema == null) {
-            logger.warn("getSchema() returned null; returning empty input map");
+            log.warn("getSchema() returned null; returning empty input map");
             return Map.of();
         }
         return schema.getValue();
@@ -194,7 +195,7 @@ public abstract class  ActivityImpl implements Activity {
         try {
             return run(getInput());
         } catch (Exception e) {
-            logger.error("Error running activity: {}", getName(), e);
+            log.error("Error running activity {}: {}", getName(), e.getMessage());
             Map<String,Object> output = new ConcurrentHashMap<>();
              output.put("error", e.getMessage() != null ? e.getMessage() : e.toString());
              return output;

@@ -13,13 +13,13 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class AIText implements EntitySchema {
+public class AITextRequest implements EntitySchema {
     String text;
     String config;
 
     @Override
     public JsonSchema getJsonSchema() {
-        JsonSchema ret =  JsonSchema.builder().title("Ai Text").build();
+        JsonSchema ret =  JsonSchema.builder().title("Ai Text Request").build();
         ret.addString("text");
         ret.addConfigDomain("config",OpenAiConfig.class);
         return ret;
