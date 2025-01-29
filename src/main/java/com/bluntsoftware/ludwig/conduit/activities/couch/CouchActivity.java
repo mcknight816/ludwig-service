@@ -1,7 +1,5 @@
 package com.bluntsoftware.ludwig.conduit.activities.couch;
 
-
-
 import com.bluntsoftware.ludwig.conduit.config.nosql.CouchbaseConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.config.nosql.domain.CouchbaseConnection;
@@ -10,13 +8,10 @@ import com.bluntsoftware.ludwig.conduit.service.nosql.couch.CouchRepository;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.couchbase.client.java.Collection;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
 /**
  * Created by Alex Mcknight on 2/14/2017.
  *
@@ -26,7 +21,6 @@ public abstract class CouchActivity extends ActivityImpl {
     private final CouchbaseConnectionConfig couchConnectionConfig;
 
     private final Map<CouchbaseConnection, CouchRepository> repos = new HashMap<>();
-
 
     public CouchActivity(CouchbaseConnectionConfig couchConnectionConfig, ActivityConfigRepository activityConfigRepository ) {
         super(activityConfigRepository);
@@ -68,6 +62,7 @@ public abstract class CouchActivity extends ActivityImpl {
         this.repos.put(connection,repo);
         return repo;
     }
+
     public static void main(String[] args) {
 
     }
