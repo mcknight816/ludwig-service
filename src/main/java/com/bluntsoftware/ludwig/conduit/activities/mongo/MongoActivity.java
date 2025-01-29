@@ -1,7 +1,5 @@
 package com.bluntsoftware.ludwig.conduit.activities.mongo;
 
-
-import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
 import com.bluntsoftware.ludwig.conduit.activities.mongo.domain.MongoSettings;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.config.nosql.domain.MongoConnect;
@@ -21,7 +19,6 @@ import java.util.Map;
 
 /**
  * Created by Alex Mcknight on 2/14/2017.
- *
  */
 @Slf4j
 public abstract class MongoActivity extends ActivityImpl  {
@@ -34,10 +31,7 @@ public abstract class MongoActivity extends ActivityImpl  {
         this.mapper = new ObjectMapper();
         this.mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
-/*
-    public <T> T convertValue(Map<String,Object> fromValue, Class<T> toValueType) throws IllegalArgumentException {
-        return mapper.convertValue(fromValue,toValueType);
-    } */
+
     @Override
     public JsonSchema getJsonSchema() {
          return MongoSettings.builder().build().getJsonSchema();
@@ -74,10 +68,6 @@ public abstract class MongoActivity extends ActivityImpl  {
         }
         this.repos.put(connection,repo);
         return repo;
-    }
-
-    public static void main(String[] args) {
-
     }
 
     @Override

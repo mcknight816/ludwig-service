@@ -1,8 +1,5 @@
 package com.bluntsoftware.ludwig.conduit.activities.mongo.domain;
 
-import com.bluntsoftware.ludwig.conduit.config.ai.domain.OpenAiConfig;
-import com.bluntsoftware.ludwig.conduit.config.nosql.MongoConnectionConfig;
-
 import com.bluntsoftware.ludwig.conduit.config.nosql.domain.MongoConnect;
 import com.bluntsoftware.ludwig.conduit.utils.schema.*;
 import lombok.AllArgsConstructor;
