@@ -14,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public class AITextRequest implements EntitySchema {
+
     String text;
     String config;
 

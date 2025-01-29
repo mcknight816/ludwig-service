@@ -20,8 +20,9 @@ import java.util.stream.Collectors;
 public class OpenAiConfig implements EntitySchema {
 
     private final static String DEFAULT_QUESTION = "What is a good blood pressure range for a healthy human ?";
-
-    String secret;
+    private final static String DEFAULT_SECRET = "YOUR_OPEN_AI_API_KEY";
+    @Builder.Default
+    String secret = DEFAULT_SECRET;
     @Builder.Default
     String testQuestion = DEFAULT_QUESTION;
     @Builder.Default
@@ -36,11 +37,11 @@ public class OpenAiConfig implements EntitySchema {
     public JsonSchema getJsonSchema() {
         JsonSchema openApiSchema = JsonSchema.builder().title("open-ai").build();
         openApiSchema.addEnum("model","model", Arrays.stream(OpenAiModel.values()).map(OpenAiModel::toString).collect(Collectors.toList()), OpenAiModel.GPT_4_MINI.toString() );
-        openApiSchema.addString("secret", StringProperty.builder().format(PropertyFormat.PASSWORD).build());
-        openApiSchema.addString("testQuestion",DEFAULT_QUESTION);
+        openApiSchema.addString("secret", StringProperty.builder().defaultValue(DEFAULT_SECRET).format(PropertyFormat.PASSWORD).build());
         openApiSchema.addNumber("max_tokens",1024);
         openApiSchema.addNumber("temperature",0);
         openApiSchema.addBoolean("store",true);
+        openApiSchema.addString("testQuestion",DEFAULT_QUESTION);
         return openApiSchema;
     }
 }
