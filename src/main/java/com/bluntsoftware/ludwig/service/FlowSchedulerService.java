@@ -11,7 +11,6 @@ import com.bluntsoftware.saasy.repository.TenantRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
@@ -51,17 +50,18 @@ public class FlowSchedulerService {
 
     @PostConstruct
     public void initializeSchedulers() {
-        ((ThreadPoolTaskScheduler) taskScheduler).initialize();
+        taskScheduler.initialize();
         String currentTenantId = TenantResolver.resolve();
-        Objects.requireNonNull(this.tenantRepository.findAll().collectList().block()).forEach(tenant ->{
-            TenantResolver.setCurrentTenant(tenant.getId());
-            List<ScheduledTask> tasks = applicationService.findAllScheduledTasks().block();
-            assert tasks != null;
-            for (ScheduledTask task : tasks) {
-                task.setTenantId(tenant.getId());
-                scheduleTask(task);
-            }
-        });
+        Objects.requireNonNull(this.tenantRepository.findAll().collectList().block())
+                .forEach(tenant ->{
+                    TenantResolver.setCurrentTenant(tenant.getId());
+                    List<ScheduledTask> tasks = applicationService.findAllScheduledTasks().block();
+                    assert tasks != null;
+                    for (ScheduledTask task : tasks) {
+                        task.setTenantId(tenant.getId());
+                        scheduleTask(task);
+                    }
+                });
         TenantResolver.setCurrentTenant(currentTenantId);
     }
 

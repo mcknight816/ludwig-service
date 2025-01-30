@@ -35,6 +35,7 @@ public class ApplicationService {
 
         Application app = applicationRepository.save(application).block();
 
+        assert app != null;
         publisher.publishEvent(new AppSaveEvent(EventData.builder()
                 .eventAction(EventAction.SAVE_EVENT)
                 .eventSubject(EventSubject.APPLICATION)
@@ -49,6 +50,7 @@ public class ApplicationService {
     public Mono<Application> deleteById(String id) {
         Application app =  applicationRepository.findById(id).block();
         applicationRepository.deleteById(id).block();
+        assert app != null;
         return Mono.just(app);
     }
 

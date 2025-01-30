@@ -41,6 +41,7 @@ public class FlowRunnerService {
         payload.put("id",id);
         in.put("headers",headers);
         in.put("payload",payload);
+        assert application != null;
         log.info("Received Api Get by ID Request to {} for flow {}", application.getName(), flowName);
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
@@ -55,6 +56,7 @@ public class FlowRunnerService {
         payload.put("id",id);
         in.put("payload",payload);
         in.put("headers",headers);
+        assert application != null;
         log.info("Received Api Delete by ID Request to {} for flow {}", application.getName(), flowName);
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
@@ -66,6 +68,7 @@ public class FlowRunnerService {
         Map<String,Object> in = new HashMap<>();
         in.put("payload",transform(input));
         in.put("headers",headers);
+        assert application != null;
         log.info("Received Api Get Request to {} for flow {}", application.getName(), flowName);
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,140,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
@@ -78,6 +81,7 @@ public class FlowRunnerService {
         in.put("user", SecurityUtils.getUserInfo());
         in.put("payload",transform(input));
         in.put("headers",headers);
+        assert application != null;
         log.info("Received Api Post Request to {} for flow {}", application.getName(), flowName);
         Flow flow  = getOrCreateInputFlow(application,flowName,activity,50,70,in,context);
         return runFlowWithActivityInputAndContext(flow,activity,in,context);
@@ -153,7 +157,6 @@ public class FlowRunnerService {
             out.putAll(input);
             flowActivity.setOutput(out);
         }
-
 /*
         if(!isAuthorised(flowActivity)){
             String authorizedRole = (String)flowActivity.getInput().get("authorized_role");
@@ -203,7 +206,7 @@ public class FlowRunnerService {
 
     public FlowActivity getFirstByClassName(Flow flow,String activityClass){
         List<FlowActivity> flowActivities = listByClass(flow,activityClass);
-        if(flowActivities.size() > 0){
+        if(!flowActivities.isEmpty()){
             return flowActivities.get(0);
         }
         return null;
