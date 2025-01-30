@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -109,7 +111,9 @@ public abstract class  ActivityImpl implements Activity {
      * @return An unmodifiable map of all activities.
      */
     public static Map<String, Activity> list() {
-        return Map.copyOf(activities);
+
+         return Collections.unmodifiableMap(new HashMap<>(activities));
+        //return Map.copyOf(activities);
     }
 
     @Override
@@ -180,7 +184,7 @@ public abstract class  ActivityImpl implements Activity {
         JsonSchema schema = getJsonSchema();
         if (schema == null) {
             log.warn("getSchema() returned null; returning empty input map");
-            return Map.of();
+            return new HashMap<>();
         }
         return schema.getValue();
     }
