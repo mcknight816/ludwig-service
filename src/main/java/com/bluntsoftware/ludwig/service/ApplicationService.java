@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.service;
 
-import com.bluntsoftware.ludwig.conduit.activities.trigger.TimerActivity;
-import com.bluntsoftware.ludwig.conduit.activities.trigger.domain.TimerInput;
+import com.bluntsoftware.ludwig.conduit.activities.trigger.TimerTriggerActivity;
+import com.bluntsoftware.ludwig.conduit.activities.trigger.domain.TimerTrigger;
 import com.bluntsoftware.ludwig.domain.Application;
 import com.bluntsoftware.ludwig.domain.ScheduledTask;
 import com.bluntsoftware.ludwig.event.*;
@@ -71,16 +71,16 @@ public class ApplicationService {
     private Flux<ScheduledTask> createAppScheduledTasks(Application app){
         return Flux.fromIterable(app.getFlows())
                 .flatMap(flow -> Flux.fromIterable(flow.getActivities())
-                        .filter(fa -> fa.getActivityClass().equalsIgnoreCase(TimerActivity.class.getName()))
+                        .filter(fa -> fa.getActivityClass().equalsIgnoreCase(TimerTriggerActivity.class.getName()))
                         .map(fa ->  ScheduledTask.builder()
                                 .flowActivityId(fa.getId())
                                 .flowId(flow.getId())
                                 .appId(app.getId())
-                                .activityClassId(TimerActivity.class.getName())
+                                .activityClassId(TimerTriggerActivity.class.getName())
                                 .tenantId(TenantResolver.resolve())
                                 .name(fa.getName())
                                 .active(true)
-                                .cronExpression(TimerInput.getCronExpression(fa.getInput()))
+                                .cronExpression(TimerTrigger.getCronExpression(fa.getInput()))
                                 .build())
                 );
     }

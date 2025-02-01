@@ -13,15 +13,15 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class TelegramRequest implements EntitySchema {
+public class TelegramTrigger implements EntitySchema {
     String chatId;
     String text;
     String config;
     @Override
     public JsonSchema getJsonSchema() {
         JsonSchema ret =  JsonSchema.builder().title("Telegram Request").build();
-        ret.addString("text");
-        ret.addString("chatId");
+        ret.addString("text","",true);
+        ret.addString("chatId","",true);
         ret.addConfigDomain("config", TelegramConfig.class);
         return ret;
     }

@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.activities.input.domain;
 
 
-import com.bluntsoftware.ludwig.conduit.activities.trigger.domain.TimerInput;
+import com.bluntsoftware.ludwig.conduit.activities.trigger.domain.TimerTrigger;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class HotFolderInput extends TimerInput {
+public class HotFolderInput extends TimerTrigger {
     String folderLocation;
     String include;
 

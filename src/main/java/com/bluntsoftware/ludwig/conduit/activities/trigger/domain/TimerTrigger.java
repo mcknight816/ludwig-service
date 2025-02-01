@@ -16,7 +16,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class TimerInput  implements EntitySchema {
+public class TimerTrigger implements EntitySchema {
 
     String second;
     String minute;
@@ -93,7 +93,7 @@ public class TimerInput  implements EntitySchema {
     }
 
     public static String getCronExpression(Map<String, Object> input) {
-        Map<String, Object> defaults = TimerInput.builder().build().getJsonSchema().getValue();
+        Map<String, Object> defaults = TimerTrigger.builder().build().getJsonSchema().getValue();
         defaults.putAll(input);
         String second = defaults.get("second").toString();
         String minute = defaults.get("minute").toString();

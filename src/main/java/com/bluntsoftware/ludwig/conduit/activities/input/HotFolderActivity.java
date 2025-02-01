@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.activities.input;
 
 
-import com.bluntsoftware.ludwig.conduit.activities.trigger.TimerActivity;
+import com.bluntsoftware.ludwig.conduit.activities.trigger.TimerTriggerActivity;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.controller.AssetController;
@@ -23,7 +23,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  * Created by Alex Mcknight on 1/12/2017.
  */
 @Service
-public class HotFolderActivity extends TimerActivity {
+public class HotFolderActivity extends TimerTriggerActivity {
 
     private final AssetController assetService;
 

@@ -1,8 +1,8 @@
 package com.bluntsoftware.ludwig.conduit.activities.trigger;
 
 
-import com.bluntsoftware.ludwig.conduit.activities.input.InputActivity;
-import com.bluntsoftware.ludwig.conduit.activities.trigger.domain.TimerInput;
+import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
+import com.bluntsoftware.ludwig.conduit.activities.trigger.domain.TimerTrigger;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
@@ -13,14 +13,14 @@ import java.util.*;
  * Created by Alex Mcknight on 1/12/2017.
  */
 @Service
-public class TimerActivity extends InputActivity {
-    public TimerActivity(ActivityConfigRepository activityConfigRepository) {
+public class TimerTriggerActivity extends ActivityImpl {
+    public TimerTriggerActivity(ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);
     }
 
     @Override
     public JsonSchema getJsonSchema() {
-        return TimerInput.builder().build().getJsonSchema();
+        return TimerTrigger.builder().build().getJsonSchema();
     }
 
     @Override
