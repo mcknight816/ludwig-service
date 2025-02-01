@@ -1,6 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.activities.input;
 
 
+import com.bluntsoftware.ludwig.conduit.activities.trigger.TimerActivity;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.controller.AssetController;

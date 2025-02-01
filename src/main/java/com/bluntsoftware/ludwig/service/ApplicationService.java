@@ -1,7 +1,7 @@
 package com.bluntsoftware.ludwig.service;
 
-import com.bluntsoftware.ludwig.conduit.activities.input.TimerActivity;
-import com.bluntsoftware.ludwig.conduit.activities.input.domain.TimerInput;
+import com.bluntsoftware.ludwig.conduit.activities.trigger.TimerActivity;
+import com.bluntsoftware.ludwig.conduit.activities.trigger.domain.TimerInput;
 import com.bluntsoftware.ludwig.domain.Application;
 import com.bluntsoftware.ludwig.domain.ScheduledTask;
 import com.bluntsoftware.ludwig.event.*;

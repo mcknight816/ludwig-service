@@ -1,5 +1,6 @@
-package com.bluntsoftware.ludwig.conduit.activities.input.domain;
+package com.bluntsoftware.ludwig.conduit.activities.trigger.domain;
 
+import com.bluntsoftware.ludwig.conduit.activities.input.domain.InputSettings;
 import com.bluntsoftware.ludwig.conduit.utils.schema.EntitySchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import lombok.AllArgsConstructor;

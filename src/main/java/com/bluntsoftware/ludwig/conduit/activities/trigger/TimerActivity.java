@@ -1,7 +1,8 @@
-package com.bluntsoftware.ludwig.conduit.activities.input;
+package com.bluntsoftware.ludwig.conduit.activities.trigger;
 
 
-import com.bluntsoftware.ludwig.conduit.activities.input.domain.TimerInput;
+import com.bluntsoftware.ludwig.conduit.activities.input.InputActivity;
+import com.bluntsoftware.ludwig.conduit.activities.trigger.domain.TimerInput;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;

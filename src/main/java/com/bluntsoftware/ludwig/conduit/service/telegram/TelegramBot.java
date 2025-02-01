@@ -1,29 +1,22 @@
 package com.bluntsoftware.ludwig.conduit.service.telegram;
 
+import lombok.*;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final String botUsername;
     private final String botToken;
+    private final String tenantId;
 
-    public TelegramBot(String botUsername, String botToken) {
-        this.botUsername = botUsername;
-        this.botToken = botToken;
-    }
-
-    @Override
-    public String getBotUsername() {
-        return botUsername;
-    }
-
-    @Override
-    public String getBotToken() {
-        return botToken;
-    }
 
     @Override
     public void onUpdateReceived(Update update) {

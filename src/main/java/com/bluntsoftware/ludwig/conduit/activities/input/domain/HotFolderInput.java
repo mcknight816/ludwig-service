@@ -1,6 +1,7 @@
 package com.bluntsoftware.ludwig.conduit.activities.input.domain;
 
 
+import com.bluntsoftware.ludwig.conduit.activities.trigger.domain.TimerInput;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
 import lombok.AllArgsConstructor;
