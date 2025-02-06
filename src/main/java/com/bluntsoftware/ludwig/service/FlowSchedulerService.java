@@ -47,7 +47,6 @@ public class FlowSchedulerService {
                  .block()).forEach(this::updateTask);
     }
 
-
     @PostConstruct
     public void initializeSchedulers() {
         taskScheduler.initialize();

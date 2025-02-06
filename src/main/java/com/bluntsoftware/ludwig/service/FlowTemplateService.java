@@ -1,6 +1,5 @@
 package com.bluntsoftware.ludwig.service;
 
-
 import com.bluntsoftware.ludwig.domain.Flow;
 import com.bluntsoftware.ludwig.domain.FlowTemplate;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
@@ -11,8 +10,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Service
+
 @Slf4j
+@Service
 public class FlowTemplateService {
     Map<String,FlowTemplate> templates;
 

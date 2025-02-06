@@ -2,8 +2,10 @@ package com.bluntsoftware.ludwig.service;
 
 import com.bluntsoftware.ludwig.conduit.activities.trigger.TimerTriggerActivity;
 import com.bluntsoftware.ludwig.conduit.activities.trigger.domain.TimerTrigger;
+import com.bluntsoftware.ludwig.conduit.service.telegram.TelegramTrigger;
 import com.bluntsoftware.ludwig.domain.Application;
 import com.bluntsoftware.ludwig.domain.ScheduledTask;
+import com.bluntsoftware.ludwig.domain.TriggerTask;
 import com.bluntsoftware.ludwig.event.*;
 import com.bluntsoftware.ludwig.repository.ApplicationRepository;
 import com.bluntsoftware.ludwig.tenant.TenantResolver;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 
 @Service()
 public class ApplicationService {
@@ -60,15 +63,15 @@ public class ApplicationService {
 
     public Mono<List<ScheduledTask>> findAllScheduledTasks() {
         return applicationRepository.findAll()
-            .flatMap(this::createAppScheduledTasks)
+            .flatMap(this::getScheduledTasks)
             .collectList();
     }
 
     public Mono<List<ScheduledTask>> scheduledTasks(Application app) {
-        return createAppScheduledTasks(app).collectList();
+        return getScheduledTasks(app).collectList();
     }
 
-    private Flux<ScheduledTask> createAppScheduledTasks(Application app){
+    private Flux<ScheduledTask> getScheduledTasks(Application app){
         return Flux.fromIterable(app.getFlows())
                 .flatMap(flow -> Flux.fromIterable(flow.getActivities())
                         .filter(fa -> fa.getActivityClass().equalsIgnoreCase(TimerTriggerActivity.class.getName()))
@@ -85,4 +88,28 @@ public class ApplicationService {
                 );
     }
 
+    public Mono<List<TriggerTask>> findAllTriggeredTasks() {
+        return applicationRepository.findAll()
+                .flatMap(this::getTriggeredTasks)
+                .collectList();
+    }
+
+    public Mono<List<TriggerTask>> triggeredTasks(Application app) {
+        return getTriggeredTasks(app).collectList();
+    }
+    public Flux<TriggerTask> getTriggeredTasks(Application app) {
+        return Flux.fromIterable(app.getFlows())
+                .flatMap(flow -> Flux.fromIterable(flow.getActivities())
+                        .filter(fa -> fa.getActivityClass().equalsIgnoreCase(TelegramTrigger.class.getName()))
+                        .map(fa ->  TriggerTask.builder()
+                                .flowActivityId(fa.getId())
+                                .flowId(flow.getId())
+                                .appId(app.getId())
+                                .activityClassId(TelegramTrigger.class.getName())
+                                .tenantId(TenantResolver.resolve())
+                                .name(fa.getName())
+                                .active(true)
+                                .build())
+                );
+    }
 }

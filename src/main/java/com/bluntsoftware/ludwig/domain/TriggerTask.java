@@ -9,13 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScheduledTask {
+public class TriggerTask {
     String name;
     String appId;
     String tenantId;
     String activityClassId;
     String flowId;
     String flowActivityId;
-    String cronExpression;
     boolean active;
 }
