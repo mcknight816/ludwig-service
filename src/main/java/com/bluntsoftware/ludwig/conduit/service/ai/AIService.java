@@ -30,7 +30,6 @@ public class AIService {
         this.appConfig = new AppConfig();
     }
 
-
     public AICompletionResponse completions(AICompletionRequest completion) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();

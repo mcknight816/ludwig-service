@@ -23,26 +23,41 @@ public class OpenAITextActivity extends ActivityImpl {
     }
 
     @Override
-    public Map<String, Object> run(Map<String, Object> input) throws Exception {
+    public Map<String, Object> getOutput() {
+        return AITextResponse.builder().build().getJsonSchema().getValue();
+    }
 
+    @Override
+    public Map<String, Object> run(Map<String, Object> input) throws Exception {
+        log.info("AI Text Activity input: {}", input);
+        String textOut = "No Ai Response";
         AITextRequest aiText = convertValue(input, AITextRequest.class);
         OpenAiConfig openAiConfig  = getExternalConfigByName(aiText.getConfig(), OpenAiConfig.class);
         if(openAiConfig != null && openAiConfig.getSecret() != null){
-            AIService aiService = new AIService(openAiConfig.getSecret());
-            AICompletionResponse response = aiService.completions(AICompletionRequest.builder()
-                    .temperature(openAiConfig.getTemperature())
-                    .store(openAiConfig.isStore())
-                    .model(openAiConfig.getModel())
-                    .max_tokens(openAiConfig.getMax_tokens())
+            AIService aiService = new AIService( openAiConfig.getSecret() );
+
+            AICompletionRequest request =  AICompletionRequest.builder()
                     .message(AIMessage.builder()
-                            .role("User")
+                            .role("user")
                             .content(aiText.getText())
                             .build())
-                    .build());
-            log.info("AI Text Activity input: {}", input);
+                    .max_tokens(openAiConfig.getMax_tokens())
+                    .store(openAiConfig.isStore())
+                    .temperature(openAiConfig.getTemperature())
+                    .model(openAiConfig.getModel())
+                    .build();
+
+            AICompletionResponse response = aiService.completions(request);
+
+            if(response != null && response.getChoices() != null && !response.getChoices().isEmpty()){
+                textOut = response.getChoices().get(0).getMessage().getContent();
+            }
+
         }
         //Default Values
-        return AITextResponse.builder().build().getJsonSchema().getValue();
+        return AITextResponse.builder()
+                .text(textOut)
+                .build().getJsonSchema().getValue();
     }
 
     @Override

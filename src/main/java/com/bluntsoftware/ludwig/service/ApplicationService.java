@@ -1,8 +1,8 @@
 package com.bluntsoftware.ludwig.service;
 
+import com.bluntsoftware.ludwig.conduit.activities.trigger.TelegramTriggerActivity;
 import com.bluntsoftware.ludwig.conduit.activities.trigger.TimerTriggerActivity;
 import com.bluntsoftware.ludwig.conduit.activities.trigger.domain.TimerTrigger;
-import com.bluntsoftware.ludwig.conduit.service.telegram.TelegramTrigger;
 import com.bluntsoftware.ludwig.domain.Application;
 import com.bluntsoftware.ludwig.domain.ScheduledTask;
 import com.bluntsoftware.ludwig.domain.TriggerTask;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.util.List;
-import java.util.concurrent.ForkJoinPool;
 
 @Service()
 public class ApplicationService {
@@ -97,17 +96,19 @@ public class ApplicationService {
     public Mono<List<TriggerTask>> triggeredTasks(Application app) {
         return getTriggeredTasks(app).collectList();
     }
+
     public Flux<TriggerTask> getTriggeredTasks(Application app) {
         return Flux.fromIterable(app.getFlows())
                 .flatMap(flow -> Flux.fromIterable(flow.getActivities())
-                        .filter(fa -> fa.getActivityClass().equalsIgnoreCase(TelegramTrigger.class.getName()))
+                        .filter(fa -> fa.getActivityClass().equalsIgnoreCase(TelegramTriggerActivity.class.getName()))
                         .map(fa ->  TriggerTask.builder()
                                 .flowActivityId(fa.getId())
                                 .flowId(flow.getId())
                                 .appId(app.getId())
-                                .activityClassId(TelegramTrigger.class.getName())
+                                .activityClassId(TelegramTriggerActivity.class.getName())
                                 .tenantId(TenantResolver.resolve())
                                 .name(fa.getName())
+                                .input(fa.getInput())
                                 .active(true)
                                 .build())
                 );

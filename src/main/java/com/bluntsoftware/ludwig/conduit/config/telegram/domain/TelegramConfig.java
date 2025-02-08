@@ -22,7 +22,6 @@ public class TelegramConfig implements EntitySchema {
 
     public JsonSchema getJsonSchema() {
         JsonSchema telegramSchema = JsonSchema.builder().title("telegram").build();
-
         telegramSchema.addString("tenantId", TenantResolver.resolve(),true);
         telegramSchema.addString("token", StringProperty.builder().defaultValue("YOUR_TELEGRAM_TOKEN").format(PropertyFormat.PASSWORD).build());
         telegramSchema.addString("username", "YOUR_USERNAME");

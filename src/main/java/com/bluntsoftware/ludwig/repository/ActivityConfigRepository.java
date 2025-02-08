@@ -53,11 +53,8 @@ public class ActivityConfigRepository {
     }
 
     public <T extends EntitySchema> T getConfigByNameAs(String name, Class<T> clazz) throws IllegalArgumentException {
-        ActivityConfig<?> activityConfig = getByKlass(clazz.getName());
-
         FlowConfig flowConfig = this.findByNameAndConfigClass(name,clazz.getName());
-
-        return (T) activityConfig;
+        return flowConfig.getConfigAs(clazz);
     }
 
 }
