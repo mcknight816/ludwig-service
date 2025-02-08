@@ -5,8 +5,8 @@ import com.bluntsoftware.ludwig.conduit.activities.output.domain.TelegramRespons
 import com.bluntsoftware.ludwig.conduit.config.telegram.domain.TelegramConfig;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
-import com.bluntsoftware.ludwig.service.telegram.TelegramBot;
-import com.bluntsoftware.ludwig.service.telegram.TelegramBotService;
+import com.bluntsoftware.ludwig.conduit.service.telegram.TelegramBot;
+import com.bluntsoftware.ludwig.conduit.service.telegram.TelegramBotService;
 
 import org.springframework.stereotype.Service;
 

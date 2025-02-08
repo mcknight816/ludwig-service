@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.service.telegram;
+package com.bluntsoftware.ludwig.conduit.service.telegram;
 
 import com.bluntsoftware.ludwig.conduit.config.telegram.domain.TelegramConfig;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,10 @@ public class TelegramBotService {
 
     TelegramBotService() throws TelegramApiException {
         this.telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+    }
+
+    public void removeBot(TelegramConfig telegramConfig){
+        bots.remove(telegramConfig.getUsername());
     }
 
     public TelegramBot getBot(TelegramConfig telegramConfig) throws TelegramApiException {

@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.service.telegram;
+package com.bluntsoftware.ludwig.conduit.service.telegram;
 
 import com.bluntsoftware.ludwig.conduit.service.Trigger;
 import lombok.*;
@@ -22,6 +22,12 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final String botUsername;
     private final String botToken;
     private final String tenantId;
+
+    void addTrigger(Trigger<Update> trigger){
+        if(!triggers.contains(trigger)){
+            triggers.add(trigger);
+        };
+    }
 
     public void sendMessage(String chatId, String text) {
         SendMessage message = new SendMessage();

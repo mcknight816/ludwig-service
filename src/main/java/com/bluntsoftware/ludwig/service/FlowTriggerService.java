@@ -11,8 +11,8 @@ import com.bluntsoftware.ludwig.domain.TriggerTask;
 import com.bluntsoftware.ludwig.event.AppSaveEvent;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.bluntsoftware.ludwig.repository.ActivityRepository;
-import com.bluntsoftware.ludwig.service.telegram.TelegramBotService;
-import com.bluntsoftware.ludwig.service.telegram.TelegramBotTrigger;
+import com.bluntsoftware.ludwig.conduit.service.telegram.TelegramBotService;
+import com.bluntsoftware.ludwig.conduit.service.telegram.TelegramBotTrigger;
 import com.bluntsoftware.ludwig.tenant.TenantResolver;
 import com.bluntsoftware.saasy.repository.TenantRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,13 +21,11 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-
 
 @Slf4j
 @Service
@@ -69,44 +67,32 @@ public class FlowTriggerService implements DisposableBean {
         log.info("FlowTriggerService initialized {} triggers", triggers.size());
     }
 
-    public void updateTask(TriggerTask task) {
-        // Cancel existing task
-        cancelTask(getTaskId(task));
-        // Re-schedule task if still active
-        if (task.isActive()) {
-            startTask(task);
-        }
-    }
-
-    private void startTask(TriggerTask task) {
-        String triggerId = getTaskId(task);
-        if(!triggers.containsKey(triggerId)){
-            createTask(task);
-        }
-        log.info("Starting Trigger Task {}",task);
-        triggers.get(triggerId).start();
+    private void createTelegramTask(TriggerTask task){
+        TelegramTrigger telegramTrigger = objectMapper.convertValue(task.getInput(),TelegramTrigger.class);
+        TelegramConfig config = activityConfigRepository.getConfigByNameAs(telegramTrigger.getConfig(), TelegramConfig.class);
+        TelegramBotTrigger trigger = new TelegramBotTrigger(telegramBotService,config, update -> {
+            if (update.hasMessage() && update.getMessage().hasText()) {
+                String chatId = update.getMessage().getChatId().toString();
+                String receivedText = update.getMessage().getText();
+                telegramTrigger.setText(receivedText);
+                telegramTrigger.setChatId(chatId);
+                task.setInput(objectMapper.convertValue(telegramTrigger,Map.class));
+                triggerActivityTask(task);
+                log.info("Trigger executed for task: {}", task);
+            }
+        });
+        triggers.put(getTaskId(task),trigger);
     }
 
     private void createTask(TriggerTask task){
+        String currentTenantId = TenantResolver.resolve();
+        TenantResolver.setCurrentTenant(task.getTenantId());
+        //Create a Telegram Task
         if(TelegramTriggerActivity.class.getName().equalsIgnoreCase(task.getActivityClassId())){
-            String currentTenantId = TenantResolver.resolve();
-            TenantResolver.setCurrentTenant(task.getTenantId());
-            TelegramTrigger telegramTrigger = objectMapper.convertValue(task.getInput(),TelegramTrigger.class);
-            TelegramConfig config = activityConfigRepository.getConfigByNameAs(telegramTrigger.getConfig(), TelegramConfig.class);
-            TelegramBotTrigger trigger = new TelegramBotTrigger(telegramBotService,config, update -> {
-                if (update.hasMessage() && update.getMessage().hasText()) {
-                    String chatId = update.getMessage().getChatId().toString();
-                    String receivedText = update.getMessage().getText();
-                    telegramTrigger.setText(receivedText);
-                    telegramTrigger.setChatId(chatId);
-                    task.setInput(objectMapper.convertValue(telegramTrigger,Map.class));
-                    triggerActivityTask(task);
-                    log.info("Trigger executed for task: {}", task);
-                }
-            });
-            triggers.put(getTaskId(task),trigger);
-            TenantResolver.setCurrentTenant(currentTenantId);
+            createTelegramTask(task);
         }
+
+        TenantResolver.setCurrentTenant(currentTenantId);
     }
 
     String getTaskId(TriggerTask task){
@@ -127,6 +113,24 @@ public class FlowTriggerService implements DisposableBean {
         flowRunnerService.runFlowWithActivityInputAndContext(flow,activity,task.getInput(),null);
     }
 
+
+
+    @EventListener
+    void listenForAppChanges(@NotNull AppSaveEvent event) {
+        Objects.requireNonNull(applicationService.triggeredTasks(applicationService
+                        .findById(event.getEventData().getSubjectId()).block())
+                .block()).forEach(this::updateTask);
+    }
+
+    public void updateTask(TriggerTask task) {
+        // Cancel existing task
+        cancelTask(getTaskId(task));
+        // Re-schedule task if still active
+        if (task.isActive()) {
+            startTask(task);
+        }
+    }
+
     void cancelTask(String taskId){
         if (triggers.containsKey(taskId)) {
             triggers.get(taskId).stop();
@@ -136,11 +140,13 @@ public class FlowTriggerService implements DisposableBean {
         }
     }
 
-    @EventListener
-    void listenForAppChanges(@NotNull AppSaveEvent event) {
-        Objects.requireNonNull(applicationService.triggeredTasks(applicationService
-                        .findById(event.getEventData().getSubjectId()).block())
-                .block()).forEach(this::updateTask);
+    private void startTask(TriggerTask task) {
+        String triggerId = getTaskId(task);
+        if(!triggers.containsKey(triggerId)){
+            createTask(task);
+        }
+        log.info("Starting Trigger Task {}",task);
+        triggers.get(triggerId).start();
     }
 
     @Override

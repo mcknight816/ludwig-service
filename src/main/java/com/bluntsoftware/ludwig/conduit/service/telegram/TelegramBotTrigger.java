@@ -1,4 +1,4 @@
-package com.bluntsoftware.ludwig.service.telegram;
+package com.bluntsoftware.ludwig.conduit.service.telegram;
 
 import com.bluntsoftware.ludwig.conduit.config.telegram.domain.TelegramConfig;
 import com.bluntsoftware.ludwig.conduit.service.Trigger;
@@ -13,6 +13,7 @@ public class TelegramBotTrigger implements Trigger<Update> {
     private final TelegramConfig config;
     private final Consumer<Update> callback;
     private final TelegramBotService telegramBotService;
+
     public TelegramBotTrigger(TelegramBotService telegramBotService,TelegramConfig config, Consumer<Update> callback) {
         this.config = config;
         this.callback = callback;
@@ -28,7 +29,7 @@ public class TelegramBotTrigger implements Trigger<Update> {
     public void start() {
         try {
             TelegramBot bot = telegramBotService.getBot(config);
-            bot.triggers.add(this);
+            bot.addTrigger(this);
             log.info("Registered Telegram bot: {}", config.getUsername());
         } catch (TelegramApiException e) {
             log.error("Failed to initialize Telegram bot: {}", config.getUsername(), e);
@@ -40,6 +41,7 @@ public class TelegramBotTrigger implements Trigger<Update> {
         try {
             TelegramBot bot = telegramBotService.getBot(config);
             bot.triggers.remove(this);
+            telegramBotService.removeBot(config);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
