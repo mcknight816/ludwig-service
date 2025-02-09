@@ -18,7 +18,7 @@ import java.util.List;
 public class TelegramBot extends TelegramLongPollingBot {
 
     @Builder.Default
-    List<Trigger<Update>> triggers = new ArrayList<>();
+    private final List<Trigger<Update>> triggers = new ArrayList<>();
     private final String botUsername;
     private final String botToken;
     private final String tenantId;
@@ -29,6 +29,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         };
     }
 
+    void removeTrigger(Trigger<Update> trigger){
+        triggers.remove(trigger);
+    }
     public void sendMessage(String chatId, String text) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId);

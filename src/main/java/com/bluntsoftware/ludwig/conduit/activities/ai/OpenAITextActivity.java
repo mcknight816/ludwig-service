@@ -12,6 +12,8 @@ import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -35,7 +37,6 @@ public class OpenAITextActivity extends ActivityImpl {
         OpenAiConfig openAiConfig  = getExternalConfigByName(aiText.getConfig(), OpenAiConfig.class);
         if(openAiConfig != null && openAiConfig.getSecret() != null){
             AIService aiService = new AIService( openAiConfig.getSecret() );
-
             AICompletionRequest request =  AICompletionRequest.builder()
                     .message(AIMessage.builder()
                             .role("user")

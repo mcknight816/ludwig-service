@@ -40,7 +40,7 @@ public class TelegramBotTrigger implements Trigger<Update> {
     public void stop() {
         try {
             TelegramBot bot = telegramBotService.getBot(config);
-            bot.triggers.remove(this);
+            bot.removeTrigger(this);
             telegramBotService.removeBot(config);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
