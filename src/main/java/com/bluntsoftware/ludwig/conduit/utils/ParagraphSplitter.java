@@ -7,7 +7,7 @@ public class ParagraphSplitter {
 
     public static List<String> chunkText(String text, int chunkSize) {
         List<String> chunks = new ArrayList<>();
-        String[] paragraphs = text.split("\n\n");
+        String[] paragraphs = text.split("\r\n");
 
         StringBuilder currentChunk = new StringBuilder();
         for (String paragraph : paragraphs) {
@@ -15,7 +15,7 @@ public class ParagraphSplitter {
                 chunks.add(currentChunk.toString());
                 currentChunk = new StringBuilder();
             }
-            currentChunk.append(paragraph).append("\n\n");
+            currentChunk.append(paragraph).append("\r\n");
         }
 
         if (currentChunk.length() > 0) {
