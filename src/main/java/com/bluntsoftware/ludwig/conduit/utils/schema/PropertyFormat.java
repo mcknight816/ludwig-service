@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PropertyFormat {
-
+    KNOWLEDGE_BASE_CHOOSER("knowledgeBaseChooser"),
     FOLDER_CHOOSER("folderChooser"),
     CONFIG_CHOOSER("configChooser"),
     IMAGE_CHOOSER("imageChooser"),
