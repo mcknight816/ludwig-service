@@ -77,7 +77,4 @@ public class KnowledgeService {
             knowledge.setProcessed(true);
         }
     }
-
-
-
 }
