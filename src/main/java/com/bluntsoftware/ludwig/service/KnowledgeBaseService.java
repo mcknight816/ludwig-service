@@ -2,7 +2,6 @@ package com.bluntsoftware.ludwig.service;
 
 import com.bluntsoftware.ludwig.domain.KnowledgeBase;
 import com.bluntsoftware.ludwig.repository.KnowledgeBaseRepository;
-import com.bluntsoftware.ludwig.repository.KnowledgeChunkRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
