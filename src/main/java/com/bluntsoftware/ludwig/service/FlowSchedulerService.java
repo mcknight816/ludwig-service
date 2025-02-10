@@ -97,6 +97,8 @@ public class FlowSchedulerService {
 
     private Runnable createTask(ScheduledTask task) {
         return () -> {
+            String currentTenantId = TenantResolver.resolve();
+            TenantResolver.setCurrentTenant(task.getTenantId());
             Application application = this.applicationService.findById(task.getAppId()).block();
             InputActivity activity = (InputActivity)activityRepository.getByKlass(task.getActivityClassId());
             Map<String,Object> in = new HashMap<>();
@@ -109,6 +111,7 @@ public class FlowSchedulerService {
             assert flow != null;
             log.info("Executing scheduled Request to {} for flow {}", application.getName(), flow.getName());
             flowRunnerService.runFlowWithActivityInputAndContext(flow,activity,in,null);
+            TenantResolver.setCurrentTenant(currentTenantId);
         };
     }
 }
