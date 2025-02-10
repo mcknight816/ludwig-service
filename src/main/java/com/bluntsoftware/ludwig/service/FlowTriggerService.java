@@ -49,6 +49,12 @@ public class FlowTriggerService implements DisposableBean {
         this.activityConfigRepository = activityConfigRepository;
         this.telegramBotService = telegramBotService;
     }
+    @EventListener
+    void listenForAppChanges(@NotNull AppSaveEvent event) {
+        Objects.requireNonNull(applicationService.triggeredTasks(applicationService
+                        .findById(event.getEventData().getSubjectId()).block())
+                .block()).forEach(this::updateTask);
+    }
 
     @PostConstruct
     public void initializeTriggers() {
@@ -91,7 +97,6 @@ public class FlowTriggerService implements DisposableBean {
         if(TelegramTriggerActivity.class.getName().equalsIgnoreCase(task.getActivityClassId())){
             createTelegramTask(task);
         }
-
         TenantResolver.setCurrentTenant(currentTenantId);
     }
 
@@ -100,6 +105,8 @@ public class FlowTriggerService implements DisposableBean {
     }
 
     void triggerActivityTask(TriggerTask task){
+        String currentTenantId = TenantResolver.resolve();
+        TenantResolver.setCurrentTenant(task.getTenantId());
         Application application = this.applicationService.findById(task.getAppId()).block();
         Activity activity = activityRepository.getByKlass(task.getActivityClassId());
         assert application != null;
@@ -111,16 +118,10 @@ public class FlowTriggerService implements DisposableBean {
         assert flow != null;
         log.info("Executing scheduled Request to {} for flow {}", application.getName(), flow.getName());
         flowRunnerService.runFlowWithActivityInputAndContext(flow,activity,task.getInput(),null);
+        TenantResolver.setCurrentTenant(currentTenantId);
     }
 
 
-
-    @EventListener
-    void listenForAppChanges(@NotNull AppSaveEvent event) {
-        Objects.requireNonNull(applicationService.triggeredTasks(applicationService
-                        .findById(event.getEventData().getSubjectId()).block())
-                .block()).forEach(this::updateTask);
-    }
 
     public void updateTask(TriggerTask task) {
         // Cancel existing task
