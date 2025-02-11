@@ -76,7 +76,7 @@ public class FlowTriggerService implements DisposableBean {
     private void createTelegramTask(TriggerTask task){
         TelegramTrigger telegramTrigger = objectMapper.convertValue(task.getInput(),TelegramTrigger.class);
         TelegramConfig config = activityConfigRepository.getConfigByNameAs(telegramTrigger.getConfig(), TelegramConfig.class);
-        TelegramBotTrigger trigger = new TelegramBotTrigger(telegramBotService,config, update -> {
+        TelegramBotTrigger trigger = new TelegramBotTrigger(task,telegramBotService,config, update -> {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 String chatId = update.getMessage().getChatId().toString();
                 String receivedText = update.getMessage().getText();
@@ -121,14 +121,16 @@ public class FlowTriggerService implements DisposableBean {
         TenantResolver.setCurrentTenant(currentTenantId);
     }
 
-
-
     public void updateTask(TriggerTask task) {
-        // Cancel existing task
-        cancelTask(getTaskId(task));
-        // Re-schedule task if still active
-        if (task.isActive()) {
-            startTask(task);
+        if (triggers.containsKey(getTaskId(task))) {
+           if(triggers.get(getTaskId(task)).triggerTaskChanged(task)){
+               // Cancel existing task
+               cancelTask(getTaskId(task));
+               // Re-schedule task if still active
+               if (task.isActive()) {
+                   startTask(task);
+               }
+           }
         }
     }
 
