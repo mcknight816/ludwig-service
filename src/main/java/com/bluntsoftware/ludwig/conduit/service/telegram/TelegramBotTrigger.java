@@ -52,7 +52,7 @@ public class TelegramBotTrigger implements Trigger<Update> {
 
     @Override
     public Boolean triggerTaskChanged(TriggerTask task) {
-        return !task.equals(triggerTask);
+        return !task.getName().equalsIgnoreCase(triggerTask.getName());
     }
 
 

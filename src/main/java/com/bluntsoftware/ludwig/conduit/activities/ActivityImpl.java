@@ -30,7 +30,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class  ActivityImpl implements Activity {
     private final ObjectMapper mapper;
 
-
+    protected ObjectMapper mapper() {
+        return mapper;
+    }
     // Thread-safe map for storing activities
     private static final Map<String, Activity> activities = new ConcurrentHashMap<>();
 

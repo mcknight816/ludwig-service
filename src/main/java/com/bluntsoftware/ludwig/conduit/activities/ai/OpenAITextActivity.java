@@ -1,6 +1,6 @@
 package com.bluntsoftware.ludwig.conduit.activities.ai;
 
-import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
+import com.bluntsoftware.ludwig.conduit.activities.TypedActivity;
 import com.bluntsoftware.ludwig.conduit.activities.ai.domain.AITextRequest;
 import com.bluntsoftware.ludwig.conduit.activities.ai.domain.AITextResponse;
 import com.bluntsoftware.ludwig.conduit.config.ai.domain.OpenAiConfig;
@@ -8,47 +8,45 @@ import com.bluntsoftware.ludwig.conduit.service.ai.AIService;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionRequest;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionResponse;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AIMessage;
-import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.domain.KnowledgeChunk;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.bluntsoftware.ludwig.repository.impl.KnowledgeChunkCustomRepositoryImpl;
 import com.bluntsoftware.ludwig.tenant.TenantResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
-public class OpenAITextActivity extends ActivityImpl {
+public class OpenAITextActivity extends TypedActivity<AITextRequest, AITextResponse> {
+
     private final KnowledgeChunkCustomRepositoryImpl knowledgeChunkCustomRepository;
+
     public OpenAITextActivity(ActivityConfigRepository activityConfigRepository, KnowledgeChunkCustomRepositoryImpl knowledgeChunkCustomRepository) {
-        super(activityConfigRepository);
+        super(activityConfigRepository,AITextRequest.class);
         this.knowledgeChunkCustomRepository = knowledgeChunkCustomRepository;
     }
 
     @Override
-    public Map<String, Object> getOutput() {
-        return AITextResponse.builder().build().getJsonSchema().getValue();
+    public AITextRequest input() {
+        return AITextRequest.builder().build();
     }
 
     @Override
-    public Map<String, Object> run(Map<String, Object> input) throws Exception {
-        log.info("AI Text Activity input: {}", input);
-        String textOut = "No Ai Response";
-        AITextRequest aiText = convertValue(input, AITextRequest.class);
-        OpenAiConfig openAiConfig  = getExternalConfigByName(aiText.getConfig(), OpenAiConfig.class);
+    public AITextResponse output() {
+        return AITextResponse.builder().build();
+    }
 
+    @Override
+    public AITextResponse run(AITextRequest aiText) throws Exception {
+        OpenAiConfig openAiConfig  = getExternalConfigByName(aiText.getConfig(), OpenAiConfig.class);
+        String textOut = "No Ai Response";
         if(openAiConfig != null && openAiConfig.getSecret() != null){
             AIService aiService = new AIService( openAiConfig.getSecret() );
             log.info("Running open AI Text Activity Current Tenant is {}" , TenantResolver.resolve());
 
             List<AIMessage> messages = new ArrayList<>();
-
-
 
             if(aiText.getKnowledgeBase() != null && !aiText.getKnowledgeBase().isEmpty()){
                 List<Double> queryVector =  aiService.getEmbedding(aiText.getText());
@@ -56,12 +54,14 @@ public class OpenAITextActivity extends ActivityImpl {
                         .collectList()
                         .block();
                 StringBuilder combinedText = new StringBuilder();
-                knowledgeChunks.forEach(kc -> {
-                    String text = kc.getText();
-                    if (text != null) {
-                        combinedText.append(text).append(System.lineSeparator());
-                    }
-                });
+                if (knowledgeChunks != null) {
+                    knowledgeChunks.forEach(kc -> {
+                        String text = kc.getText();
+                        if (text != null) {
+                            combinedText.append(text).append(System.lineSeparator());
+                        }
+                    });
+                }
 
                 AIMessage aiMessage = AIMessage.builder()
                         .role("system")
@@ -69,6 +69,13 @@ public class OpenAITextActivity extends ActivityImpl {
                         .build();
                 messages.add(aiMessage);
             }
+
+            AIMessage sysMessage = AIMessage.builder()
+                    .role("system")
+                    .content(aiText.getInstructions())
+                    .build();
+
+            messages.add(sysMessage);
 
             AIMessage userMessage = AIMessage.builder()
                     .role("user")
@@ -94,11 +101,6 @@ public class OpenAITextActivity extends ActivityImpl {
         //Default Values
         return AITextResponse.builder()
                 .text(textOut)
-                .build().getJsonSchema().getValue();
-    }
-
-    @Override
-    public JsonSchema getJsonSchema() {
-        return AITextRequest.builder().build().getJsonSchema();
+                .build();
     }
 }
