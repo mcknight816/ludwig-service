@@ -22,10 +22,12 @@ public class AITextRequest implements EntitySchema {
     @Builder.Default
     String instructions = "Respond in a sarcastic tone";
     String knowledgeBase;
+    String user;
     @Override
     public JsonSchema getJsonSchema() {
         JsonSchema ret =  JsonSchema.builder().title("Ai Text Request").build();
         ret.addString("text");
+        ret.addString("user");
         ret.addString("instructions",this.instructions);
         ret.addConfigDomain("config",OpenAiConfig.class);
         ret.addString("knowledgeBase","", PropertyFormat.KNOWLEDGE_BASE_CHOOSER);

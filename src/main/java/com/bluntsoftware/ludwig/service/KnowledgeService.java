@@ -34,8 +34,13 @@ public class KnowledgeService {
          if(knowledge.getId() == null || knowledge.getId().isEmpty()) {
              knowledge.setId(UUID.randomUUID().toString());
          }
-        createKnowledgeEmbeddings(knowledge);
-        return knowledgeRepository.save(knowledge);
+
+         if(knowledge.getUserId() == null || knowledge.getUserId().isEmpty()) {
+            knowledge.setUserId("system");
+         }
+
+         createKnowledgeEmbeddings(knowledge);
+         return knowledgeRepository.save(knowledge);
     }
 
     public Mono<Knowledge> findById(String id) {
@@ -67,6 +72,8 @@ public class KnowledgeService {
                     List<Double> embeddings = aiService.getEmbedding(knowledge.getText());
                     knowledgeChunkRepository.save(KnowledgeChunk.builder()
                                     .text(text)
+                                    .knowledgeBaseName(kb.getName())
+                                    .userId(knowledge.getUserId())
                                     .knowledgeId(knowledge.getId())
                                     .vector(embeddings)
                             .build()).block();
@@ -76,5 +83,9 @@ public class KnowledgeService {
             });
             knowledge.setProcessed(true);
         }
+    }
+
+    public Mono<Knowledge> findAllByBaseIdAndUserId(String id, String user) {
+        return knowledgeRepository.findAllByBaseIdAndUserId(id, user);
     }
 }

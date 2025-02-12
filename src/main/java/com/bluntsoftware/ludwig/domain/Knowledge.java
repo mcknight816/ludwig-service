@@ -14,6 +14,7 @@ public class Knowledge {
     @Id
     String id;
     String baseId;
+    String userId;
     String description;
     String text;
     boolean processed;

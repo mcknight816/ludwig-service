@@ -22,7 +22,6 @@ public class KnowledgeChunkCustomRepositoryImpl implements KnowledgeChunkCustomR
         this.mongoTemplate = mongoTemplate;
     }
 
-    @Override
     public Flux<KnowledgeChunk> findSimilarChunks(List<Double> queryVector, int limit) {
         boolean isAtlasOrVectorSearchSupported = checkVectorSearchSupport();
 
@@ -33,6 +32,14 @@ public class KnowledgeChunkCustomRepositoryImpl implements KnowledgeChunkCustomR
 
         // Fallback to application-level vector similarity for standard MongoDB
         return findSimilarChunksWithApplicationFallback(queryVector, limit);
+    }
+
+    //TODO : Make this more efficient by querying the db with user && knowledgeBaseName vs filter
+    @Override
+    public Flux<KnowledgeChunk> findSimilarChunks(String user, String knowledgeBaseName, List<Double> queryVector, int limit) {
+        return findSimilarChunks(queryVector, limit)
+                .filter(kc -> knowledgeBaseName.equalsIgnoreCase(kc.getKnowledgeBaseName()))
+                .filter(kc-> user.equalsIgnoreCase(kc.getUserId()));
     }
 
     private boolean checkVectorSearchSupport() {
@@ -65,6 +72,7 @@ public class KnowledgeChunkCustomRepositoryImpl implements KnowledgeChunkCustomR
     private Flux<KnowledgeChunk> findSimilarChunksWithApplicationFallback(List<Double> queryVector, int limit) {
         // Fallback logic for local MongoDB (no $vectorSearch support)
         return mongoTemplate.findAll(KnowledgeChunk.class)
+                .filter(kc -> kc.getVector() != null && !kc.getVector().isEmpty())
                 .flatMap(kc -> {
                     // Compute similarity manually
                     double similarity = calculateCosineSimilarity(queryVector, kc.getVector());

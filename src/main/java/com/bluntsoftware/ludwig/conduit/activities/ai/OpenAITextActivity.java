@@ -8,24 +8,34 @@ import com.bluntsoftware.ludwig.conduit.service.ai.AIService;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionRequest;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionResponse;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AIMessage;
+import com.bluntsoftware.ludwig.conduit.service.ai.domain.OpenAiModel;
+import com.bluntsoftware.ludwig.domain.Knowledge;
+import com.bluntsoftware.ludwig.domain.KnowledgeBase;
 import com.bluntsoftware.ludwig.domain.KnowledgeChunk;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
+import com.bluntsoftware.ludwig.repository.KnowledgeBaseRepository;
 import com.bluntsoftware.ludwig.repository.impl.KnowledgeChunkCustomRepositoryImpl;
+import com.bluntsoftware.ludwig.service.KnowledgeService;
 import com.bluntsoftware.ludwig.tenant.TenantResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
 public class OpenAITextActivity extends TypedActivity<AITextRequest, AITextResponse> {
 
     private final KnowledgeChunkCustomRepositoryImpl knowledgeChunkCustomRepository;
+    private final KnowledgeService knowledgeService;
+    private final KnowledgeBaseRepository knowledgeBaseRepository;
 
-    public OpenAITextActivity(ActivityConfigRepository activityConfigRepository, KnowledgeChunkCustomRepositoryImpl knowledgeChunkCustomRepository) {
+    public OpenAITextActivity(ActivityConfigRepository activityConfigRepository, KnowledgeChunkCustomRepositoryImpl knowledgeChunkCustomRepository, KnowledgeService knowledgeService, KnowledgeBaseRepository knowledgeBaseRepository) {
         super(activityConfigRepository,AITextRequest.class);
         this.knowledgeChunkCustomRepository = knowledgeChunkCustomRepository;
+        this.knowledgeService = knowledgeService;
+        this.knowledgeBaseRepository = knowledgeBaseRepository;
     }
 
     @Override
@@ -41,41 +51,27 @@ public class OpenAITextActivity extends TypedActivity<AITextRequest, AITextRespo
     @Override
     public AITextResponse run(AITextRequest aiText) throws Exception {
         OpenAiConfig openAiConfig  = getExternalConfigByName(aiText.getConfig(), OpenAiConfig.class);
+        KnowledgeBase kb = knowledgeBaseRepository.findAllByName(aiText.getKnowledgeBase()).blockFirst();
         String textOut = "No Ai Response";
+        String classification = null;
         if(openAiConfig != null && openAiConfig.getSecret() != null){
             AIService aiService = new AIService( openAiConfig.getSecret() );
             log.info("Running open AI Text Activity Current Tenant is {}" , TenantResolver.resolve());
 
             List<AIMessage> messages = new ArrayList<>();
 
-            if(aiText.getKnowledgeBase() != null && !aiText.getKnowledgeBase().isEmpty()){
-                List<Double> queryVector =  aiService.getEmbedding(aiText.getText());
-                List<KnowledgeChunk> knowledgeChunks =  knowledgeChunkCustomRepository.findSimilarChunks(queryVector,50)
-                        .collectList()
-                        .block();
-                StringBuilder combinedText = new StringBuilder();
-                if (knowledgeChunks != null) {
-                    knowledgeChunks.forEach(kc -> {
-                        String text = kc.getText();
-                        if (text != null) {
-                            combinedText.append(text).append(System.lineSeparator());
-                        }
-                    });
-                }
-
-                AIMessage aiMessage = AIMessage.builder()
-                        .role("system")
-                        .content(combinedText.toString())
-                        .build();
-                messages.add(aiMessage);
+            //Search the user the Knowledge base
+            if(aiText.getUser() != null && !aiText.getUser().isEmpty()){
+                messages.add(searchUserKnowledgeBase(aiText,kb));
             }
-
-            AIMessage sysMessage = AIMessage.builder()
-                    .role("system")
-                    .content(aiText.getInstructions())
-                    .build();
-
-            messages.add(sysMessage);
+            //Search the system Knowledge base
+            if(aiText.getKnowledgeBase() != null && !aiText.getKnowledgeBase().isEmpty()){
+                messages.add(searchSystemKnowledgeBase(aiText, aiService.getEmbedding(aiText.getText())));
+            }
+            //Get Ai Bot instructions
+            if(aiText.getInstructions() != null && !aiText.getInstructions().isEmpty()){
+                messages.add(AIMessage.builder().role("system").content(aiText.getInstructions()).build());
+            }
 
             AIMessage userMessage = AIMessage.builder()
                     .role("user")
@@ -97,10 +93,105 @@ public class OpenAITextActivity extends TypedActivity<AITextRequest, AITextRespo
                 textOut = response.getChoices().get(0).getMessage().getContent();
             }
 
+            classification = classifyInput(openAiConfig, aiText.getText());
         }
+
+        //Save
+        if(classification!= null && classification.equalsIgnoreCase("Statement") &&
+                kb != null && aiText.getUser() != null && !aiText.getUser().isEmpty()){
+            Knowledge knowledge = knowledgeService.findAllByBaseIdAndUserId(kb.getId(),aiText.getUser()).block();
+            String id = knowledge == null ? UUID.randomUUID().toString() : knowledge.getId();
+            String text = aiText.getText() + "\r\n";
+            text = knowledge == null ? text : text + knowledge.getText() ;
+
+            knowledgeService.save(Knowledge.builder()
+                            .id(id)
+                            .baseId(kb.getId())
+                            .text(text)
+                            .userId(aiText.getUser())
+                            .description("user conversation for " + aiText.getUser())
+                            .build())
+                    .block();
+        }
+
         //Default Values
         return AITextResponse.builder()
                 .text(textOut)
                 .build();
     }
+
+    private AIMessage searchSystemKnowledgeBase(AITextRequest aiTextRequest, List<Double> queryVector) {
+        return searchKnowledgeBase("system",aiTextRequest.getKnowledgeBase(),queryVector);
+    }
+
+    public AIMessage searchUserKnowledgeBase(AITextRequest aiTextRequest,KnowledgeBase kb){
+
+        Knowledge knowledge = knowledgeService.findAllByBaseIdAndUserId(kb.getId(),aiTextRequest.getUser()).block();
+        String userStatements = "";
+        if(knowledge != null && knowledge.getText() != null && !knowledge.getText().isEmpty()){
+            userStatements = knowledge.getText();
+        }
+
+        return AIMessage.builder()
+                .role("system")
+                .content(userStatements)
+                .build();
+    }
+
+    public AIMessage searchKnowledgeBase(String user,String knowledgeBase, List<Double> queryVector){
+
+        List<KnowledgeChunk> knowledgeChunks =  knowledgeChunkCustomRepository
+                .findSimilarChunks(user,knowledgeBase,queryVector,50)
+                .collectList()
+                .block();
+
+        StringBuilder combinedText = new StringBuilder();
+
+        if (knowledgeChunks != null) {
+            knowledgeChunks.forEach(kc -> {
+                String text = kc.getText();
+                if (text != null) {
+                    combinedText.append(text).append(System.lineSeparator());
+                }
+            });
+        }
+
+        return AIMessage.builder()
+                .role("system")
+                .content(combinedText.toString())
+                .build();
+    }
+
+    //Question, Statement or Command
+    String classifyInput(OpenAiConfig openAiConfig,String text) {
+        AIService aiService = new AIService( openAiConfig.getSecret() );
+        String prompt = "Classify the following input as 'Question', 'Statement', or 'Command':\n\n" + text + "\n\n";
+
+        AIMessage systemMessage = AIMessage.builder()
+                .role("system")
+                .content("You are a classifier that determines if an input is a Question, Statement, or Command.")
+                .build();
+
+        AIMessage userMessage = AIMessage.builder()
+                .role("user")
+                .content(prompt)
+                .build();
+
+        AICompletionResponse response = aiService.completions(AICompletionRequest.builder()
+                        .message(systemMessage)
+                        .message(userMessage)
+                        .max_tokens(100)
+                        .store(false)
+                        .temperature(openAiConfig.getTemperature())
+                        .model(OpenAiModel.GPT_4_TURBO.getValue())
+                        .build());
+
+        String textOut = "Question";
+        if(response != null && response.getChoices() != null && !response.getChoices().isEmpty()){
+            textOut = response.getChoices().get(0).getMessage().getContent();
+        }
+        return textOut;
+    }
+
+
 }

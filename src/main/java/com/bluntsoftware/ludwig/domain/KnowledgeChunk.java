@@ -16,6 +16,8 @@ import java.util.List;
 public class KnowledgeChunk {
     @Id
     String id;
+    String userId;
+    String knowledgeBaseName;
     String knowledgeId;
     String text;
     List<Double> vector;
