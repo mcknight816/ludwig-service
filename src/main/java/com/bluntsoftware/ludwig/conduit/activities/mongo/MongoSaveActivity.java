@@ -16,8 +16,12 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
- * Created by Alex Mcknight on 2/27/2017.
+ * Represents an activity for persisting data into a MongoDB database.
+ * This class extends {@link MongoActivity} and leverages {@link MongoRepository}
+ * for operations. It performs validation and manages user-related metadata during
+ * the save operation.
  */
 @Slf4j
 @Service

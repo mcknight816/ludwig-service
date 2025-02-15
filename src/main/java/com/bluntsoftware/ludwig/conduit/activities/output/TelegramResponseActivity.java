@@ -12,6 +12,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Map;
+/**
+ * TelegramResponseActivity is an implementation of ActivityImpl that integrates with Telegram.
+ * This class is responsible for sending a message through a Telegram bot using the given input parameters
+ * and external configuration.
+ *
+ * Dependencies:
+ * - ActivityConfigRepository: Retrieves necessary configurations for the activity.
+ * - TelegramBotService: Provides access to TelegramBot instances.
+ *
+ * Functionality:
+ * - Processes the provided input map to extract and convert it into a TelegramResponse object.
+ * - Retrieves the Telegram configuration based on the provided configuration name.
+ * - Sends a text message to a specified chat ID using the configured Telegram bot.
+ */
 @Service
 public class TelegramResponseActivity extends ActivityImpl {
 

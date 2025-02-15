@@ -13,8 +13,26 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+
 /**
- * Created by Alex Mcknight on 2/27/2017.
+ * MongoFindActivity is a concrete implementation of the MongoActivity class.
+ * This class serves as an activity to perform find operations on a MongoDB collection.
+ * It handles query parameters, security checks, and MongoDB connection interactions to fetch data
+ * based on the input configuration.
+ *
+ * Key features include:
+ * - Parsing input parameters for MongoDB queries.
+ * - Validating and handling user-managed access and security constraints.
+ * - Fetching data from the specified MongoDB collection using the MongoRepository.
+ * - Generating results in a structured format.
+ *
+ * Constructor:
+ * - Requires an ActivityConfigRepository to initialize the activity.
+ *
+ * Methods:
+ * - run(Map<String, Object> input): Executes the find activity based on the provided input map.
+ *   Retrieves data from the specified MongoDB collection and returns the results as a map.
+ * - getJsonSchema(): Provides the JSON schema definition for the MongoFind activity.
  */
 @Service
 public class MongoFindActivity extends MongoActivity {

@@ -12,9 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+
 /**
- * Created by Alex Mcknight on 2/27/2017.
- *
+ * Service class responsible for performing delete operations on a MongoDB collection.
+ * Extends the {@link MongoActivity} class to utilize base Mongo related functionalities.
  */
 @Service
 public class MongoDeleteActivity  extends MongoActivity {

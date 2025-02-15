@@ -9,6 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Service class that extends ActivityConfigImpl for handling PayloadSchema configurations.
+ * This class validates JSON schema structures defined in PayloadSchema to ensure correctness.
+ */
 @Service
 public class PayloadSchemaConfig extends ActivityConfigImpl<PayloadSchema> {
 

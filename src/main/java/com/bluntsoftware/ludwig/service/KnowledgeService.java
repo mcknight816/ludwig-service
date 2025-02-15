@@ -52,7 +52,10 @@ public class KnowledgeService {
     }
 
     public Mono<Void> deleteById(String id) {
-        return knowledgeRepository.deleteById(id);
+       knowledgeChunkRepository
+                .deleteAllByKnowledgeId(id)
+                .block();
+       return knowledgeRepository.deleteById(id);
     }
 
     public Flux<Knowledge> findAllByBaseId(String s) {

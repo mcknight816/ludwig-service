@@ -10,6 +10,21 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 import org.bson.Document;
+
+/**
+ * MongoConnectionConfig is a configuration class that extends ActivityConfigImpl for handling
+ * MongoDB-specific connection configurations. This class provides functionalities to validate
+ * and test connectivity with a MongoDB instance using the provided configuration details.
+ *
+ * The primary responsibility of this class is to implement the `testConfig` method which executes
+ * a connection test against a MongoDB server to ensure the configuration is valid.
+ *
+ * Key functionalities include:
+ * - Creating and initializing a MongoRepository instance using provided connection details.
+ * - Performing a test operation by saving a sample document in a test database and collection.
+ * - Validating the successful completion of the test operation and returning a ConfigTestResult
+ *   indicating success or failure. On failure, it provides a detailed error message.
+ */
 @Service
 public class MongoConnectionConfig extends ActivityConfigImpl<MongoConnect> {
 

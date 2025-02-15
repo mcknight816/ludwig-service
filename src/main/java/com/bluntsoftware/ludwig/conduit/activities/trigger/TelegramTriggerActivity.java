@@ -10,6 +10,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+/**
+ * TelegramTriggerActivity is a concrete implementation of the Activity interface
+ * that handles Telegram-related trigger activities. It extends the functionality
+ * of ActivityImpl and provides specific behavior for processing input, schema
+ * definitions, and visual representation.
+ *
+ * This class is designed to work within the context of a modular activity-based
+ * system, leveraging dependency injection and configuration management through
+ * the ActivityConfigRepository.
+ */
 @Slf4j
 @Service
 public class TelegramTriggerActivity extends ActivityImpl {
