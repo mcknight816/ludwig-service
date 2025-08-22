@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +33,13 @@ public class TelegramTriggerActivity extends ActivityImpl {
     @Override
     public Map<String, Object> run(Map<String, Object> input) throws Exception {
         return input;
+    }
+
+    @Override
+    public List<String> getKeywords() {
+        List<String> ret = super.getKeywords();
+        ret.addAll(Arrays.asList("telegram","telegram trigger"));
+        return ret;
     }
 
     @Override

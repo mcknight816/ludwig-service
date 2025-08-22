@@ -34,11 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 
 
 @Service
@@ -53,7 +49,10 @@ public class HttpClientActivity extends ActivityImpl {
     public HttpClientActivity(ActivityConfigRepository activityConfigRepository) {
         super(activityConfigRepository);
     }
-
+    @Override
+    public List<String> getKeywords() {
+        return Arrays.asList("http client","get","post","put","delete","upload");
+    }
     @Override
     public JsonSchema getJsonSchema() {
         JsonSchema schema = JsonSchema.builder().title(this.getName()).build();

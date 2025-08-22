@@ -34,7 +34,7 @@ public class AiLudwigController {
 
     @PostMapping("/chat/{sessionId}/update")
     public ResponseEntity<String> updateConversation(@PathVariable String sessionId, @RequestBody Map<String, String> request) {
-        conversationService.updateConversation(sessionId, request.get("key"), request.get("value"));
+        //conversationService.updateConversation(sessionId, request.get("key"), request.get("value"));
         return ResponseEntity.ok("✅ Updated conversation context.");
     }
 }

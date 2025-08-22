@@ -1,6 +1,8 @@
 package com.bluntsoftware.ludwig.conduit.activities;
 
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
+
+import java.util.List;
 import java.util.Map;
 
 public interface Activity {
@@ -13,4 +15,5 @@ public interface Activity {
     Boolean fireAndForget();
     ActivityProperties getActivityProperties();
     JsonSchema getJsonSchema();
+    List<String> getKeywords();
 }

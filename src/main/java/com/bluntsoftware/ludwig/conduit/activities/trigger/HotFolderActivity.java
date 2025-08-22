@@ -12,9 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -41,6 +39,15 @@ public class HotFolderActivity extends TimerTriggerActivity {
         return schema;
     }
 
+    @Override
+    public List<String> getKeywords() {
+        List<String> ret = new ArrayList<>();
+        ret.add("hot folder");
+        ret.add("live folder");
+        ret.add("watch folder");
+        ret.add("monitor folder");
+        return ret;
+    }
     @Override
     public Map<String, Object> run(Map<String, Object> input) throws Exception{
         Map<String, Object> out =  super.run(input);

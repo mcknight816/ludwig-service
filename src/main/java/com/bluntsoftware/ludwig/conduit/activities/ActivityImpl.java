@@ -13,9 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -130,7 +128,7 @@ public abstract class  ActivityImpl implements Activity {
      * @return The activity properties.
      */
     public ActivityProperties getActivityProperties(Activity activity) {
-        return ActivityProperties.builder()
+        ActivityProperties ret = ActivityProperties.builder()
                 .name(activity.getName())
                 .activityClass(activity.getActivityClass())
                 .output(activity.getOutput())
@@ -139,7 +137,10 @@ public abstract class  ActivityImpl implements Activity {
                 .fireAndForget(activity.fireAndForget())
                 .input(activity.getInput())
                 .schema(activity.getJsonSchema())
+                .keywords(activity.getKeywords())
                 .build();
+
+        return ret;
     }
 
     /**
@@ -201,7 +202,7 @@ public abstract class  ActivityImpl implements Activity {
         try {
             return run(getInput());
         } catch (Exception e) {
-            log.error("Error running activity {}: {}", getName(), e.getMessage());
+            //log.error("Error running activity {}: {}", getName(), e.getMessage());
             Map<String,Object> output = new ConcurrentHashMap<>();
              output.put("error", e.getMessage() != null ? e.getMessage() : e.toString());
              return output;
@@ -216,4 +217,10 @@ public abstract class  ActivityImpl implements Activity {
     // Abstract methods to be implemented by subclasses
     public abstract Map<String, Object> run(Map<String, Object> input) throws Exception;
     public abstract JsonSchema getJsonSchema();
+    public List<String> getKeywords(){
+        List<String> keywords = new ArrayList<>();
+        keywords.add(getName());
+        keywords.add(getCategory());
+        return keywords;
+    };
 }

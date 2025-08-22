@@ -24,6 +24,13 @@ public class TimerTriggerActivity extends ActivityImpl {
     }
 
     @Override
+    public List<String> getKeywords() {
+        List<String> ret = super.getKeywords();
+        ret.addAll(Arrays.asList("timer","trigger","scheduler","every hour", "every minute","every second","once a month", "once a day","once a week","once a year"));
+        return ret;
+    }
+
+    @Override
     public Map<String, Object> run(Map<String, Object> input)throws Exception  {
         Map<String, Object> ret = new HashMap<>();
         ret.put("time",new Date());

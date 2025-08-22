@@ -95,6 +95,21 @@
       <artifactId>telegrambots</artifactId>
       <version>6.7.0</version>
     </dependency>
+
+    <!-- DJL: Pytorch engine -->
+    <dependency>
+      <groupId>ai.djl.pytorch</groupId>
+      <artifactId>pytorch-engine</artifactId>
+      <version>0.23.0</version>
+    </dependency>
+
+    <!-- Hugging Face Transformers (Optional) -->
+    <dependency>
+      <groupId>ai.djl.huggingface</groupId>
+      <artifactId>tokenizers</artifactId>
+      <version>0.34.0</version>
+    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webflux</artifactId>
@@ -145,7 +160,6 @@
       <artifactId>compiler</artifactId>
       <version>0.9.2</version>
     </dependency>
-
     <dependency>
       <groupId>com.github.java-json-tools</groupId>
       <artifactId>json-schema-validator</artifactId>
@@ -203,6 +217,17 @@
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>
       <url>https://repo.spring.io/snapshot</url>
+    </repository>
+    <!-- Maven Central Repository -->
+    <repository>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+
+    <!-- DJL Repository for additional artifacts -->
+    <repository>
+      <id>djl-repository</id>
+      <url>https://djl.ai/maven/</url>
     </repository>
   </repositories>
   <pluginRepositories>

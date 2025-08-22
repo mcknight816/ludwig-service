@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,12 @@ public class InputActivity extends ActivityImpl {
         this.mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-@Override
+    @Override
+    public List<String> getKeywords() {
+        return Arrays.asList("input","input activity");
+    }
+
+    @Override
     public JsonSchema getJsonSchema() {
         return InputSettings.builder().build().getJsonSchema();
     }

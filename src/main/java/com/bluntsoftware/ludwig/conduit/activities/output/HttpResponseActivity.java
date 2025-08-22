@@ -9,6 +9,7 @@ import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,10 @@ public class HttpResponseActivity extends ActivityImpl {
     @Override
     public Map<String, Object> run(Map<String, Object> input)throws Exception {
         return null;
+    }
+    @Override
+    public List<String> getKeywords() {
+        return Arrays.asList("http","response","http response");
     }
 
     @Override

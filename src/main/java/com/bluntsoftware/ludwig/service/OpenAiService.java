@@ -5,9 +5,13 @@ import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionRequest;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AIMessage;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.OpenAiModel;
 import com.bluntsoftware.ludwig.config.AppConfig;
+import com.bluntsoftware.ludwig.domain.AiEmbedding;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class OpenAiService {
@@ -17,40 +21,83 @@ public class OpenAiService {
         this.aiService = new AIService(appConfig);
     }
 
-    public String callOpenAi(String prompt){
+    public String callOpenAi(String prompt) {
         return this.aiService.completions(AICompletionRequest.builder()
                         .message(AIMessage.builder().role("user").content(prompt).build())
                         .model(OpenAiModel.GPT_4.getValue())
                 .build()).getChoices().get(0).getMessage().getContent();
     }
 
-    public String completeMissingDetails(Map<String, String> conversationState) throws IOException {
-        StringBuilder prompt = new StringBuilder("The user wants to create an application but hasn't provided some required details. ");
-        prompt.append("Ask for the missing information based on the current state:\n\n");
+    public List<Double> getEmbeddings(String text) throws IOException {
+        return aiService.getEmbedding(text);
+    }
 
-        if (!conversationState.containsKey("applicationName")) {
-            prompt.append("- What name should I call this application?\n");
-        }
-        if (!conversationState.containsKey("flowType")) {
-            prompt.append("- Would you like to create a flow? What type? Options: [\"MONGO CRUD FLOW\", \"TELEGRAM AI FLOW\"]\n");
-        }
-        if (!conversationState.containsKey("flowName")) {
-            prompt.append("- What should we name the flow?\n");
+    public List<String> getRelevantHistory( List<Double> userEmbedding,List<AiEmbedding> history) {
+        return getRelevantHistory(userEmbedding,history,5);
+    }
+
+    public List<String> getRelevantHistory( List<Double> userEmbedding,List<AiEmbedding> history,int limit) {
+        // Filter by session id and calculate similarity
+        return history.stream()
+                .sorted((entry1, entry2) -> Double.compare(
+                        calculateCosineSimilarity(entry2.getVector(), userEmbedding),
+                        calculateCosineSimilarity(entry1.getVector(), userEmbedding)
+                ))
+                .limit(limit)
+                .map(AiEmbedding::getText)
+                .collect(Collectors.toList());
+    }
+
+    public Map<AiEmbedding, Double> computeSimilarities(String prompt, List<AiEmbedding> aiEmbeddings) throws IOException {
+        List<Double> promptEmbedding = getEmbeddings(prompt);
+        return computeSimilarities(promptEmbedding, aiEmbeddings);
+    }
+
+    private Map<AiEmbedding, Double> computeSimilarities(List<Double> promptEmbedding, List<AiEmbedding> aiEmbeddings) {
+        Map<AiEmbedding, Double> similarityScores = new HashMap<>();
+
+        for (AiEmbedding aiEmbedding :aiEmbeddings) {
+            List<Double> activityEmbedding = aiEmbedding.getVector(); // Fetch stored embedding
+            double similarity = calculateCosineSimilarity(promptEmbedding, activityEmbedding);
+            similarityScores.put(aiEmbedding, similarity);
         }
 
-        if ("MONGO CRUD FLOW".equals(conversationState.get("flowType")) && !conversationState.containsKey("databaseType")) {
-            prompt.append("- What database config should we use? Options: []\n");
+        return similarityScores;
+    }
+
+    private double calculateCosineSimilarity(List<Double> vectorA, List<Double> vectorB) {
+        // Validate inputs
+        if (vectorA == null || vectorB == null || vectorA.isEmpty() || vectorB.isEmpty()) {
+            throw new IllegalArgumentException("Input vectors must be non-null and non-empty.");
+        }
+        if (vectorA.size() != vectorB.size()) {
+            throw new IllegalArgumentException("Input vectors must have the same size.");
         }
 
-        if ("MONGO CRUD FLOW".equals(conversationState.get("flowType")) && !conversationState.containsKey("databaseName")) {
-            prompt.append("- What should be the database name?\n");
+        // Compute dot product
+        double dotProduct = 0.0;
+        for (int i = 0; i < vectorA.size(); i++) {
+            dotProduct += vectorA.get(i) * vectorB.get(i);
         }
-        if ("MONGO CRUD FLOW".equals(conversationState.get("flowType")) && !conversationState.containsKey("collectionName")) {
-            prompt.append("- What should be the collection/table name?\n");
-            if (!conversationState.containsKey("schema")) {
-                prompt.append("- Should I auto-generate a schema based on the collection/table name, or would you like to provide a JSON schema?\n");
-            }
+
+        // Compute magnitudes using a helper method
+        double magnitudeA = computeVectorMagnitude(vectorA);
+        double magnitudeB = computeVectorMagnitude(vectorB);
+
+        // Prevent division by zero if one of the vectors has zero magnitude
+        if (magnitudeA == 0.0 || magnitudeB == 0.0) {
+            throw new IllegalArgumentException("Vector magnitude should not be zero.");
         }
-        return callOpenAi(prompt.toString());
+
+        // Calculate and return cosine similarity
+        return dotProduct / (magnitudeA * magnitudeB);
+    }
+
+    private double computeVectorMagnitude(List<Double> vector) {
+        double sumOfSquares = 0.0;
+        for (Double value : vector) {
+            sumOfSquares += value * value;
+        }
+        return Math.sqrt(sumOfSquares);
     }
 }
