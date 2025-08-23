@@ -40,18 +40,25 @@ private final UserService userService;
         List<String> relevantHistory = openAiService.getRelevantHistory(userMessageEmbedding, history, 25);
 
         // Construct context using the relevant history
-        String context = String.join("\n", relevantHistory); // Combine relevant messages
-        context += "\nUser: " + userMessage; // Include current user input
+        String context = "Your role is that of an assistant." + String.join("\n", relevantHistory); // Combine relevant messages
 
         // Generate AI response based on the constructed context
-        String aiResponse = openAiService.callOpenAi(context);
+        String aiResponse = openAiService.callOpenAi(userMessage,context);
 
         // Save the current user message and AI response (with embeddings) into the mongo aiEmbeddingRepository
-        aiEmbeddingRepository.save(AiEmbedding.builder().vector(userMessageEmbedding).userId(userId).text(userMessage).category(CATEGORY).processed(true).build()).block();
-        aiEmbeddingRepository.save(AiEmbedding.builder().vector(openAiService.getEmbeddings(aiResponse)).userId(userId).text(aiResponse).category(CATEGORY).processed(true).build()).block();
-
+        if(isStatement(userMessage)){
+            aiEmbeddingRepository.save(AiEmbedding.builder().vector(userMessageEmbedding).userId(userId).text(userMessage).category(CATEGORY).processed(true).build()).block();
+            // aiEmbeddingRepository.save(AiEmbedding.builder().vector(openAiService.getEmbeddings(aiResponse)).userId(userId).text(aiResponse).category(CATEGORY).processed(true).build()).block();
+        }
         // Return AI's response wrapped in a DTO
         return new ChatResponseDto(aiResponse);
     }
 
+    public boolean isStatement(String prompt) {
+        // Send prompt to OpenAI API asking if it's a question
+        String classificationQuery = "Classify the following as either 'question' or 'statement' or 'command': \"" + prompt + "\"";
+        String response = openAiService.callOpenAi(classificationQuery);
+
+        return response.toLowerCase().contains("statement");
+    }
 }

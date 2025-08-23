@@ -28,6 +28,15 @@ public class OpenAiService {
                 .build()).getChoices().get(0).getMessage().getContent();
     }
 
+    public String callOpenAi(String prompt,String history) {
+        return this.aiService.completions(AICompletionRequest.builder()
+                .message(AIMessage.builder().role("system").content(history).build())
+                .message(AIMessage.builder().role("user").content(prompt).build())
+                .model(OpenAiModel.GPT_4.getValue())
+                .build()).getChoices().get(0).getMessage().getContent();
+    }
+
+
     public List<Double> getEmbeddings(String text) throws IOException {
         return aiService.getEmbedding(text);
     }
