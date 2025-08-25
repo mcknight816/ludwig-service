@@ -16,12 +16,14 @@ import com.bluntsoftware.ludwig.conduit.service.telegram.TelegramBotTrigger;
 import com.bluntsoftware.ludwig.tenant.TenantResolver;
 import com.bluntsoftware.saasy.repository.TenantRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import javax.annotation.PostConstruct;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;

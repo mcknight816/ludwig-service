@@ -4,6 +4,7 @@ package com.bluntsoftware.saasy.service;
 import com.bluntsoftware.saasy.domain.*;
 import com.bluntsoftware.saasy.repository.TenantRepo;
 import com.bluntsoftware.saasy.repository.TenantUserRepo;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.PostConstruct;
+
 import java.util.ArrayList;
 
 import java.util.UUID;

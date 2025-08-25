@@ -3,8 +3,13 @@ package com.bluntsoftware.ludwig.security;
 import com.bluntsoftware.ludwig.domain.Application;
 import com.bluntsoftware.ludwig.domain.Flow;
 import com.bluntsoftware.ludwig.service.ApplicationService;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.http.HttpStatus;
@@ -14,10 +19,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 @Slf4j
 @Configuration
@@ -68,7 +70,11 @@ public class JwtFilter extends OncePerRequestFilter {
                 log.info("API endpoint is not secured");
             }
         }
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
+        try {
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private JwtDecoder selectDecoder(String jwkUri) {

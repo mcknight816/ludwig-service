@@ -4,6 +4,7 @@ import com.bluntsoftware.ludwig.conduit.activities.files.FileDownloader;
 import com.bluntsoftware.ludwig.conduit.activities.output.HttpResponseActivity;
 import com.bluntsoftware.ludwig.domain.FlowActivity;
 import com.bluntsoftware.ludwig.service.FlowRunnerService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -12,7 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;

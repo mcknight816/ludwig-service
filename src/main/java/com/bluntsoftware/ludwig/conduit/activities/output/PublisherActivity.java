@@ -8,6 +8,7 @@ import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.conduit.utils.schema.PropertyFormat;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.jms.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -47,7 +48,7 @@ public class PublisherActivity extends ActivityImpl {
     public Map<String, Object> run(Map<String, Object> input) throws Exception {
         ActiveMQConfig  config = this.getExternalConfigByName(input.get(qConnectionConfig.getPropertyName()), ActiveMQConfig.class);
         JmsMessagingTemplate template = new JmsMessagingTemplate();
-        template.setConnectionFactory(connectionFactoryChooser.connectionFactory(config));
+        template.setConnectionFactory((ConnectionFactory) connectionFactoryChooser.connectionFactory(config));
         Map<String,Object> msg = new HashMap<>();
         Object payload = input.get("payload");
         ObjectMapper mapper = new ObjectMapper();

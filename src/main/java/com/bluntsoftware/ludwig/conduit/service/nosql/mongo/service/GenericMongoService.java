@@ -4,12 +4,13 @@ package com.bluntsoftware.ludwig.conduit.service.nosql.mongo.service;
 import com.bluntsoftware.ludwig.conduit.service.nosql.mongo.MongoServiceImpl;
 import com.bluntsoftware.ludwig.conduit.service.nosql.mongo.domain.Domain;
 import com.bluntsoftware.ludwig.conduit.service.nosql.mongo.repository.GenericMongoRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.List;
 import java.util.Map;
 

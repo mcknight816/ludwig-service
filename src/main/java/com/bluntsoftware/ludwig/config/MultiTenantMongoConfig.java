@@ -4,6 +4,7 @@ import com.bluntsoftware.ludwig.tenant.TenantResolver;
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
 import com.mongodb.reactivestreams.client.MongoDatabase;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.mongodb.core.SimpleReactiveMongoDatabaseFactory;
 import reactor.core.publisher.Mono;
-import javax.validation.constraints.NotNull;
+
 @Slf4j
 @Configuration
 public class MultiTenantMongoConfig {
@@ -25,7 +26,7 @@ public class MultiTenantMongoConfig {
     @Bean
     SimpleReactiveMongoDatabaseFactory mongoDbFactory(MongoClient client){
         return new SimpleReactiveMongoDatabaseFactory(client,dbName){
-            @org.jetbrains.annotations.NotNull
+
             @NotNull
             @Override
             public Mono<MongoDatabase> getMongoDatabase() throws DataAccessException {

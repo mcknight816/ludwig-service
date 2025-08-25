@@ -2,6 +2,7 @@ package com.bluntsoftware.ludwig.service;
 
 import com.bluntsoftware.ludwig.conduit.service.ai.AIService;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionRequest;
+import com.bluntsoftware.ludwig.conduit.service.ai.domain.AIEmbeddingRequest;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AIMessage;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.OpenAiModel;
 import com.bluntsoftware.ludwig.config.AppConfig;
@@ -17,6 +18,13 @@ import java.util.stream.Collectors;
 public class OpenAiService {
 
     private final AIService aiService;
+    /*
+    private final static String MODEL = OpenAiModel.GPT_4.getValue();
+    private final static String EMBEDDING_MODEL =  OpenAiModel.EMBEDDING_ADA.getValue();
+    */
+    private final static String MODEL = "ai/gemma3";//"ai/gemma3-qat"; //"ai/gpt-oss";
+    private final static String EMBEDDING_MODEL = "ai/granite-embedding-multilingual";
+
     public OpenAiService(AppConfig appConfig) {
         this.aiService = new AIService(appConfig);
     }
@@ -24,7 +32,7 @@ public class OpenAiService {
     public String callOpenAi(String prompt) {
         return this.aiService.completions(AICompletionRequest.builder()
                         .message(AIMessage.builder().role("user").content(prompt).build())
-                        .model(OpenAiModel.GPT_4.getValue())
+                        .model(MODEL)
                 .build()).getChoices().get(0).getMessage().getContent();
     }
 
@@ -32,13 +40,16 @@ public class OpenAiService {
         return this.aiService.completions(AICompletionRequest.builder()
                 .message(AIMessage.builder().role("system").content(history).build())
                 .message(AIMessage.builder().role("user").content(prompt).build())
-                .model(OpenAiModel.GPT_4.getValue())
+                .model(MODEL)
                 .build()).getChoices().get(0).getMessage().getContent();
     }
 
 
     public List<Double> getEmbeddings(String text) throws IOException {
-        return aiService.getEmbedding(text);
+        return aiService.getEmbedding(AIEmbeddingRequest.builder()
+                        .model(EMBEDDING_MODEL)
+                .input( text)
+                .build());
     }
 
     public List<String> getRelevantHistory( List<Double> userEmbedding,List<AiEmbedding> history) {

@@ -4,11 +4,12 @@ package com.bluntsoftware.ludwig.conduit.service.nosql.mongo.service;
  * Created by Alex Mcknight on 8/11/2017.
  */
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.List;
 import java.util.Map;
 

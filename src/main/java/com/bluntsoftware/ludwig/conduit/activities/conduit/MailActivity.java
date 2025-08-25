@@ -5,6 +5,7 @@ import com.bluntsoftware.ludwig.conduit.config.mail.MailConfigActivity;
 import com.bluntsoftware.ludwig.conduit.activities.ActivityImpl;
 import com.bluntsoftware.ludwig.conduit.utils.schema.JsonSchema;
 import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
+import jakarta.mail.internet.MimeMessage;
 import org.apache.commons.lang3.CharEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -12,7 +13,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -120,7 +120,7 @@ public class MailActivity extends ActivityImpl {
             this.javaMailSender = getMailSender( config);
         }
 
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        jakarta.mail.internet.MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
             boolean bisMultiPart = false;
             if(input.get(isMultipart) != null){
@@ -197,8 +197,8 @@ public class MailActivity extends ActivityImpl {
             message.setSubject("Test");
             message.setText("Hello World",false);
             mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
-            e.printStackTrace();
+        } catch (jakarta.mail.MessagingException e) {
+            throw new RuntimeException(e);
         }
 
         //MailActivity activity = new MailActivity();

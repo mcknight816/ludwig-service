@@ -6,6 +6,7 @@ import com.bluntsoftware.saasy.domain.Plan;
 import com.bluntsoftware.saasy.domain.User;
 import com.bluntsoftware.saasy.dto.AppDto;
 import com.bluntsoftware.saasy.repository.AppRepo;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.PostConstruct;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 

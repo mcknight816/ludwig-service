@@ -7,9 +7,9 @@ import com.bluntsoftware.ludwig.repository.ActivityRepository;
 import com.bluntsoftware.ludwig.repository.AiEmbeddingRepository;
 import com.bluntsoftware.ludwig.service.OpenAiService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,7 +33,7 @@ public class ActivityRegistry {
 
     @PostConstruct
     public void init() {
-        this.registerActivities();
+     //   this.registerActivities();
     }
 
     public void registerActivities(){

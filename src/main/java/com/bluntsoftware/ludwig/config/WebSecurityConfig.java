@@ -9,12 +9,13 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
@@ -22,26 +23,26 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
         prePostEnabled = true,
         securedEnabled = true,
         jsr250Enabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig  {
 
     @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
     String jwkSetUri;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/core/application/**").authenticated()
-                .antMatchers("/api/**").permitAll()
-                .antMatchers("/saasy/v1/**").permitAll()
-                .anyRequest()
-                .permitAll()
-                .and()
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+           http
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/core/application/**").authenticated()
+                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/saasy/v1/**").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(
                         jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())
                 ))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        return http.build();
     }
     private Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter() {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();

@@ -8,13 +8,15 @@ import com.bluntsoftware.ludwig.event.AppSaveEvent;
 import com.bluntsoftware.ludwig.repository.ActivityRepository;
 import com.bluntsoftware.ludwig.tenant.TenantResolver;
 import com.bluntsoftware.saasy.repository.TenantRepo;
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
-import javax.annotation.PostConstruct;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

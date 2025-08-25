@@ -3,11 +3,13 @@ package com.bluntsoftware.ludwig.conduit.config.mail;
 import com.bluntsoftware.ludwig.conduit.config.ActivityConfigImpl;
 import com.bluntsoftware.ludwig.conduit.config.ConfigTestResult;
 import com.bluntsoftware.ludwig.conduit.config.mail.domain.MailConfig;
-import org.jetbrains.annotations.NotNull;
+
+import jakarta.mail.internet.MimeMessage;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import javax.mail.internet.MimeMessage;
+
 import java.util.Map;
 import java.util.Properties;
 

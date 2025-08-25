@@ -36,7 +36,7 @@ public class ModelConverter implements Converter {
   }
 
   protected Map<String,Object> convertToMap(Object map){
-    return mapper.convertValue(map,Map.class);
+    return  mapper.convertValue(map,Map.class);
   }
 
   public Model fromFile(File file) throws IOException {
