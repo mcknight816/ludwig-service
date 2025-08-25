@@ -98,32 +98,17 @@
                 <artifactId>httpclient5</artifactId>
             </exclusion>
         </exclusions>
-
     </dependency>
-      <dependency>
-          <groupId>org.apache.httpcomponents</groupId>
-          <artifactId>httpclient</artifactId>
-          <version>4.5.13</version>
-      </dependency>
-      <dependency>
-          <groupId>org.apache.httpcomponents</groupId>
-          <artifactId>httpcore</artifactId>
-          <version>4.4.15</version>
-      </dependency>
-
-    <!-- DJL: Pytorch engine -->
-    <dependency>
-      <groupId>ai.djl.pytorch</groupId>
-      <artifactId>pytorch-engine</artifactId>
-      <version>0.23.0</version>
-    </dependency>
-
-    <!-- Hugging Face Transformers (Optional) -->
-    <dependency>
-      <groupId>ai.djl.huggingface</groupId>
-      <artifactId>tokenizers</artifactId>
-      <version>0.34.0</version>
-    </dependency>
+  <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.13</version>
+  </dependency>
+  <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
+      <version>4.4.15</version>
+  </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
