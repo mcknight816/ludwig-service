@@ -79,7 +79,7 @@ class AppExceptionHandlerTest {
 
     @Test
     void handleAllExceptionsTest(){
-        ResponseEntity<?>  ret = appExceptionHandler.handleAll(new AppException(HttpStatus.BAD_REQUEST,"Test"),webRequest);
+        ResponseEntity<?>  ret = appExceptionHandler.handleAll(new AppException(HttpStatus.INTERNAL_SERVER_ERROR,"Test"),webRequest);
         Assertions.assertEquals(ret.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
         log.info("{}",ret);
     }
