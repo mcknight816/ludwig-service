@@ -33,7 +33,7 @@ public class ActivityRegistry {
 
     @PostConstruct
     public void init() {
-     //   this.registerActivities();
+        this.registerActivities();
     }
 
     public void registerActivities(){
@@ -43,7 +43,8 @@ public class ActivityRegistry {
                 .stream()
                 .map(activity -> {
                     try {
-                       return activity.getActivityProperties();
+                        ActivityProperties activityProperties = activity.getActivityProperties();
+                       return activityProperties;
                     } catch (Exception e){
                       log.error(activity.getName() + " activity had issues" );
                       return ActivityProperties.builder().name(activity.getName()).build();
@@ -51,7 +52,7 @@ public class ActivityRegistry {
                 }).collect(Collectors.toList());
 
         log.info("Registered {} activities", activities.size());
-       // activities.forEach(this::registerActivity);
+        // activities.forEach(this::registerActivity);
     }
 
     public void registerActivity(ActivityProperties activity){

@@ -1,7 +1,8 @@
 package com.bluntsoftware.ludwig.conduit.service.nosql.mongo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.MongoClient;
+
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import jakarta.servlet.http.HttpServletRequest;

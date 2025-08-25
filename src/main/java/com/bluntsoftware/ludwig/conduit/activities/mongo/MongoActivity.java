@@ -63,7 +63,10 @@ public abstract class MongoActivity extends ActivityImpl  {
                 Integer port = Integer.parseInt(strPort);
                 repo =  new MongoRepository(new MongoConnection(server,port));
             }else{
-                repo = new MongoRepository(new MongoConnection(server,null));
+                // When no port is provided, build a proper URI instead of passing null
+                String uri = "mongodb://" + server;
+                repo = new MongoRepository(new MongoConnection(uri));
+
             }
         }
         this.repos.put(connection,repo);

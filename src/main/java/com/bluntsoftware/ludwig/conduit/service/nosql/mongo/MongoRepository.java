@@ -6,7 +6,7 @@ import com.bluntsoftware.ludwig.conduit.service.nosql.NoSqlListener;
 import com.bluntsoftware.ludwig.conduit.service.nosql.NoSqlRepository;
 import com.bluntsoftware.ludwig.conduit.service.nosql.NoSqlResult;
 import com.mongodb.BasicDBObject;
-import com.mongodb.MongoClient;
+
 import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -35,7 +35,7 @@ public class MongoRepository extends NoSqlRepository<MongoClient> implements IRe
     @Override
     public Map deleteDatabase(String database){
          Map<String,String> ret = new HashMap<>();
-        connection.getClient().dropDatabase(database);
+        connection.getClient().getDatabase(database).drop();
         ret.put("database",database);
         ret.put("msg","deleted successfully");
         return ret;
