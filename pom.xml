@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.0</version>
+        <version>3.5.5</version>
     </parent>
   <groupId>com.bluntsoftware</groupId>
   <artifactId>ludwig-service</artifactId>
@@ -20,17 +20,38 @@
     <spring-boot-admin.version>2.3.1</spring-boot-admin.version>
     <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+      <spring-ai.version>1.0.1</spring-ai.version>
+      <!-- Let JaCoCo set argLine for Surefire -->
+      <argLine></argLine>
+
   </properties>
-  <dependencyManagement />
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring-ai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
+      <dependency>
+          <groupId>org.springframework.ai</groupId>
+          <artifactId>spring-ai-starter-mcp-server</artifactId>
+      </dependency>
     <dependency>
       <groupId>com.microsoft.onnxruntime</groupId>
       <artifactId>onnxruntime</artifactId>
@@ -172,6 +193,8 @@
       <version>4.0.0</version>
       <scope>test</scope>
     </dependency>
+    <!-- Remove explicit JUnit Jupiter 5.4.2 to avoid version mismatch -->
+    <!--
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -190,14 +213,28 @@
       <version>5.4.2</version>
       <scope>test</scope>
     </dependency>
+    -->
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
-      <version>1.5.6</version>
+      <version>1.8.0</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.junit.vintage</groupId>
+          <artifactId>junit-vintage-engine</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- Ensure a properly aligned JUnit Platform Launcher is present.
+         Version is managed by the Spring Boot parent, so omit it here. -->
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -224,11 +261,7 @@
       <url>https://repo.maven.apache.org/maven2</url>
     </repository>
 
-    <!-- DJL Repository for additional artifacts -->
-    <repository>
-      <id>djl-repository</id>
-      <url>https://djl.ai/maven/</url>
-    </repository>
+
   </repositories>
   <pluginRepositories>
     <pluginRepository>
@@ -250,27 +283,41 @@
   </pluginRepositories>
   <build>
     <plugins>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <argLine>@{argLine} -Xmx1024m</argLine>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.6</version>
-        <executions>
-          <execution>
-            <id>prepare-agent</id>
-            <goals>
-              <goal>prepare-agent</goal>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.10</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>report</id>
+                    <phase>verify</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <!-- Optional: exclude framework classes from runtime instrumentation -->
+            <configuration>
+                <excludes>
+                    <exclude>org/springframework/**</exclude>
+                    <exclude>jakarta/**</exclude>
+                </excludes>
+            </configuration>
+        </plugin>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.2.5</version>
+            <!-- argLine is injected by jacoco:prepare-agent execution -->
+        </plugin>
+
+        <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>

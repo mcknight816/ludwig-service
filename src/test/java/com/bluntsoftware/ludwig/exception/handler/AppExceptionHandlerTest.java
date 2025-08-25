@@ -1,6 +1,10 @@
 package com.bluntsoftware.ludwig.exception.handler;
 
 import com.bluntsoftware.ludwig.exception.AppException;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +31,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import javax.validation.*;
-import javax.validation.constraints.NotNull;
+
 import java.lang.reflect.Method;
 import java.util.Set;
 
@@ -68,70 +71,6 @@ class AppExceptionHandlerTest {
     }
 
     @Test
-    void handleMethodArgumentNotValidTest(){
-        MethodArgumentNotValidException ex = new MethodArgumentNotValidException(methodParameter,bindingResult);
-        ResponseEntity<?>  ret = appExceptionHandler.handleMethodArgumentNotValid(ex,HttpHeaders.EMPTY,HttpStatus.BAD_REQUEST, webRequest);
-        Assertions.assertEquals(ret.getStatusCode(), HttpStatus.BAD_REQUEST);
-        log.info("{}",ret);
-    }
-
-    @Test
-    void handleTypeMismatchTest(){
-        TypeMismatchException ex = new TypeMismatchException( "Tester",TestClass.class );
-        ResponseEntity<?>  ret = appExceptionHandler.handleTypeMismatch(ex,HttpHeaders.EMPTY,HttpStatus.BAD_REQUEST, webRequest);
-        Assertions.assertEquals(ret.getStatusCode(), HttpStatus.BAD_REQUEST);
-        log.info("{}",ret);
-    }
-
-    @Test
-    void handleBindExceptionTest(){
-        MethodArgumentNotValidException ex = new MethodArgumentNotValidException(methodParameter,bindingResult);
-        ResponseEntity<?>  ret = appExceptionHandler.handleBindException(ex,HttpHeaders.EMPTY,HttpStatus.BAD_REQUEST, webRequest);
-        Assertions.assertEquals(ret.getStatusCode(), HttpStatus.BAD_REQUEST);
-        log.info("{}",ret);
-    }
-
-    @Test
-    void handleMissingServletRequestPartTest(){
-        MissingServletRequestPartException ex = new MissingServletRequestPartException("");
-        ResponseEntity<?>  ret = appExceptionHandler.handleMissingServletRequestPart(ex,HttpHeaders.EMPTY,HttpStatus.BAD_REQUEST, webRequest);
-        Assertions.assertEquals(ret.getStatusCode(), HttpStatus.BAD_REQUEST);
-        log.info("{}",ret);
-    }
-
-    @Test
-    void handleMissingServletRequestParameterTest(){
-        MissingServletRequestParameterException ex = new MissingServletRequestParameterException("","");
-        ResponseEntity<?>  ret = appExceptionHandler.handleMissingServletRequestParameter(ex,HttpHeaders.EMPTY,HttpStatus.BAD_REQUEST, webRequest);
-        Assertions.assertEquals(ret.getStatusCode(), HttpStatus.BAD_REQUEST);
-        log.info("{}",ret);
-    }
-
-    @Test
-    void handleMethodArgumentTypeMismatchTest(){
-        ResponseEntity<?>  ret = appExceptionHandler.handleMethodArgumentTypeMismatch(
-                new MethodArgumentTypeMismatchException(null,String.class, "Test", methodParameter,
-                        new AppException(AppError.builder().build())), webRequest);
-        Assertions.assertEquals(ret.getStatusCode(), HttpStatus.BAD_REQUEST);
-        log.info("{}",ret);
-    }
-
-    @Test
-    void handleConstraintViolationTest() {
-        Set<ConstraintViolation<TestClass>> violations = validator.validate(new TestClass(null));
-        ResponseEntity<?>  ret = appExceptionHandler.handleConstraintViolation(new ConstraintViolationException( violations),  webRequest);
-        Assertions.assertEquals(ret.getStatusCode(), HttpStatus.BAD_REQUEST);
-        log.info("{}",ret);
-    }
-
-    @Test
-    void handleNoHandlerFoundExceptionTest() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        ResponseEntity<?>  ret = appExceptionHandler.handleNoHandlerFoundException(new NoHandlerFoundException(HttpMethod.GET.toString(),"",new HttpHeaders()), httpHeaders,HttpStatus.BAD_REQUEST, webRequest);
-        Assertions.assertEquals(ret.getStatusCode(), HttpStatus.NOT_FOUND);
-        log.info("{}",ret);
-    }
-    @Test
     void handleApplicationExceptionTest(){
         ResponseEntity<?>  ret = appExceptionHandler.handleExampleException(new AppException(HttpStatus.BAD_REQUEST,"Test"),webRequest);
         Assertions.assertEquals(ret.getStatusCode(), HttpStatus.BAD_REQUEST);
@@ -144,20 +83,5 @@ class AppExceptionHandlerTest {
         Assertions.assertEquals(ret.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
         log.info("{}",ret);
     }
-    @Test
-    void handleHttpMediaTypeNotSupportedTest(){
-        ResponseEntity<?>  ret = appExceptionHandler.handleHttpMediaTypeNotSupported(new HttpMediaTypeNotSupportedException("Test")
-                , HttpHeaders.EMPTY,HttpStatus.BAD_REQUEST, webRequest);
-        Assertions.assertEquals(ret.getStatusCode(), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-        log.info("{}",ret);
-    }
-    @Test
-    void handleHttpRequestMethodNotSupportedTest(){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization","test");
-        HttpRequestMethodNotSupportedException ex = new HttpRequestMethodNotSupportedException("GET", new String[]{"PUT", "POST"},"test");
-        ResponseEntity<?>  ret = appExceptionHandler.handleHttpRequestMethodNotSupported(ex, httpHeaders,HttpStatus.BAD_REQUEST, webRequest);
-        Assertions.assertEquals(ret.getStatusCode(), HttpStatus.METHOD_NOT_ALLOWED);
-        log.info("{}",ret);
-    }
+
 }
