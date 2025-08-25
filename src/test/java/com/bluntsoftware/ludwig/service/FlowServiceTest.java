@@ -9,7 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.Mock;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
@@ -24,7 +25,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 @Scope("test")
 class FlowServiceTest {
 
-  @MockBean
+  @Mock
   private FlowRepository repo;
 
   Flow item1;

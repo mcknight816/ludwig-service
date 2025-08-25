@@ -1,5 +1,6 @@
 package com.bluntsoftware.ludwig;
 
+import com.bluntsoftware.LudwigApplication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,10 +15,10 @@ class  ApplicationTest {
     this.applicationContext = applicationContext;
   }
 
-  /*@Test
+/*  @Test
   void contextLoadsAndAppStarts() {
-    Application.main(new String[0]);
-    Assertions.assertNotNull(applicationContext);
+      LudwigApplication.main(new String[0]);
+      Assertions.assertNotNull(applicationContext);
   }*/
 
 }

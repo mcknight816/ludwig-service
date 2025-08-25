@@ -12,8 +12,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.ui.ConcurrentModel;
@@ -25,9 +26,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 @ExtendWith(SpringExtension.class)
 @Scope("test")
 class MongoSaveActivityTest {
-    @MockBean
+    @Mock
     MongoConnectionConfig mongoConnectionConfig;
-    @MockBean
+    @Mock
     ActivityConfigRepository activityConfigRepository;
 
     Map<String,Object> payload;
