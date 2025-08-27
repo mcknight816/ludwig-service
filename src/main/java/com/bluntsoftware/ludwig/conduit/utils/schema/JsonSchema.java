@@ -215,7 +215,9 @@ public class JsonSchema implements Property {
         return mapper.convertValue(getValue(),toValueType);
     }
 
-
+    public void addProperties(Map<String, Property> props) {
+        this.properties.putAll(props);
+    }
 
 
     public interface StringPropertyFilter {
