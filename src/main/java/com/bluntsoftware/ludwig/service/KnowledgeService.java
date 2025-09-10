@@ -2,7 +2,11 @@ package com.bluntsoftware.ludwig.service;
 
 import com.bluntsoftware.ludwig.conduit.config.ai.domain.OpenAiConfig;
 import com.bluntsoftware.ludwig.conduit.service.ai.AIService;
+import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionRequest;
+import com.bluntsoftware.ludwig.conduit.service.ai.domain.AIMessage;
+import com.bluntsoftware.ludwig.conduit.service.ai.domain.OpenAiModel;
 import com.bluntsoftware.ludwig.conduit.utils.ParagraphSplitter;
+import com.bluntsoftware.ludwig.config.AppConfig;
 import com.bluntsoftware.ludwig.domain.Knowledge;
 import com.bluntsoftware.ludwig.domain.KnowledgeBase;
 import com.bluntsoftware.ludwig.domain.KnowledgeChunk;
@@ -10,21 +14,28 @@ import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import com.bluntsoftware.ludwig.repository.KnowledgeBaseRepository;
 import com.bluntsoftware.ludwig.repository.KnowledgeChunkRepository;
 import com.bluntsoftware.ludwig.repository.KnowledgeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Service
 public class KnowledgeService {
+    private final UserService userService;
     private final KnowledgeRepository knowledgeRepository;
     private final KnowledgeChunkRepository knowledgeChunkRepository;
     private final KnowledgeBaseRepository knowledgeBaseRepository;
     private final ActivityConfigRepository activityConfigRepository;
-    public KnowledgeService(KnowledgeRepository knowledgeRepository, KnowledgeChunkRepository knowledgeChunkRepository, KnowledgeBaseRepository knowledgeBaseRepository, ActivityConfigRepository activityConfigRepository) {
+    public KnowledgeService(UserService userService, KnowledgeRepository knowledgeRepository, KnowledgeChunkRepository knowledgeChunkRepository, KnowledgeBaseRepository knowledgeBaseRepository, ActivityConfigRepository activityConfigRepository) {
+        this.userService = userService;
         this.knowledgeRepository = knowledgeRepository;
         this.knowledgeChunkRepository = knowledgeChunkRepository;
         this.knowledgeBaseRepository = knowledgeBaseRepository;
@@ -52,10 +63,11 @@ public class KnowledgeService {
     }
 
     public Mono<Void> deleteById(String id) {
-       knowledgeChunkRepository
+         knowledgeChunkRepository
                 .deleteAllByKnowledgeId(id)
-                .block();
-       return knowledgeRepository.deleteById(id);
+                .doOnSubscribe(s -> log.info("Deleting Knowledge Chunk {}", id)).block();
+          knowledgeRepository.deleteById(id).block();
+         return Mono.empty();
     }
 
     public Flux<Knowledge> findAllByBaseId(String s) {
@@ -67,8 +79,7 @@ public class KnowledgeService {
         KnowledgeBase kb = knowledgeBaseRepository.findById(knowledge.getBaseId()).block();
         if(kb != null){
             knowledgeChunkRepository.deleteAllByKnowledgeId(knowledge.getId()).block();
-            OpenAiConfig config = this.activityConfigRepository.getConfigByNameAs(kb.getOpenAiConfig(),OpenAiConfig.class);
-            AIService aiService = new AIService(config.getSecret());
+            AIService aiService = getOpenAiService(kb);
             List<String> vectorText = ParagraphSplitter.chunkText(knowledge.getText(),500);
             vectorText.forEach(text -> {
                 try {
@@ -90,5 +101,72 @@ public class KnowledgeService {
 
     public Mono<Knowledge> findAllByBaseIdAndUserId(String id, String user) {
         return knowledgeRepository.findAllByBaseIdAndUserId(id, user);
+    }
+
+    ConcurrentHashMap<String,AIService> aiServiceCache = new ConcurrentHashMap<>();
+
+    AIService getOpenAiService( KnowledgeBase kb){
+        OpenAiConfig config = null;
+        if(kb.getOpenAiConfig() == null || kb.getOpenAiConfig().isEmpty()){
+            config = this.activityConfigRepository.getFirstConfigByClass(OpenAiConfig.class);
+        } else {
+            config = this.activityConfigRepository.getConfigByNameAs(kb.getOpenAiConfig(),OpenAiConfig.class);
+        }
+
+        if(config == null){
+            throw new RuntimeException("No OpenAiConfig found for KnowledgeBase "+kb.getName());
+        }
+        aiServiceCache.putIfAbsent(config.getSecret(),new AIService(config.getSecret()));
+
+        return aiServiceCache.get(config.getSecret());
+    }
+
+    public List<String> getRelevantKnowledge(Knowledge request){
+        return getRelevantKnowledge(request,getUserId());
+    }
+    public List<String> getRelevantKnowledge(Knowledge request,String userId)  {
+        KnowledgeBase kb = knowledgeBaseRepository.findById(request.getBaseId()).block();
+        assert kb != null;
+        AIService aiService = getOpenAiService(kb);
+
+        List<Double> queryVector = null;
+        try {
+            queryVector = aiService.getEmbedding(request.getText());
+            List<KnowledgeChunk> knowledgeChunks =  knowledgeChunkRepository
+                    .findSimilarChunks(userId,kb.getName(),queryVector,50)
+                    .collectList()
+                    .block();
+
+            if(knowledgeChunks != null) {
+                return knowledgeChunks.stream().map(KnowledgeChunk::getText).toList();
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new ArrayList<>();
+    }
+
+    public String getUserId(){
+        Map<String,Object> userDetails = userService.getAuthenticatedUserDetails();
+        return userDetails.containsKey("email") ? (String)userDetails.get("email") : (String)userDetails.get("sub");
+    }
+
+    public String processRequest(Knowledge request, String context) {
+        KnowledgeBase kb = knowledgeBaseRepository.findById(request.getBaseId()).block();
+        assert kb != null;
+        AIService aiService = getOpenAiService(kb);
+        return aiService.completions(AICompletionRequest.builder()
+                .message(AIMessage.builder().role("system").content(context).build())
+                .message(AIMessage.builder().role("user").content(request.getText()).build())
+                .model(OpenAiModel.GPT_4_MINI.getValue())
+                .build()).getChoices().get(0).getMessage().getContent();
+    }
+
+
+    public Mono<Void>  deleteAllByKnowledgeBaseId(String id) {
+        findAllByBaseId(id).collectList().block().forEach(k -> deleteById(k.getId()).block());
+        return Mono.empty();
     }
 }

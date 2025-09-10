@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 public class OpenAiService {
 
     private final AIService aiService;
-    /*
-    private final static String MODEL = OpenAiModel.GPT_4.getValue();
+
+    private final static String MODEL = OpenAiModel.GPT_5.getValue();
     private final static String EMBEDDING_MODEL =  OpenAiModel.EMBEDDING_ADA.getValue();
-    */
+   /*
     private final static String MODEL = "ai/gemma3";//"ai/gemma3-qat"; //"ai/gpt-oss";
     private final static String EMBEDDING_MODEL = "ai/granite-embedding-multilingual";
-
+*/
     public OpenAiService(AppConfig appConfig) {
         this.aiService = new AIService(appConfig);
     }
@@ -119,5 +119,9 @@ public class OpenAiService {
             sumOfSquares += value * value;
         }
         return Math.sqrt(sumOfSquares);
+    }
+
+    public List<Double> getEmbedding(String text) throws IOException {
+        return aiService.getEmbedding(text);
     }
 }

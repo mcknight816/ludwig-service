@@ -30,7 +30,7 @@ public class OpenAiConfig implements EntitySchema {
     @Builder.Default
     boolean store = true;
     @Builder.Default
-    int temperature = 0;
+    int temperature = 1;
     @Builder.Default
     int max_tokens = 1024;
 

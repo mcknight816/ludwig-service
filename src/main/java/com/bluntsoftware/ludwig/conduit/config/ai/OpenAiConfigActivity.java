@@ -36,7 +36,7 @@ public class OpenAiConfigActivity extends ActivityConfigImpl<OpenAiConfig> {
                                 .role("user")
                                 .content(config.getTestQuestion())
                                 .build())
-                        .max_tokens(config.getMax_tokens())
+                        .max_completion_tokens(config.getMax_tokens())
                         .store(config.isStore())
                         .temperature(config.getTemperature())
                         .model(config.getModel())

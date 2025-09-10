@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum OpenAiModel {
     // GPT-4 Aliases
+    GPT_5("gpt-5"),
+    GPT_5_TURBO("gpt-5-turbo"),
+    GPT_5_VISION("gpt-5-vision"),
+    GPT_5_MINI("gpt-5o-mini"),
+    // GPT-4 Aliases
     GPT_4("gpt-4"),
     GPT_4_TURBO("gpt-4-turbo"),
     GPT_4_VISION("gpt-4-vision"),
@@ -27,7 +32,8 @@ public enum OpenAiModel {
 
     // Embedding Alias
     EMBEDDING_ADA("text-embedding-ada-002"),
-
+    EMBEDDING_SMALL("text-embedding-3-small"),
+    EMBEDDING_LARGE("text-embedding-3-large"),
     // Moderation Aliases
     MODERATION_LATEST("text-moderation-latest"),
     MODERATION_STABLE("text-moderation-stable");

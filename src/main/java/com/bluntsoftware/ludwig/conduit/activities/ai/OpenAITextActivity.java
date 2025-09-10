@@ -113,7 +113,7 @@ public class OpenAITextActivity extends TypedActivity<AITextRequest, AITextRespo
 
             AICompletionRequest request =  AICompletionRequest.builder()
                     .messages(messages)
-                    .max_tokens(openAiConfig.getMax_tokens())
+                    .max_completion_tokens(openAiConfig.getMax_tokens())
                     .store(openAiConfig.isStore())
                     .temperature(openAiConfig.getTemperature())
                     .model(openAiConfig.getModel())
@@ -212,7 +212,7 @@ public class OpenAITextActivity extends TypedActivity<AITextRequest, AITextRespo
         AICompletionResponse response = aiService.completions(AICompletionRequest.builder()
                         .message(systemMessage)
                         .message(userMessage)
-                        .max_tokens(100)
+                        .max_completion_tokens(100)
                         .store(false)
                         .temperature(openAiConfig.getTemperature())
                         .model(OpenAiModel.GPT_4_TURBO.getValue())

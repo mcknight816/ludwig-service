@@ -13,4 +13,5 @@ public interface KnowledgeRepository extends ReactiveMongoRepository<Knowledge, 
     Flux<Knowledge> findAllByBaseId(String baseId);
 
     Mono<Knowledge> findAllByBaseIdAndUserId(String baseId, String userId);
+
 }

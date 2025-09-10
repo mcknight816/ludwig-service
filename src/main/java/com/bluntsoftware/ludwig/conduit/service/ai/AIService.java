@@ -15,18 +15,18 @@ import java.util.List;
 public class AIService {
 
     private final AppConfig appConfig;
-    /*
+
     private static final String API_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions";
     private static final String API_IMAGES_URL = "https://api.openai.com/v1/images/generations";
     private static final String API_EMBEDDING_URL = "https://api.openai.com/v1/embeddings";
-   */
 
-//host.docker.internal
+
+/*
     private static final String API_COMPLETIONS_URL = "http://localhost:8000/engines/llama.cpp/v1/chat/completions";
     private static final String API_IMAGES_URL = "http://localhost:8000/engines/llama.cpp/v1/images/generations";
     private static final String API_EMBEDDING_URL = "http://localhost:8000/engines/llama.cpp/v1/embeddings";
     //private static final String API_EMBEDDING_URL = "https://api.openai.com/v1/embeddings";
-
+ */
     public AIService(AppConfig appConfig) {
         this.appConfig = appConfig;
     }

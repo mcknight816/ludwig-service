@@ -1,11 +1,10 @@
 package com.bluntsoftware.ludwig.service;
 
-import com.bluntsoftware.ludwig.domain.AiEmbedding;
+import com.bluntsoftware.ludwig.domain.Knowledge;
+import com.bluntsoftware.ludwig.domain.KnowledgeBase;
 import com.bluntsoftware.ludwig.dto.ChatResponseDto;
-import com.bluntsoftware.ludwig.repository.AiEmbeddingRepository;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 /*
     The `AiConversationService` provides an abstraction for managing AI-powered conversations. It makes the process user-friendly,
@@ -14,51 +13,38 @@ import java.util.Map;
  */
 @Service
 public class AiConversationService {
-private final UserService userService;
-    private final OpenAiService openAiService;
-    private final AiEmbeddingRepository aiEmbeddingRepository;
-    private final static String CATEGORY = "UserConversations";
 
-    public AiConversationService(UserService userService, OpenAiService openAiService, AiEmbeddingRepository aiEmbeddingRepository) {
+
+    private final UserService userService;
+    private final static String CATEGORY = "UserConversations";
+    private final KnowledgeBaseService knowledgeBaseService;
+
+    public AiConversationService(UserService userService, KnowledgeBaseService knowledgeBaseService) {
         this.userService = userService;
-        this.openAiService = openAiService;
-        this.aiEmbeddingRepository = aiEmbeddingRepository;
+        this.knowledgeBaseService = knowledgeBaseService;
     }
 
     public ChatResponseDto processQuery(String sessionId, String userMessage) throws IOException {
 
         Map<String,Object> userDetails = userService.getAuthenticatedUserDetails();
-
         String userId = userDetails.containsKey("email") ? (String)userDetails.get("email") : (String)userDetails.get("sub");
-        // Generate embedding for the user's current message
-        List<Double> userMessageEmbedding = openAiService.getEmbeddings(userMessage);
 
-        // Get previous conversation history
-        List<AiEmbedding> history = aiEmbeddingRepository.getAiEmbeddingByUserIdAndCategory(userId,CATEGORY).collectList().block();
+        KnowledgeBase kb = knowledgeBaseService.findFirstByCategoryAndUserId(CATEGORY,userId);
+        if(kb == null){
+            kb = knowledgeBaseService.save(KnowledgeBase.builder()
+                    .description("User Conversations")
+                    .userId(userId)
+                    .name(userId + " Conversations")
+                    .category(CATEGORY).build()).block();
+        }
 
-        // Retrieve the most relevant conversation history using embeddings
-        List<String> relevantHistory = openAiService.getRelevantHistory(userMessageEmbedding, history, 25);
-
-        // Construct context using the relevant history
-        String context = "Your role is that of an assistant." + String.join("\n", relevantHistory); // Combine relevant messages
+        assert kb != null;
+        Knowledge request =  Knowledge.builder().baseId(kb.getId()).userId(userId).text(userMessage).category(CATEGORY).build();
 
         // Generate AI response based on the constructed context
-        String aiResponse = openAiService.callOpenAi(userMessage,context);
+        String aiResponse = knowledgeBaseService.processRequest(request,"Your role is that of an assistant.");
 
-        // Save the current user message and AI response (with embeddings) into the mongo aiEmbeddingRepository
-        if(isStatement(userMessage)){
-            aiEmbeddingRepository.save(AiEmbedding.builder().vector(userMessageEmbedding).userId(userId).text(userMessage).category(CATEGORY).processed(true).build()).block();
-            // aiEmbeddingRepository.save(AiEmbedding.builder().vector(openAiService.getEmbeddings(aiResponse)).userId(userId).text(aiResponse).category(CATEGORY).processed(true).build()).block();
-        }
         // Return AI's response wrapped in a DTO
-        return new ChatResponseDto(aiResponse);
-    }
-
-    public boolean isStatement(String prompt) {
-        // Send prompt to OpenAI API asking if it's a question
-        String classificationQuery = "Classify the following as either 'question' or 'statement' or 'command': \"" + prompt + "\"";
-        String response = openAiService.callOpenAi(classificationQuery);
-
-        return response.toLowerCase().contains("statement");
+        return new ChatResponseDto(aiResponse.equalsIgnoreCase("") ? "I'm sorry, I am at a loss for words." : aiResponse );
     }
 }

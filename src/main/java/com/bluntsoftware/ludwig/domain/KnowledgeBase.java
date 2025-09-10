@@ -15,5 +15,7 @@ public class KnowledgeBase {
     String id;
     String name;
     String openAiConfig;
+    String category;
+    String userId;
     String description;
 }

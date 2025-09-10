@@ -15,6 +15,7 @@ public class Knowledge {
     String id;
     String baseId;
     String userId;
+    String category;
     String description;
     String text;
     boolean processed;

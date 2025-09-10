@@ -2,11 +2,12 @@ package com.bluntsoftware.ludwig.controller;
 
 import com.bluntsoftware.ludwig.domain.KnowledgeBase;
 import com.bluntsoftware.ludwig.service.KnowledgeBaseService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
+@Slf4j
 @RestController
 @RequestMapping("/core/knowledge-base")
 public class KnowledgeBaseController {
@@ -33,7 +34,9 @@ public class KnowledgeBaseController {
 
     @DeleteMapping(value = "{id}")
     public Mono<Void> deleteById(@PathVariable("id") String id ){
-        return this.knowledgeBaseService.deleteById(String.valueOf(id));
+         knowledgeBaseService.deleteById(id)
+                .doOnSubscribe(s -> log.info("Deleting Knowledge {}", id)).block();
+        return Mono.empty();
     }
 
 }

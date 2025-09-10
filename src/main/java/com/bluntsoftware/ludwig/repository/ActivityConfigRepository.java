@@ -52,9 +52,21 @@ public class ActivityConfigRepository {
                 .build();
     }
 
+    public List<FlowConfig> findAllByConfigClass(String configCLass) {
+        if(flowConfigRepository != null){
+            return flowConfigRepository.findAllByConfigClass(configCLass).collectList().block();
+        }
+        return null;
+    }
+
+
     public <T extends EntitySchema> T getConfigByNameAs(String name, Class<T> clazz) throws IllegalArgumentException {
         FlowConfig flowConfig = this.findByNameAndConfigClass(name,clazz.getName());
         return flowConfig.getConfigAs(clazz);
     }
 
+    public <T extends EntitySchema> T getFirstConfigByClass(Class<T> clazz) throws IllegalArgumentException {
+        FlowConfig flowConfig = this.findAllByConfigClass(clazz.getName()).get(0);
+        return flowConfig.getConfigAs(clazz);
+    }
 }

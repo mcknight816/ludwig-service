@@ -15,9 +15,11 @@ public class AICompletionRequest {
     @Builder.Default
     boolean store = false;
     @Builder.Default
-    int temperature = 0;
+    int temperature = 1;
+    //@Builder.Default
+    //int max_tokens = 1024;
     @Builder.Default
-    int max_tokens = 1024;
+    int max_completion_tokens = 1024;
     @Builder.Default
     double top_p = 1.0;
     @Builder.Default
