@@ -11,6 +11,7 @@ public enum PropertyFormat {
     ROLE_CHOOSER("roleChooser"),
     PASSWORD("password"),
     JAVASCRIPT("javascript"),
+    PYTHON("python"),
     JSON("json"),
     HTML("html"),
     FILE("file"),

@@ -1,16 +1,16 @@
 package com.bluntsoftware.ludwig.service;
 
-import com.bluntsoftware.ludwig.conduit.config.ai.domain.OpenAiConfig;
+
 import com.bluntsoftware.ludwig.conduit.service.ai.AIService;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionRequest;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AIMessage;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.OpenAiModel;
 import com.bluntsoftware.ludwig.conduit.utils.ParagraphSplitter;
-import com.bluntsoftware.ludwig.config.AppConfig;
+
 import com.bluntsoftware.ludwig.domain.Knowledge;
 import com.bluntsoftware.ludwig.domain.KnowledgeBase;
 import com.bluntsoftware.ludwig.domain.KnowledgeChunk;
-import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
+
 import com.bluntsoftware.ludwig.repository.KnowledgeBaseRepository;
 import com.bluntsoftware.ludwig.repository.KnowledgeChunkRepository;
 import com.bluntsoftware.ludwig.repository.KnowledgeRepository;
@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service
@@ -33,13 +32,13 @@ public class KnowledgeService {
     private final KnowledgeRepository knowledgeRepository;
     private final KnowledgeChunkRepository knowledgeChunkRepository;
     private final KnowledgeBaseRepository knowledgeBaseRepository;
-    private final ActivityConfigRepository activityConfigRepository;
-    public KnowledgeService(UserService userService, KnowledgeRepository knowledgeRepository, KnowledgeChunkRepository knowledgeChunkRepository, KnowledgeBaseRepository knowledgeBaseRepository, ActivityConfigRepository activityConfigRepository) {
+    private final OpenAiService openAiService;
+    public KnowledgeService(UserService userService, KnowledgeRepository knowledgeRepository, KnowledgeChunkRepository knowledgeChunkRepository, KnowledgeBaseRepository knowledgeBaseRepository, OpenAiService openAiService) {
         this.userService = userService;
         this.knowledgeRepository = knowledgeRepository;
         this.knowledgeChunkRepository = knowledgeChunkRepository;
         this.knowledgeBaseRepository = knowledgeBaseRepository;
-        this.activityConfigRepository = activityConfigRepository;
+        this.openAiService = openAiService;
     }
     public Mono<Knowledge> save(Knowledge knowledge) {
          if(knowledge.getId() == null || knowledge.getId().isEmpty()) {
@@ -79,7 +78,7 @@ public class KnowledgeService {
         KnowledgeBase kb = knowledgeBaseRepository.findById(knowledge.getBaseId()).block();
         if(kb != null){
             knowledgeChunkRepository.deleteAllByKnowledgeId(knowledge.getId()).block();
-            AIService aiService = getOpenAiService(kb);
+            AIService aiService = openAiService.getOpenAiService(kb.getOpenAiConfig());
             List<String> vectorText = ParagraphSplitter.chunkText(knowledge.getText(),500);
             vectorText.forEach(text -> {
                 try {
@@ -103,23 +102,7 @@ public class KnowledgeService {
         return knowledgeRepository.findAllByBaseIdAndUserId(id, user);
     }
 
-    ConcurrentHashMap<String,AIService> aiServiceCache = new ConcurrentHashMap<>();
 
-    AIService getOpenAiService( KnowledgeBase kb){
-        OpenAiConfig config = null;
-        if(kb.getOpenAiConfig() == null || kb.getOpenAiConfig().isEmpty()){
-            config = this.activityConfigRepository.getFirstConfigByClass(OpenAiConfig.class);
-        } else {
-            config = this.activityConfigRepository.getConfigByNameAs(kb.getOpenAiConfig(),OpenAiConfig.class);
-        }
-
-        if(config == null){
-            throw new RuntimeException("No OpenAiConfig found for KnowledgeBase "+kb.getName());
-        }
-        aiServiceCache.putIfAbsent(config.getSecret(),new AIService(config.getSecret()));
-
-        return aiServiceCache.get(config.getSecret());
-    }
 
     public List<String> getRelevantKnowledge(Knowledge request){
         return getRelevantKnowledge(request,getUserId());
@@ -127,7 +110,7 @@ public class KnowledgeService {
     public List<String> getRelevantKnowledge(Knowledge request,String userId)  {
         KnowledgeBase kb = knowledgeBaseRepository.findById(request.getBaseId()).block();
         assert kb != null;
-        AIService aiService = getOpenAiService(kb);
+        AIService aiService = openAiService.getOpenAiService(kb.getOpenAiConfig());
 
         List<Double> queryVector = null;
         try {
@@ -156,7 +139,7 @@ public class KnowledgeService {
     public String processRequest(Knowledge request, String context) {
         KnowledgeBase kb = knowledgeBaseRepository.findById(request.getBaseId()).block();
         assert kb != null;
-        AIService aiService = getOpenAiService(kb);
+        AIService aiService = openAiService.getOpenAiService(kb.getOpenAiConfig());
         return aiService.completions(AICompletionRequest.builder()
                 .message(AIMessage.builder().role("system").content(context).build())
                 .message(AIMessage.builder().role("user").content(request.getText()).build())

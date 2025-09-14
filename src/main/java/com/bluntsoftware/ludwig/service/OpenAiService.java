@@ -1,5 +1,6 @@
 package com.bluntsoftware.ludwig.service;
 
+import com.bluntsoftware.ludwig.conduit.config.ai.domain.OpenAiConfig;
 import com.bluntsoftware.ludwig.conduit.service.ai.AIService;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AICompletionRequest;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.AIEmbeddingRequest;
@@ -7,26 +8,30 @@ import com.bluntsoftware.ludwig.conduit.service.ai.domain.AIMessage;
 import com.bluntsoftware.ludwig.conduit.service.ai.domain.OpenAiModel;
 import com.bluntsoftware.ludwig.config.AppConfig;
 import com.bluntsoftware.ludwig.domain.AiEmbedding;
+
+import com.bluntsoftware.ludwig.repository.ActivityConfigRepository;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
 public class OpenAiService {
 
     private final AIService aiService;
-
+    private final ActivityConfigRepository activityConfigRepository;
     private final static String MODEL = OpenAiModel.GPT_5.getValue();
     private final static String EMBEDDING_MODEL =  OpenAiModel.EMBEDDING_ADA.getValue();
    /*
     private final static String MODEL = "ai/gemma3";//"ai/gemma3-qat"; //"ai/gpt-oss";
     private final static String EMBEDDING_MODEL = "ai/granite-embedding-multilingual";
 */
-    public OpenAiService(AppConfig appConfig) {
+    public OpenAiService(AppConfig appConfig, ActivityConfigRepository activityConfigRepository) {
         this.aiService = new AIService(appConfig);
+        this.activityConfigRepository = activityConfigRepository;
     }
 
     public String callOpenAi(String prompt) {
@@ -124,4 +129,25 @@ public class OpenAiService {
     public List<Double> getEmbedding(String text) throws IOException {
         return aiService.getEmbedding(text);
     }
+
+
+    ConcurrentHashMap<String,AIService> aiServiceCache = new ConcurrentHashMap<>();
+
+    public AIService getOpenAiService(String openAiConfigName){
+        OpenAiConfig config = null;
+        if(openAiConfigName == null || openAiConfigName.isEmpty()){
+            config = this.activityConfigRepository.getFirstConfigByClass(OpenAiConfig.class);
+        } else {
+            config = this.activityConfigRepository.getConfigByNameAs(openAiConfigName,OpenAiConfig.class);
+        }
+
+        if(config == null){
+            throw new RuntimeException("No OpenAiConfig found for config "+openAiConfigName);
+        }
+        aiServiceCache.putIfAbsent(config.getSecret(),new AIService(config.getSecret()));
+
+        return aiServiceCache.get(config.getSecret());
+    }
+
+
 }

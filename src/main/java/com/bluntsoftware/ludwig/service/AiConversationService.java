@@ -1,8 +1,11 @@
 package com.bluntsoftware.ludwig.service;
 
+
 import com.bluntsoftware.ludwig.domain.Knowledge;
 import com.bluntsoftware.ludwig.domain.KnowledgeBase;
 import com.bluntsoftware.ludwig.dto.ChatResponseDto;
+import com.bluntsoftware.ludwig.dto.ToolSelection;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Map;
@@ -11,15 +14,18 @@ import java.util.Map;
     efficient, and contextually relevant by bridging the gap between user input and AI capabilities while optionally maintaining
     session histories and interaction data. It acts as the backbone for powering intelligent chat-driven workflows.
  */
+@Slf4j
 @Service
 public class AiConversationService {
 
-
+    private final McpService mcpService;
     private final UserService userService;
     private final static String CATEGORY = "UserConversations";
     private final KnowledgeBaseService knowledgeBaseService;
 
-    public AiConversationService(UserService userService, KnowledgeBaseService knowledgeBaseService) {
+
+    public AiConversationService(McpService mcpService, UserService userService, KnowledgeBaseService knowledgeBaseService ) {
+        this.mcpService = mcpService;
         this.userService = userService;
         this.knowledgeBaseService = knowledgeBaseService;
     }
@@ -28,6 +34,15 @@ public class AiConversationService {
 
         Map<String,Object> userDetails = userService.getAuthenticatedUserDetails();
         String userId = userDetails.containsKey("email") ? (String)userDetails.get("email") : (String)userDetails.get("sub");
+
+        ToolSelection  toolSelection = mcpService.selectToolWithAi(userMessage);
+
+        if(toolSelection != null){
+            log.info("Tool selection: {}",toolSelection);
+            if(toolSelection.getTool() != null && !toolSelection.getTool().equalsIgnoreCase("None")){
+                return new ChatResponseDto(mcpService.run(toolSelection));
+            }
+        }
 
         KnowledgeBase kb = knowledgeBaseService.findFirstByCategoryAndUserId(CATEGORY,userId);
         if(kb == null){
@@ -47,4 +62,6 @@ public class AiConversationService {
         // Return AI's response wrapped in a DTO
         return new ChatResponseDto(aiResponse.equalsIgnoreCase("") ? "I'm sorry, I am at a loss for words." : aiResponse );
     }
+
+
 }
