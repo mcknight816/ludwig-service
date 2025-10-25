@@ -30,17 +30,17 @@ public class AiConversationService {
         this.knowledgeBaseService = knowledgeBaseService;
     }
 
-    public ChatResponseDto processQuery(String sessionId, String userMessage) throws IOException {
+    public ChatResponseDto processQuery(String sessionId, String userMessage,String[] apps, String[] knowledgeBases) throws IOException {
 
         Map<String,Object> userDetails = userService.getAuthenticatedUserDetails();
         String userId = userDetails.containsKey("email") ? (String)userDetails.get("email") : (String)userDetails.get("sub");
 
-        ToolSelection  toolSelection = mcpService.selectToolWithAi(userMessage);
+        ToolSelection  toolSelection = mcpService.selectToolWithAi(userMessage,apps);
 
         if(toolSelection != null){
             log.info("Tool selection: {}",toolSelection);
             if(toolSelection.getTool() != null && !toolSelection.getTool().equalsIgnoreCase("None")){
-                return new ChatResponseDto(mcpService.run(toolSelection));
+                return new ChatResponseDto(mcpService.run(toolSelection,apps));
             }
         }
 

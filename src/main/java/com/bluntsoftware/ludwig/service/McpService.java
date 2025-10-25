@@ -43,8 +43,9 @@ public class McpService {
         this.flowRunnerService = flowRunnerService;
     }
 
-    public Mono<List<McpServerTool>> listTools() {
+    public Mono<List<McpServerTool>> listTools(String[] apps) {
         return applicationService.findAll()
+                .filter(app -> apps != null && (apps.length == 0 || Arrays.asList(apps).contains(app.getId())) )
                 .flatMap(app -> Flux.fromIterable(app.getFlows())
                         .flatMap(flow -> Flux.fromIterable(flow.getActivities())
                                 .filter(fa -> fa.getCategory().equalsIgnoreCase("input"))
@@ -62,18 +63,18 @@ public class McpService {
                 .collectList();
     }
 
-    Optional<McpServerTool> findTool(String name){
-        return Objects.requireNonNull(listTools().block()).stream()
+    Optional<McpServerTool> findTool(String name,String[] apps){
+        return Objects.requireNonNull(listTools(apps).block()).stream()
                 .filter(t -> t.getName().equalsIgnoreCase(name)).findFirst();
 
     }
 
-    public ToolSelection selectToolWithAi(String userPrompt ) {
-        return selectToolWithAi(userPrompt,  listTools().block());
+    public ToolSelection selectToolWithAi(String userPrompt,String[] apps ) {
+        return selectToolWithAi(userPrompt,  listTools(apps).block());
     }
 
-    public String run(ToolSelection toolSelection){
-        McpServerTool mcpServerTool = findTool(toolSelection.getTool()).orElse(null);
+    public String run(ToolSelection toolSelection,String[] apps){
+        McpServerTool mcpServerTool = findTool(toolSelection.getTool(),apps).orElse(null);
         String ret = " Tool Not Found !";
         if(mcpServerTool != null){
            log.info("Mcp Server Tool: {}",mcpServerTool);

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/core/application")
@@ -23,7 +24,18 @@ public class AiLudwigController {
     public ResponseEntity<ChatResponseDto> chatWithAi(@PathVariable String sessionId, @RequestBody Map<String, String> request) {
         try {
             String userMessage = request.get("message");
-            ChatResponseDto aiResponse = conversationService.processQuery(sessionId, userMessage);
+
+            String[] apps = Optional.ofNullable(request.get("apps"))
+                    .filter(s -> !s.isBlank())
+                    .map(s -> s.split("\\s*,\\s*"))
+                    .orElse(null);
+
+            String[] knowledgeBases = Optional.ofNullable(request.get("knowledgeBases"))
+                    .filter(s -> !s.isBlank())
+                    .map(s -> s.split("\\s*,\\s*"))
+                    .orElse(new String[0]);
+
+            ChatResponseDto aiResponse = conversationService.processQuery(sessionId, userMessage,apps,knowledgeBases);
             return ResponseEntity.ok(aiResponse);
         } catch (IOException e) {
             return ResponseEntity.status(500).body(ChatResponseDto.builder()
